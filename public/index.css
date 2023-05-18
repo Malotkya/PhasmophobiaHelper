@@ -141,6 +141,17 @@ h2{
     padding-left: 3ch;
 }
 
+footer {
+    background-color: #444;
+    text-align: center;
+    padding: 10px;
+}
+
+footer a:link,
+footer a:visited{
+    color: #aaa;
+}
+
 @media(min-width: 438px){
     main {
         display: grid;
