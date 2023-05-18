@@ -1,0 +1,22 @@
+{
+  "name": "phasmophobia",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "npx webpack-cli -d source-map",
+    "watch": "npx webpack-cli --watch",
+    "build": "npx webpack-cli"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "ts-loader": "^9.4.2",
+    "typescript": "^5.0.4",
+    "webpack": "^5.81.0",
+    "webpack-cli": "^5.0.2"
+  },
+  "dependencies": {
+    "firebase": "^9.22.0"
+  }
+}

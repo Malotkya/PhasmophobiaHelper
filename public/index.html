@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Phasmophobia Hardcore Checklist</title>
+        <script src="index.js"></script>
+        <link rel="stylesheet" href="index.css">
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+    </head>
+    <body>
+        <header>
+            <h1>Phasmophobia Checklist</h1>
+            <div class="input">
+                <label for="numEvidence">
+                    Evidence:
+                    <input type="number" id="numEvidence" value="2" max="3" min="1" />
+                </label>
+                <button id="btnReset">Reset</button>
+            </div>
+        </header>
+        <main>
+            <article id="evidence-section">
+                <section>
+                    <h2>Evidence</h2>
+                    <ul id="evidence-list"></ul>
+                </section>
+            </article>
+            <article id="ghost-section">
+                <section>
+                    <h2>Ghosts</h2>
+                    <ul id="ghost-list"></ul>
+                </section>
+            </article>
+            <article id="display-section">
+                <section id="display"></section>
+            </article>
+        </main>
+        <footer>
+            <!-- TODO: add  my info here. -->
+        </footer>
+    </body>
+</html>
