@@ -178,6 +178,7 @@ export class Banshee extends Ghost {
             [
                 "Will target one player at a time",
                 "Perfers singing/humming during ghost events.",
+                "Has a chance to roam to it's target.",
                 "Has a special sound that can only be herd with the parabolic mic.",
                 "<a target='_blank' href='https://youtu.be/zuiss03Zd9Q'>More Info</a>"
             ]);
@@ -218,6 +219,7 @@ export class Goryo extends Ghost {
             [EVIDENCE_TYPES.EMF_LEVEL_FIVE, EVIDENCE_TYPES.FINGERPRINTS, EVIDENCE_TYPES.DOTS_PROJECTOR],
             [
                 "Will not show " + EVIDENCE_TYPES.DOTS_PROJECTOR + " if there is a player in the room.",
+                "A goryo is unable to change its favorit room unless the monkey paw forces it too.",
                 "Weakness: Not able to roam far away from its favorit room."
             ],
             EVIDENCE_TYPES.DOTS_PROJECTOR);
@@ -230,8 +232,10 @@ export class Hantu extends Ghost {
         super(target, display, "Hantu",
             [EVIDENCE_TYPES.FINGERPRINTS, EVIDENCE_TYPES.GHOST_ORBS, EVIDENCE_TYPES.FREEZING_TEMPS],
             [
+                
                 "Will speed up when in a colder room, and will slow down in a warmer room.",
-                "When a Hantu is visible you will also be able to see its' freezing breath.",
+                "When a Hantu is visible durring a hunt, and the breaker is off, you will be able to see its freezing breath.",
+                "Weakness: Cannot turn on the fuse box.",
                 "<a target='_blank' href='https://youtu.be/oaPInpuMY58'>More Info</a>"
             ],
             EVIDENCE_TYPES.FREEZING_TEMPS);
@@ -312,7 +316,8 @@ export class Oni extends Ghost {
             [EVIDENCE_TYPES.EMF_LEVEL_FIVE, EVIDENCE_TYPES.FREEZING_TEMPS, EVIDENCE_TYPES.DOTS_PROJECTOR],
             [
                 "Can throw objects very far, very fast.",
-                "This ghost will be more active the more people there are in the ghost room."
+                "This ghost will be more active the more people there are in the ghost room.",
+                "Weakness: Will be visible more often during hunts than normal ghosts."
             ]);
     }
 }
@@ -321,7 +326,12 @@ export class Onryo extends Ghost {
     constructor(target: Element, display: Element){
         super(target, display, "Onryo",
             [EVIDENCE_TYPES.SPIRIT_BOX, EVIDENCE_TYPES.GHOST_ORBS, EVIDENCE_TYPES.FREEZING_TEMPS],
-            []);
+            [
+                "If attempting to hunt, it will be prevented by blowing out a flame similar to using a crucifix.",
+                "If a flame is lit, that will have precidence over a crucifix in preventing a hunt.",
+                "Every thrid flame beingng blown out will start a hunt regardless of sanity, can be prevented with another flame or cucifix.",
+                "Can start hunting at 60% average sanity."
+            ]);
     }
 }
 
@@ -392,7 +402,10 @@ export class Spirit extends Ghost {
     constructor(target: Element, display: Element){
         super(target, display, "Spirit",
             [EVIDENCE_TYPES.EMF_LEVEL_FIVE, EVIDENCE_TYPES.SPIRIT_BOX, EVIDENCE_TYPES.GHOST_WRITING],
-            []);
+            [
+                "Smudging a spirit will prevent a hunt for 180 seconds instead of the noraml 90 seconds.",
+                "Has no other defining characteristics."
+            ]);
     }
 }
 
@@ -441,6 +454,7 @@ export class Wraith extends Ghost {
         super(target, display, "Wraith",
             [EVIDENCE_TYPES.EMF_LEVEL_FIVE, EVIDENCE_TYPES.SPIRIT_BOX, EVIDENCE_TYPES.DOTS_PROJECTOR],
             [
+                "Has a chance of teleporting next to a random player, this will leave an EMF Level 2 or EMF Level 5 reading at the location.",
                 "Weakness: A wraith will never step in salt."
             ]);
     }
