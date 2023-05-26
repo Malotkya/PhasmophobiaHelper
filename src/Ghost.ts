@@ -285,7 +285,7 @@ export class Moroi extends Ghost {
 
 export class Myling extends Ghost {
     constructor(target: Element, display: Element){
-        super(target, display, "Banshee",
+        super(target, display, "Myling",
             [EVIDENCE_TYPES.EMF_LEVEL_FIVE, EVIDENCE_TYPES.FINGERPRINTS, EVIDENCE_TYPES.GHOST_WRITING],
             [
                 "Has a greater chance of making paranormal sounds on the parabolic mic.",
@@ -389,7 +389,7 @@ export class Revenant extends Ghost {
 export class Shade extends Ghost {
     constructor(target: Element, display: Element){
         super(target, display, "Shade",
-            [EVIDENCE_TYPES.GHOST_ORBS, EVIDENCE_TYPES.GHOST_WRITING, EVIDENCE_TYPES.FREEZING_TEMPS],
+            [EVIDENCE_TYPES.EMF_LEVEL_FIVE, EVIDENCE_TYPES.GHOST_WRITING, EVIDENCE_TYPES.FREEZING_TEMPS],
             [
                 "Shades perfer using the ghost ball over a normal ghost event",
                 "Weakness: A shade cannot hunt if there are more then one person in the room with it, and hunts at 35% average sanity.",
