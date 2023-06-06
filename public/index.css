@@ -136,8 +136,7 @@ h2{
     padding: .2em;
     background-color: #444;
     border-radius: 0.25rem;
-
-    list-style-type: "⮊ ";
+    list-style-type: circle;
     padding-left: 3ch;
 }
 
