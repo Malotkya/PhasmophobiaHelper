@@ -315,9 +315,11 @@ export class Oni extends Ghost {
         super(target, display, "Oni",
             [EVIDENCE_TYPES.EMF_LEVEL_FIVE, EVIDENCE_TYPES.FREEZING_TEMPS, EVIDENCE_TYPES.DOTS_PROJECTOR],
             [
-                "Can throw objects very far, very fast.",
+                "A ghost event will drain double the amount of sanity of a normal ghost event.",
                 "This ghost will be more active the more people there are in the ghost room.",
-                "Weakness: Will be visible more often during hunts than normal ghosts."
+                "Unable to do the cloudball ghost event, and has a greater chance of being the normal ghost model during an event.",
+                "Weakness: Will be visible more often during hunts than normal ghosts.",
+                "<a target='_blank' href='https://youtu.be/HDBm_vlA1f8'>More Info</a>"
             ]);
     }
 }
