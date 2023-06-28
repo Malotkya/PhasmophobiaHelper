@@ -71,24 +71,25 @@ export default class Evidence{
         this._btnInclude.style.display = "";
     }
 
-    get includeButton(){
-        return this._btnInclude;
-    }
-
-    get excludeButton(){
-        return this._btnExclude;
-    }
-
-    get resetButton(){
-        return this._btnReset;
-    }
-
     get name(){
         return this._name.textContent;
     }
 
     get style(){
         return this._element.style;
+    }
+
+    public includeEvent(callback:(e:MouseEvent)=>void){
+        this._name.addEventListener("click", callback);
+        this._btnInclude.addEventListener("click", callback);
+    }
+
+    public excludeEvent(callback:(e:MouseEvent)=>void){
+        this._btnExclude.addEventListener("click", callback);
+    }
+
+    public resetEvent(callback:(e:MouseEvent)=>void){
+        this._btnReset.addEventListener("click", callback);
     }
 }
 

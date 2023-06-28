@@ -8,7 +8,7 @@ export default class Phasmophobia {
     private _ghostList: Array<Ghost>
     private _evidenceList: Array<Evidence>
 
-    private _induction: CustomSet<Evidence>;
+    private _induction: CustomSet<Evidence>; 
     private _deduction: Set<Evidence>;
 
     private _evidenceThreashold;
@@ -25,7 +25,7 @@ export default class Phasmophobia {
         this._evidenceThreashold = 1;
 
         this._evidenceList.forEach(evidence=>{
-            evidence.includeButton.addEventListener("click", event=>{
+            evidence.includeEvent(()=>{
                 evidence.found();
                 let replaced = this._induction.add(evidence);
                 if(replaced)
@@ -34,20 +34,22 @@ export default class Phasmophobia {
                 this.update();
             });
         
-            evidence.excludeButton.addEventListener("click", event=>{
+            evidence.excludeEvent(()=>{
                 evidence.notFound();
                 this._induction.delete(evidence);
                 this._deduction.add(evidence);
                 this.update();
             });
     
-            evidence.resetButton.addEventListener("click", event=>{
+            evidence.resetEvent(()=>{
                 evidence.reset();
                 this._induction.delete(evidence);
                 this._deduction.delete(evidence);
                 this.update();
             })
         });
+
+        
     }
 
     update(){
