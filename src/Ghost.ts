@@ -1,13 +1,18 @@
+/** Ghost.ts
+ * 
+ * @author Alex Malotky
+ */
 import * as Icons from "./UnicodeIcons";
 import Evidence, {EVIDENCE_TYPES} from "./Evidence"
 
-export interface GhostObject{
-    name: string,
-    evidence: Array<any>,
-    info: string,
-    required: string
-}
-
+/** Create All Ghost Objects
+ * 
+ * Creates a list of all Ghost objects
+ * 
+ * @param {Element} target 
+ * @param {Element} display 
+ * @returns {Array<Ghost>}
+ */
 export function createAllGhosts(target: Element, display: Element): Array<Ghost>{
     return [
         new Banshee(target, display),
@@ -37,25 +42,33 @@ export function createAllGhosts(target: Element, display: Element): Array<Ghost>
     ];
 }
 
+/** Ghost Class
+ * 
+ */
 export default class Ghost{
+    //Info Elements
     private _name: Element;
     private _info: Element;
     private _evidence: Element;
     private _btnRemove: Element;
 
+    //Ghost Info
     private _disproven: boolean;
     private _required: string;
 
+    //List Elements
     private _element: HTMLElement;
     private _styleElement: HTMLElement;
     
     constructor(target: Element, display: Element, name: string, evidence: Array<string>, info: Array<string>, required?: string){
         this._disproven = false;
         
+        //Name Information
         this._name = document.createElement("h2");
         this._name.className = "name";
         this._name.textContent = name;
 
+        //Alternative Evidence Information
         this._info = document.createElement("ul");
         info.forEach(item=>{
             let li = document.createElement("li");
@@ -63,6 +76,7 @@ export default class Ghost{
             this._info.appendChild(li);
         })
 
+        //Required Evidence Information
         if(typeof required === "undefined"){
             this._required = "";
         } else {
@@ -70,13 +84,7 @@ export default class Ghost{
             this._info.innerHTML += `<li>Will always have ${required} as an evidence.</li>`
         }
 
-        this._btnRemove = document.createElement("button");
-        this._btnRemove.textContent = Icons.EX;
-        this._btnRemove.addEventListener("click", event=>{
-            event.stopPropagation()
-            this.flip()
-        });
-
+        //Main Evidence Information
         this._evidence = document.createElement("ol");
         evidence.forEach(string=>{
             let item = document.createElement("li");
@@ -84,9 +92,19 @@ export default class Ghost{
             this._evidence.appendChild(item);
         });
 
+        //Remove Button List Element
+        this._btnRemove = document.createElement("button");
+        this._btnRemove.textContent = Icons.EX;
+        this._btnRemove.addEventListener("click", event=>{
+            event.stopPropagation()
+            this.flip()
+        });
+
+        //Name List Element
         this._styleElement = document.createElement("span");
         this._styleElement.textContent = name;
 
+        //List Element
         this._element = document.createElement("li");
         this._element.className = "ghost";
         this._element.appendChild(this._styleElement);
@@ -96,6 +114,11 @@ export default class Ghost{
         target.appendChild(this._element);
     }
 
+    /** Has Evidence
+     * 
+     * @param {string} evidence 
+     * @returns {boolean}
+     */
     public has(evidence: string): boolean{
         const list = this._evidence.children;
         for(let i=0; i<list.length; i++){
@@ -106,6 +129,9 @@ export default class Ghost{
         return false;
     }
 
+    /** Cross Off Ghost from List
+     * 
+     */
     public crossOff(){
         this.style.textDecoration = "line-through";
         this._btnRemove.textContent = Icons.RESET;
@@ -114,6 +140,9 @@ export default class Ghost{
         this.order = order;
     }
 
+    /** Un Cross Off Ghost from List
+     * 
+     */
     public unCrossOff(){
         this._btnRemove.textContent = Icons.EX;
         this.style.textDecoration = "";
@@ -122,20 +151,32 @@ export default class Ghost{
         this.order = order;
     }
 
+    /** Hide Ghost from List
+     * 
+     */
     public hide(){
         this._element.classList.add("no");
     }
 
+    /** Show Ghost on List
+     * 
+     */
     public show(){
         this._element.classList.remove("no");
     }
 
+    /** Reset Ghost on List
+     * 
+     */
     public reset(){
         this.unCrossOff();
         this.show();
         this.order = 0;
     }
 
+    /** Flip Ghost on list
+     * 
+     */
     public flip(){
         if(this._disproven){
             this.unCrossOff();
@@ -144,26 +185,53 @@ export default class Ghost{
         }
     }
 
+    /** Ghost is Corssed Off
+     * 
+     * @returns {boolean}
+     */
+    public isCorssedOff(): boolean{
+        return this._disproven;
+    }
+
+    /** Ghost List Item Style Element
+     * 
+     */
     get style(){
         return this._styleElement.style;
     }
 
+    /** Required Evidence Getter
+     * 
+     */
     get required(){
         return this._required;
     }
 
+    /** Ghost Name Getter
+     * 
+     */
     get name(){
         return this._name.textContent;
     }
 
+    /** Ghost List Item Order Getter
+     * 
+     */
     get order(){
         return Number(this._element.style.order) - (Number(this._disproven) * 10);
     }
 
+    /** Ghost List Item Order Setter
+     * 
+     */
     set order(value: number){
         this._element.style.order = (value + (Number(this._disproven) * 10)).toString();
     }
 
+    /** Display Ghost Information
+     * 
+     * @param {Element} target 
+     */
     display(target: Element){
         target.innerHTML = "";
         target.append(this._name);
@@ -172,6 +240,11 @@ export default class Ghost{
     }
 }
 
+/** Custome Ghost Classes
+ * 
+ * Bellow is a custom class for each Ghost type in the game using super constructor.
+ */
+//------------------------------------------------------------------------------------------------------
 export class Banshee extends Ghost {
     constructor(target: Element, display: Element){
         super(target, display, "Banshee",
