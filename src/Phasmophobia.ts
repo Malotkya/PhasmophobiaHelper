@@ -49,7 +49,11 @@ export default class Phasmophobia {
             })
         });
 
-        
+        evidenceTarget.addEventListener("click", ()=>{
+            let current: Ghost = findCurrentGhost(this._ghostList, displayTarget);
+            if(current.order > 0)
+                findTopGhost(this._ghostList).display(displayTarget);
+        })
     }
 
     update(){
@@ -73,7 +77,6 @@ export default class Phasmophobia {
                 }
             });
 
-            console.log(`${ghost.name}: (${iCount}>1 || ${dCount}>${this._evidenceThreashold})`);
             if(iCount>1 || dCount >= this._evidenceThreashold){
                 ghost.hide();
             } else {
@@ -109,4 +112,26 @@ export default class Phasmophobia {
     get evidenceCount(){
         return (DEFAULT_EVIDENCE_COUNT + 1) - this._evidenceThreashold;
     }
+}
+
+function findCurrentGhost(list: Array<Ghost>, current: Element): Ghost{
+    let nameNode = current.querySelector(".name");
+    if(nameNode){
+        let name:string = nameNode.textContent
+        for(let ghost of list){
+            if(ghost.name === name)
+                return ghost;
+        }
+    }
+
+    return null;
+}
+
+function findTopGhost(list: Array<Ghost>){
+    let top = list[0];
+    for(let index = 1; index<list.length; index++){
+        if(top.order > list[index].order)
+            top = list[index];
+    }
+    return top;
 }
