@@ -133,6 +133,7 @@ export default class Ghost{
     public reset(){
         this.unCrossOff();
         this.show();
+        this.order = 0;
     }
 
     public flip(){
