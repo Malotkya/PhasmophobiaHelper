@@ -3,6 +3,7 @@
  * @author Alex Malotky
  */
 import Phasmophobia from "./Phasmophobia";
+import { createInputElements } from "./Html";
 
 //On Load Event
 window.onload = () => {
@@ -17,18 +18,10 @@ window.onload = () => {
         //Create Game
         let game = new Phasmophobia(evidenceTarget, ghostTarget, displayTarget);
 
-        //Reset Button
-        let btnReset = document.querySelector("#btnReset");
-        if(btnReset){
-            btnReset.addEventListener("click", event=>game.reset());
-        }
-        
-        //Evidence Count Selector
-        let numEvidence:HTMLInputElement = document.querySelector("#numEvidence");
-        if(numEvidence){
-            numEvidence.addEventListener("change", event=>game.evidenceCount = Number(numEvidence.value))
-            numEvidence.value = game.evidenceCount.toString();
-        }
+        const [numEvidence, btnReset] = createInputElements(document.querySelector("header"));
+        btnReset.addEventListener("click", event=>game.reset());
+        numEvidence.addEventListener("change", event=>game.evidenceCount = Number(numEvidence.value))
+        numEvidence.value = game.evidenceCount.toString();
 
     //Panik!!!
     } else {
