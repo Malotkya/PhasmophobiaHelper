@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "npx webpack-cli -d source-map",
     "watch": "npx webpack-cli --watch",
-    "build": "npx webpack-cli"
+    "build": "npx webpack-cli",
+
+    "deploy": "npm run build && firebase deploy"
   },
   "author": "",
   "license": "ISC",
