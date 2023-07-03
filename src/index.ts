@@ -3,28 +3,27 @@
  * @author Alex Malotky
  */
 import Phasmophobia from "./Phasmophobia";
-import { createInputElements } from "./Html";
+import { createInputElements, createEvidenceListELement, createGhostListELement, createDisplayTargetElement } from "./Html";
 
 //On Load Event
 window.onload = () => {
 
-    //Find all targets for game.
-    let evidenceTarget = document.querySelector("#evidence-list");
-    let ghostTarget = document.querySelector("#ghost-list");
-    let displayTarget = document.querySelector("#display");
+    //Find Main Element
+    const main = document.querySelector("main");
 
-    if(evidenceTarget && ghostTarget && displayTarget){
+    main.innerHTML = "";
 
-        //Create Game
-        let game = new Phasmophobia(evidenceTarget, ghostTarget, displayTarget);
+    //Create Main Child Elements
+    const evidenceTarget: HTMLElement = createEvidenceListELement(main);
+    const ghostTarget: HTMLElement    = createGhostListELement(main);
+    const displayTarget: HTMLElement  = createDisplayTargetElement(main);
 
-        const [numEvidence, btnReset] = createInputElements(document.querySelector("header"));
-        btnReset.addEventListener("click", event=>game.reset());
-        numEvidence.addEventListener("change", event=>game.evidenceCount = Number(numEvidence.value))
-        numEvidence.value = game.evidenceCount.toString();
+    //Create Game
+    let game = new Phasmophobia(evidenceTarget, ghostTarget, displayTarget);
 
-    //Panik!!!
-    } else {
-        alert("Critical Error: couldn't find main elements!");
-    }
+    //Create Inputs
+    const [numEvidence, btnReset] = createInputElements(document.querySelector("header"));
+    btnReset.addEventListener("click", event=>game.reset());
+    numEvidence.addEventListener("change", event=>game.evidenceCount = Number(numEvidence.value))
+    numEvidence.value = game.evidenceCount.toString();
 }
