@@ -139,13 +139,6 @@ h2{
     list-style-type: circle;
 }
 
-
-
-#display li:has(> .warn),
-#display li:has(> .info){
-    list-style: none;
-}
-
 .warn,
 .info a{
     display: inline-block;
