@@ -406,7 +406,8 @@ export class Onryo extends Ghost {
                 "If attempting to hunt, it will be prevented by blowing out a flame similar to using a crucifix.",
                 "If a flame is lit, that will have precidence over a crucifix in preventing a hunt.",
                 "Every thrid flame beingng blown out will start a hunt regardless of sanity, can be prevented with another flame or cucifix.",
-                "Can start hunting at 60% average sanity."
+                "Can start hunting at 60% average sanity.",
+                "<a target='_blank' href='https://youtu.be/xF2-mf3oEUs'>More Info</a>"
             ]);
     }
 }
