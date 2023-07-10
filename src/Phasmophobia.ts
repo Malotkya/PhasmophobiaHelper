@@ -26,46 +26,53 @@ export default class Phasmophobia {
     constructor(evidenceTarget: Element, ghostTarget: Element, displayTarget: Element){
 
         //Create all Objects
-        this._evidenceList = createAllEvidence(evidenceTarget);
-        this._ghostList = createAllGhosts(ghostTarget, displayTarget);
+        createAllEvidence(evidenceTarget)
+            .then((list:Array<Evidence>)=>{
+                this._evidenceList = list;
+
+                 //Events for find/not finding evedence.
+                this._evidenceList.forEach(evidence=>{
+
+                    //Evidence Found
+                    evidence.includeEvent(()=>{
+                        evidence.found();
+                        let replaced = this._induction.add(evidence);
+                        if(replaced)
+                            replaced.reset();
+                        this._deduction.delete(evidence);
+                        this.update();
+                    });
+                
+                    //Evidence Not Found
+                    evidence.excludeEvent(()=>{
+                        evidence.notFound();
+                        this._induction.delete(evidence);
+                        this._deduction.add(evidence);
+                        this.update();
+                    });
+            
+                    //Evidence Reset
+                    evidence.resetEvent(()=>{
+                        evidence.reset();
+                        this._induction.delete(evidence);
+                        this._deduction.delete(evidence);
+                        this.update();
+                    })
+                });
+            });
+        createAllGhosts(ghostTarget, displayTarget)
+            .then((list:Array<Ghost>)=>{
+                this._ghostList = list;
+
+                this._ghostList[0].display(displayTarget);
+            })
 
         //Create lists
         this._induction = new CustomSet(DEFAULT_EVIDENCE_COUNT);
         this._deduction = new Set();
         
         //Initial Information
-        this._ghostList[0].display(displayTarget);
         this._evidenceThreashold = 1;
-
-        //Events for find/not finding evedence.
-        this._evidenceList.forEach(evidence=>{
-
-            //Evidence Found
-            evidence.includeEvent(()=>{
-                evidence.found();
-                let replaced = this._induction.add(evidence);
-                if(replaced)
-                    replaced.reset();
-                this._deduction.delete(evidence);
-                this.update();
-            });
-        
-            //Evidence Not Found
-            evidence.excludeEvent(()=>{
-                evidence.notFound();
-                this._induction.delete(evidence);
-                this._deduction.add(evidence);
-                this.update();
-            });
-    
-            //Evidence Reset
-            evidence.resetEvent(()=>{
-                evidence.reset();
-                this._induction.delete(evidence);
-                this._deduction.delete(evidence);
-                this.update();
-            })
-        });
 
         //Display new ghost if current ghost is hidden.
         evidenceTarget.addEventListener("click", ()=>{
