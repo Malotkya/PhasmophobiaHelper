@@ -8,16 +8,29 @@ import * as Icons from "./UnicodeIcons";
  * 
  * enum like constants used to keep track of evidence in ghosts.
  */
-export const EVIDENCE_TYPES = {
-    DOTS_PROJECTOR: "Dots Projector", 
-    EMF_LEVEL_FIVE: "EMF Level 5",
-    FREEZING_TEMPS: "Freezing",
-    FINGERPRINTS: "Fingerprints",
-    GHOST_ORBS: "Ghost Orbs",
-    GHOST_WRITING: "Ghost Writing",
-    SPIRIT_BOX: "Spirit Box"
-};
+export const EVIDENCE_TYPES = [
+    "D.O.T.s Projector", 
+    "EMF Level 5",
+    "Freezing Temps",
+    "Fingerprints",
+    "Ghost Orbs",
+    "Ghost Writing",
+    "Spirit Box"
+];
 
+/** Verify If Evidence
+ * 
+ * @param {string} s 
+ * @returns {boolean}
+ */
+export function verifyIfEvidence(s:string): boolean {
+    for(let e of EVIDENCE_TYPES){
+        if(s === e)
+            return true;
+    }
+
+    return false;
+}
 /** Evidence Class
  * 
  */
@@ -149,14 +162,12 @@ export default class Evidence{
  * @param {Element}target 
  * @returns {Array<Evidence>}
  */
-export function createAllEvidence(target: Element): Array<Evidence>{
-    return [
-        new Evidence(EVIDENCE_TYPES.DOTS_PROJECTOR, target),
-        new Evidence(EVIDENCE_TYPES.EMF_LEVEL_FIVE, target),
-        new Evidence(EVIDENCE_TYPES.FREEZING_TEMPS, target),
-        new Evidence(EVIDENCE_TYPES.FINGERPRINTS, target),
-        new Evidence(EVIDENCE_TYPES.GHOST_ORBS, target),
-        new Evidence(EVIDENCE_TYPES.GHOST_WRITING, target),
-        new Evidence(EVIDENCE_TYPES.SPIRIT_BOX, target),
-    ];
+export async function createAllEvidence(target: Element): Promise<Array<Evidence>>{
+    const output: Array<Evidence> = [];
+
+    for(let e of EVIDENCE_TYPES){
+        output.push(new Evidence(e, target));
+    }
+
+    return output;
 }
