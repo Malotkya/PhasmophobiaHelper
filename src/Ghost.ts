@@ -3,7 +3,7 @@
  * @author Alex Malotky
  */
 import * as Icons from "./UnicodeIcons";
-import {checkEvidence} from "./Evidence"
+import {verifyIfEvidence} from "./Evidence"
 import Database, {GhostData} from "./Database";
 
 /** Create All Ghost Objects
@@ -50,7 +50,7 @@ export default class Ghost{
         //Main Evidence Information
         this._evidence = document.createElement("ol");
         data.evidence.forEach((s:string)=>{
-            if( !checkEvidence(s) )
+            if( !verifyIfEvidence(s) )
                 console.warn(`Unknown Evidence type '${s}' on ghost '${data.name}!`);
 
             let item = document.createElement("li");
@@ -81,7 +81,7 @@ export default class Ghost{
         
         //Required Evidence Information
         if(data.required){
-            if( !checkEvidence(data.required))
+            if( !verifyIfEvidence(data.required))
                 console.warn(`Unknown REQUIRED Evidence type '${data.required}' on ghost '${data.name}!`);
 
             this._required = data.required;
