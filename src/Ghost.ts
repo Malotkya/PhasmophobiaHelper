@@ -59,21 +59,22 @@ export default class Ghost{
         });
 
         //Alternative Evidence Information
-        this._info = document.createElement("ul");
+        this._info = document.createElement("div");
+        this._info.className = "info";
 
         //Warning Information
         if(data.warning){
-            let li = document.createElement("li");
-            li.innerHTML = "<span class='warn'>" + data.warning + "</span>";
-            this._info.appendChild(li);
+            this._info.innerHTML += "<span class='warn'>" + data.warning + "</span>";
         }
 
         //Main Information
+        const list = document.createElement("ul");
+        this._info.appendChild(list);
         if(data.info){
             data.info.forEach((item:string)=>{
-                let li = document.createElement("li");
+                const li = document.createElement("li");
                 li.innerHTML = item;
-                this._info.appendChild(li);
+                list.appendChild(li);
             })
         } else {
             console.warn(`No info on ghost '${data.name}'.`);
@@ -85,7 +86,7 @@ export default class Ghost{
                 console.warn(`Unknown REQUIRED Evidence type '${data.required}' on ghost '${data.name}!`);
 
             this._required = data.required;
-            this._info.innerHTML += `<li>Will always have ${data.required} as an evidence.</li>`
+            list.innerHTML += `<li>Will always have ${data.required} as an evidence.</li>`
         } else {
             this._required = "";
         }
