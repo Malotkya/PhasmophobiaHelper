@@ -133,11 +133,34 @@ h2{
 
 #display ul{
     margin: 1em;
-    padding: .2em;
+    padding: .2em 3ch;
     background-color: #444;
     border-radius: 0.25rem;
     list-style-type: circle;
-    padding-left: 3ch;
+}
+
+
+
+#display li:has(> .warn),
+#display li:has(> .info){
+    list-style: none;
+}
+
+.warn,
+.info a{
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+}
+
+.warn {
+    color: red;
+}
+
+.info a:link,
+.info a:visited{
+    color: cyan;
+    padding-bottom: .2em;
 }
 
 footer {
