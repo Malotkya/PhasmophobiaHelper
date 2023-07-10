@@ -3,7 +3,7 @@
  * @author Alex Malotky
  */
 import Phasmophobia from "./Phasmophobia";
-import { createInputElements, createEvidenceListELement, createGhostListELement, createDisplayTargetElement } from "./Html";
+import { createInputElements, createEvidenceListElement, createGhostListElement, createDisplayTargetElement } from "./Html";
 
 //On Load Event
 window.onload = () => {
@@ -14,8 +14,8 @@ window.onload = () => {
     main.innerHTML = "";
 
     //Create Main Child Elements
-    const evidenceTarget: HTMLElement = createEvidenceListELement(main);
-    const ghostTarget: HTMLElement    = createGhostListELement(main);
+    const evidenceTarget: HTMLElement = createEvidenceListElement(main);
+    const ghostTarget: HTMLElement    = createGhostListElement(main);
     const displayTarget: HTMLElement  = createDisplayTargetElement(main);
 
     //Create Game

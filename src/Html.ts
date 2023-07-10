@@ -64,7 +64,7 @@ function createListElement(articleId: string, listId:string, title: string): Arr
  * @param {HTMLElement} target 
  * @returns {HTMLElement}
  */
-export function createEvidenceListELement(target: HTMLElement): HTMLElement{
+export function createEvidenceListElement(target: HTMLElement): HTMLElement{
     const [html, list] = createListElement("evidence-section", "evidence-list", "Evidence:");
     target.appendChild(html);
     return list;
@@ -75,7 +75,7 @@ export function createEvidenceListELement(target: HTMLElement): HTMLElement{
  * @param {HTMLElement} target 
  * @returns {HTMLElement}
  */
-export function createGhostListELement(target: HTMLElement): HTMLElement{
+export function createGhostListElement(target: HTMLElement): HTMLElement{
     const [html, list] = createListElement("ghost-section", "ghost-list", "Ghosts:");
     target.appendChild(html);
     return list;
