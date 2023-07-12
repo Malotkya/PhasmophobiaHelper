@@ -2,8 +2,8 @@
  * 
  * @author Alex Malotky
  */
-import Ghost, { createAllGhosts } from "./Ghost";
-import Evidence, { createAllEvidence } from "./Evidence";
+import Ghost from "./Ghost";
+import Evidence from "./Evidence";
 import CustomSet from "./CustomSet";
 
 const DEFAULT_EVIDENCE_COUNT = 3;
