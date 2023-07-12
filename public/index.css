@@ -5,6 +5,9 @@
 body {
     background-color: #111;
     color: #aaa;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 h1 {
@@ -15,6 +18,10 @@ h1 {
 header {
     display: flex;
     flex-flow: row wrap;
+}
+
+header, footer {
+    flex-grow: 0;
 }
 
 header input {
@@ -44,6 +51,7 @@ button, input {
 main{
     display: flex;
     flex-flow: column nowrap;
+    flex-grow: 1;
 }
 
 section{
@@ -157,17 +165,17 @@ h2{
 }
 
 footer {
-    background-color: #444;
+    background-color: #222;
     text-align: center;
     padding: 10px;
 }
 
 footer a:link,
 footer a:visited{
-    color: #aaa;
+    color: cyan;
 }
 
-@media(min-width: 438px){
+@media(min-width: 500px){
     main {
         display: grid;
         grid-template-columns: 200px auto;
@@ -186,7 +194,7 @@ footer a:visited{
         width: 100%;
     }
 
-    @media(max-width: 550px){
+    @media(max-width: 650px){
         #display ol {
             flex-direction: column;
         }
