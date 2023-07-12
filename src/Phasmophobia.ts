@@ -23,49 +23,42 @@ export default class Phasmophobia {
     //number of abailable evidence.
     private _evidenceThreashold;
 
-    constructor(evidenceTarget: Element, ghostTarget: Element, displayTarget: Element){
+    constructor(evidenceList: Array<Evidence>, ghostList: Array<Ghost>){
 
-        //Create all Objects
-        createAllEvidence(evidenceTarget)
-            .then((list:Array<Evidence>)=>{
-                this._evidenceList = list;
+        this._evidenceList = evidenceList;
 
-                 //Events for find/not finding evedence.
-                this._evidenceList.forEach(evidence=>{
+        //Events for find/not finding evedence.
+        this._evidenceList.forEach(evidence=>{
 
-                    //Evidence Found
-                    evidence.includeEvent(()=>{
-                        evidence.found();
-                        let replaced = this._induction.add(evidence);
-                        if(replaced)
-                            replaced.reset();
-                        this._deduction.delete(evidence);
-                        this.update();
-                    });
-                
-                    //Evidence Not Found
-                    evidence.excludeEvent(()=>{
-                        evidence.notFound();
-                        this._induction.delete(evidence);
-                        this._deduction.add(evidence);
-                        this.update();
-                    });
-            
-                    //Evidence Reset
-                    evidence.resetEvent(()=>{
-                        evidence.reset();
-                        this._induction.delete(evidence);
-                        this._deduction.delete(evidence);
-                        this.update();
-                    })
-                });
+            //Evidence Found
+            evidence.includeEvent(()=>{
+                evidence.found();
+                let replaced = this._induction.add(evidence);
+                if(replaced)
+                    replaced.reset();
+                this._deduction.delete(evidence);
+                this.update();
             });
-        createAllGhosts(ghostTarget, displayTarget)
-            .then((list:Array<Ghost>)=>{
-                this._ghostList = list;
 
-                this._ghostList[0].display(displayTarget);
+            //Evidence Not Found
+            evidence.excludeEvent(()=>{
+                evidence.notFound();
+                this._induction.delete(evidence);
+                this._deduction.add(evidence);
+                this.update();
+            });
+
+            //Evidence Reset
+            evidence.resetEvent(()=>{
+                evidence.reset();
+                this._induction.delete(evidence);
+                this._deduction.delete(evidence);
+                this.update();
             })
+        });
+        
+        //Ghosts
+        this._ghostList = ghostList;
 
         //Create lists
         this._induction = new CustomSet(DEFAULT_EVIDENCE_COUNT);
@@ -73,13 +66,6 @@ export default class Phasmophobia {
         
         //Initial Information
         this._evidenceThreashold = 1;
-
-        //Display new ghost if current ghost is hidden.
-        evidenceTarget.addEventListener("click", ()=>{
-            let current: Ghost = findCurrentGhost(this._ghostList, displayTarget);
-            if(current.order > 0)
-                findTopGhost(this._ghostList).display(displayTarget);
-        })
     }
 
     /** Update Ghost List Visibility & Order
@@ -156,58 +142,4 @@ export default class Phasmophobia {
     get evidenceCount(){
         return (DEFAULT_EVIDENCE_COUNT + 1) - this._evidenceThreashold;
     }
-}
-
-/** Find Current Ghost on Display
- * 
- * Will return null if the ghost can't be found.
- * 
- * @param {Array<Ghost>} list 
- * @param {Element} current 
- * @returns {Ghost}
- */
-function findCurrentGhost(list: Array<Ghost>, current: Element): Ghost{
-    let nameNode = current.querySelector(".name");
-    if(nameNode){
-        let name:string = nameNode.textContent
-        for(let ghost of list){
-            if(ghost.name === name)
-                return ghost;
-        }
-    }
-
-    return null;
-}
-
-/** Find the Top Ghost
- * 
- * Looks for the top ghost of the list, and excludes ghosts that are crossed off.
- * Will return null if all ghosts are crossed off.
- * Assumes list is in alphabetical order!
- * 
- * @param {Array<Ghost>} list 
- * @returns {Ghost}
- */
-function findTopGhost(list: Array<Ghost>): Ghost{
-    let top: Ghost = null;
-    let index:number = 0;
-
-    //Loop through finding start.
-    while(top!==null && index<list.length){
-        if(!list[index].isCorssedOff())
-            top = list[index];
-
-        index++;
-    }
-
-    //Loop thorugh finding top.
-    while(index<list.length){
-        if(top.order > list[index].order) {
-            if(!list[index].isCorssedOff())
-                top = list[index];
-        }
-        index++;
-    }
-
-    return top;
 }

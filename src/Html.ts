@@ -61,32 +61,25 @@ function createListElement(articleId: string, listId:string, title: string): Arr
 
 /** Create Evidence List Element
  * 
- * @param {HTMLElement} target 
- * @returns {HTMLElement}
+ * @returns {[HTMLElement, HTMLElement]}
  */
-export function createEvidenceListElement(target: HTMLElement): HTMLElement{
-    const [html, list] = createListElement("evidence-section", "evidence-list", "Evidence:");
-    target.appendChild(html);
-    return list;
+export function createEvidenceListElement(): Array<HTMLElement>{
+    return createListElement("evidence-section", "evidence-list", "Evidence:");
 }
 
 /** Create Ghost List Element
  * 
- * @param {HTMLElement} target 
- * @returns {HTMLElement}
+ * @returns {[HTMLElement, HTMLElement]}
  */
-export function createGhostListElement(target: HTMLElement): HTMLElement{
-    const [html, list] = createListElement("ghost-section", "ghost-list", "Ghosts:");
-    target.appendChild(html);
-    return list;
+export function createGhostListElement(): Array<HTMLElement>{
+    return createListElement("ghost-section", "ghost-list", "Ghosts:");
 }
 
 /** Create Display Target Element
  * 
- * @param {HTMLElement} target 
- * @returns {HTMLElement}
+ * @returns {[HTMLElement, HTMLElement]}
  */
-export function createDisplayTargetElement(target: HTMLElement): HTMLElement{
+export function createDisplayTargetElement(): Array<HTMLElement>{
     const section = document.createElement("section");
     section.id = "display";
 
@@ -94,6 +87,8 @@ export function createDisplayTargetElement(target: HTMLElement): HTMLElement{
     article.id = "display-section";
     article.appendChild(section);
 
-    target.appendChild(article);
-    return section;
+    return [
+        article,
+        section
+    ];
 }
