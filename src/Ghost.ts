@@ -64,7 +64,7 @@ export default class Ghost{
 
         //Warning Information
         if(data.warning){
-            this._info.innerHTML += "<span class='warn'>" + data.warning + "</span>";
+            this._info.innerHTML += "<p class='warn'>" + data.warning + "</p>";
         }
 
         //Main Information
@@ -93,7 +93,7 @@ export default class Ghost{
 
         //Additional Information Link
         if(data.link){
-            this._info.innerHTML += `<a target='_blank' href='${data.link}'>More Info</a>`;
+            this._info.innerHTML += `<p><a target='_blank' href='${data.link}'>More Info</a></p>`;
         }
 
         //Remove Button List Element

@@ -131,6 +131,7 @@ h2{
     flex-flow: row nowrap;
     justify-content: space-around;
     font-weight: bold;
+    margin-bottom: 0;
 }
 
 #display ol li {
@@ -145,10 +146,10 @@ h2{
     background-color: #444;
     border-radius: 0.25rem;
     list-style-type: circle;
+    margin-bottom: 0;
 }
 
-.warn,
-.info a{
+.info p{
     display: inline-block;
     width: 100%;
     text-align: center;
@@ -156,23 +157,18 @@ h2{
 
 .warn {
     color: red;
+    margin-bottom: 0;
 }
 
-.info a:link,
-.info a:visited{
+a:link,
+a:visited{
     color: cyan;
-    padding-bottom: .2em;
 }
 
 footer {
     background-color: #222;
     text-align: center;
     padding: 10px;
-}
-
-footer a:link,
-footer a:visited{
-    color: cyan;
 }
 
 @media(min-width: 500px){
