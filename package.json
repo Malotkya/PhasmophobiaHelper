@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "npx webpack-cli -d source-map",
+    "dev": "npx webpack-cli --env dev",
     "watch": "npx webpack-cli --watch",
-    "build": "npx webpack-cli",
+    "build": "npx webpack-cli --env prod",
 
     "deploy": "npm run build && firebase deploy"
   },
@@ -16,7 +16,9 @@
     "ts-loader": "^9.4.2",
     "typescript": "^5.0.4",
     "webpack": "^5.81.0",
-    "webpack-cli": "^5.0.2"
+    "webpack-cli": "^5.0.2",
+    "css-minimizer-webpack-plugin": "^5.0.0",
+    "file-loader": "^6.2.0"
   },
   "dependencies": {
     "firebase": "^9.22.0"
