@@ -18,37 +18,35 @@ window.onload = () => {
     const [ghostSectionElement, ghostListElement] = createGhostListElement();
     const [displaySectionElement, displayTargetElement] = createDisplayTargetElement();
 
-    createAllGhosts(ghostListElement, displayTargetElement)
-        .then((ghostList:Array<Ghost>)=>{
+    createAllGhosts(ghostListElement, displayTargetElement).then((ghostList:Array<Ghost>)=>{
 
-            //Display First Ghost
-            ghostList[0].display(displayTargetElement);
+        //Display First Ghost
+        ghostList[0].display(displayTargetElement);
 
-            createAllEvidence(evidenceListElement)
-                .then((evidenceList: Array<Evidence>)=>{
+        createAllEvidence(evidenceListElement).then((evidenceList: Array<Evidence>)=>{
 
-                    //Display Everything
-                    main.appendChild(evidenceSectionElement);
-                    main.appendChild(ghostSectionElement);
-                    main.appendChild(displaySectionElement);
+            //Display Everything
+            main.appendChild(evidenceSectionElement);
+            main.appendChild(ghostSectionElement);
+            main.appendChild(displaySectionElement);
 
-                    //Create Game
-                    let game = new Phasmophobia(evidenceList, ghostList);
+            //Create Game
+            let game = new Phasmophobia(evidenceList, ghostList);
 
-                    //Create Inputs
-                    const [numEvidence, btnReset] = createInputElements(document.querySelector("header"));
-                    btnReset.addEventListener("click", event=>game.reset());
-                    numEvidence.addEventListener("change", event=>game.evidenceCount = Number(numEvidence.value))
-                    numEvidence.value = game.evidenceCount.toString();
-                
-                });
-
-            evidenceListElement.addEventListener("click", ()=>{
-                let current: Ghost = findCurrentGhost(ghostList, displayTargetElement);
-                if(current.order > 0)
-                    findTopGhost(ghostList).display(displayTargetElement);
-                })
+            //Create Inputs
+            const [numEvidence, btnReset] = createInputElements(document.querySelector("header"));
+            btnReset.addEventListener("click", event=>game.reset());
+            numEvidence.addEventListener("change", event=>game.evidenceCount = Number(numEvidence.value))
+            numEvidence.value = game.evidenceCount.toString();
+        
         });
+
+        evidenceListElement.addEventListener("click", ()=>{
+            let current: Ghost = findCurrentGhost(ghostList, displayTargetElement);
+            if(current.order > 0)
+                findTopGhost(ghostList).display(displayTargetElement);
+        });
+    });
 }
 
 /** Find Current Ghost on Display
