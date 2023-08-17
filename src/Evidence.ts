@@ -12,7 +12,7 @@ export const EVIDENCE_TYPES = [
     "D.O.T.s Projector", 
     "EMF Level 5",
     "Freezing Temps",
-    "Fingerprints",
+    "Ultraviolet",
     "Ghost Orbs",
     "Ghost Writing",
     "Spirit Box"
