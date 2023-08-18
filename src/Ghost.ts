@@ -51,7 +51,7 @@ export default class Ghost{
         this._evidence = document.createElement("ol");
         data.evidence.forEach((s:string)=>{
             if( !verifyIfEvidence(s) )
-                console.warn(`Unknown Evidence type '${s}' on ghost '${data.name}!`);
+                console.warn(`Unknown Evidence type '${s}' on ghost '${data.name}'!`);
 
             let item = document.createElement("li");
             item.textContent = s;
@@ -83,7 +83,7 @@ export default class Ghost{
         //Required Evidence Information
         if(data.required){
             if( !verifyIfEvidence(data.required))
-                console.warn(`Unknown REQUIRED Evidence type '${data.required}' on ghost '${data.name}!`);
+                console.warn(`Unknown REQUIRED Evidence type '${data.required}' on ghost '${data.name}'!`);
 
             this._required = data.required;
             list.innerHTML += `<li>Will always have ${data.required} as an evidence.</li>`
