@@ -6,6 +6,7 @@ import Phasmophobia from "./Phasmophobia";
 import { createInputElements, createEvidenceListElement, createGhostListElement, createDisplayTargetElement } from "./Html";
 import Evidence, {createAllEvidence} from "./Evidence";
 import Ghost, {createAllGhosts} from "./Ghost";
+import makeInterface from "./Sound";
 
 //On Load Event
 window.onload = () => {
@@ -38,6 +39,8 @@ window.onload = () => {
             btnReset.addEventListener("click", event=>game.reset());
             numEvidence.addEventListener("change", event=>game.evidenceCount = Number(numEvidence.value))
             numEvidence.value = game.evidenceCount.toString();
+
+            document.querySelector("header").appendChild(makeInterface());
         
         });
 
