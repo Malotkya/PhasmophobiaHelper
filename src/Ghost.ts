@@ -160,7 +160,6 @@ export default class Ghost{
      */
     public hide(){
         this._element.classList.add("no");
-        this._disproven = true;
     }
 
     /** Show Ghost on List
@@ -168,7 +167,6 @@ export default class Ghost{
      */
     public show(){
         this._element.classList.remove("no");
-        this._disproven = false;
     }
 
     /** Reset Ghost on List
@@ -224,7 +222,8 @@ export default class Ghost{
      * 
      */
     get order(){
-        return Number(this._element.style.order) + (Number(this._disproven) * 10);
+        let hidden: Boolean = this._element.classList.contains("no");
+        return Number(this._element.style.order) + (Number(this._disproven || hidden) * 10);
     }
 
     /** Ghost List Item Order Setter
