@@ -37,7 +37,10 @@ window.onload = () => {
 
             //Create Inputs
             const [numEvidence, btnReset] = createInputElements(header);
-            btnReset.addEventListener("click", event=>game.reset());
+            btnReset.addEventListener("click", ()=>{
+                game.reset();
+                ghostList[0].display(displayTargetElement);
+            });
             numEvidence.addEventListener("change", event=>game.evidenceCount = Number(numEvidence.value))
             numEvidence.value = game.evidenceCount.toString();
 

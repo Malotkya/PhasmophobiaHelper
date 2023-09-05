@@ -120,8 +120,11 @@ export default class Phasmophobia {
     reset(){
         this._induction.clear()
         this._deduction.clear();
-        this._ghostList.forEach(g=>g.reset());
         this._evidenceList.forEach(e=>e.reset());
+        this._ghostList.sort((lhs:Ghost, rhs:Ghost)=>{
+            lhs.reset();
+            return lhs.name.localeCompare(rhs.name);
+        })
     }
 
     /** Evidence Count Setter.
