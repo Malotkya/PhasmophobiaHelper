@@ -13,6 +13,7 @@ window.onload = () => {
 
     //Find Main Element
     const main: HTMLElement = document.querySelector("main");
+    const header: HTMLElement = document.querySelector("header");
     main.innerHTML = "";
 
     const [evidenceSectionElement, evidenceListElement] = createEvidenceListElement();
@@ -35,19 +36,16 @@ window.onload = () => {
             let game = new Phasmophobia(evidenceList, ghostList);
 
             //Create Inputs
-            const [numEvidence, btnReset] = createInputElements(document.querySelector("header"));
+            const [numEvidence, btnReset] = createInputElements(header);
             btnReset.addEventListener("click", event=>game.reset());
             numEvidence.addEventListener("change", event=>game.evidenceCount = Number(numEvidence.value))
             numEvidence.value = game.evidenceCount.toString();
 
-            document.querySelector("header").appendChild(makeInterface());
-        
+            header.appendChild(makeInterface());
         });
 
         evidenceListElement.addEventListener("click", ()=>{
-            let current: Ghost = findCurrentGhost(ghostList, displayTargetElement);
-            if(current.order > 0)
-                findTopGhost(ghostList).display(displayTargetElement);
+            ghostList[0].display(displayTargetElement);
         });
     });
 }
