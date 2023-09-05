@@ -30,43 +30,37 @@ export interface GhostData {
     warning?: string
 }
 
-/** Database Class
- * 
- */
-export default class Database {
-    private _firestore: Firestore;
-    constructor(){
-        const app = initializeApp(firebaseConfig);
-        this._firestore = getFirestore(app);
-    }
+const app = initializeApp(firebaseConfig);
+const database = getFirestore(app);
 
-    /** Get Ghost Data
+/** Get Ghost Data
      * 
      * @returns {Array<GhostData>}
      */
-    async getGhosts(): Promise<Array<GhostData>>{
-        const raw = await getDocs(collection(this._firestore, "Ghosts"));
-        const output: Array<GhostData> = [];
+export async function getGhosts(): Promise<Array<GhostData>>{
+    const raw = await getDocs(collection(database, "Ghosts"));
+    const output: Array<GhostData> = [];
 
-        raw.forEach(result=>{
-            //Convert to GhostData
-            const data: any = result.data();
+    raw.forEach(result=>{
+        //Convert to GhostData
+        const data: any = result.data();
 
-            if(typeof data.name === "undefined"){
-                console.error("No name on object and will be droped:\n" + JSON.stringify(data, null, 2));
+        if(typeof data.name === "undefined"){
+            console.error("No name on object and will be droped:\n" + JSON.stringify(data, null, 2));
+        } else {
+
+            if(typeof data.evidence === "undefined") {
+                console.error(`No evidence on ghost '${data.name}' and will be droped.`)
             } else {
-
-                if(typeof data.evidence === "undefined") {
-                    console.error(`No evidence on ghost '${data.name}' and will be droped.`)
-                } else {
-                    output.push(data);
-                }
+                output.push(data);
             }
-        });
+        }
+    });
 
-        //Sort by name.
-        output.sort((a,b)=>a.name.localeCompare(b.name));
+    //Sort by name.
+    output.sort((a,b)=>a.name.localeCompare(b.name));
 
-        return output;
-    }
+    return output;
 }
+
+export default database;

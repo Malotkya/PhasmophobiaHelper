@@ -4,7 +4,7 @@
  */
 import * as Icons from "./UnicodeIcons";
 import {verifyIfEvidence} from "./Evidence"
-import Database, {GhostData} from "./Database";
+import {getGhosts, GhostData} from "./Database";
 
 /** Create All Ghost Objects
  * 
@@ -15,10 +15,7 @@ import Database, {GhostData} from "./Database";
  * @returns {Array<Ghost>}
  */
 export async function createAllGhosts(target: Element, display: Element): Promise<Array<Ghost>>{
-    const database = new Database();
-    const results = await database.getGhosts();
-    
-    return results.map((data: GhostData)=>new Ghost(target, display, data));
+    return (await getGhosts()).map((data: GhostData)=>new Ghost(target, display, data));
 }
 
 /** Ghost Class
