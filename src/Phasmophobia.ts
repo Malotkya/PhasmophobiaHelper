@@ -72,7 +72,7 @@ export default class Phasmophobia {
      * 
      */
     update(){
-        this._ghostList.forEach(ghost=>{
+        for(let ghost of this._ghostList){
 
             //Count Evidence Not Found
             let dCount = 0;
@@ -104,6 +104,13 @@ export default class Phasmophobia {
 
             //Reorder Ghost
             ghost.order = iCount;
+        };
+
+        //Sort the list
+        this._ghostList.sort((lhs:Ghost,rhs:Ghost):number=>{
+            if(lhs.order === rhs.order)
+                return lhs.name.localeCompare(rhs.name);
+            return lhs.order - rhs.order;
         });
     }
 
