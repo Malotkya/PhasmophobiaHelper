@@ -71,9 +71,9 @@ const lblVolume = document.createElement("span");
     lblVolume.textContent = "50%";
 
     sldVolume.addEventListener("change", ()=>{
-        masterGain.gain.value = new Number(sldVolume.value).valueOf();
-        nodeGain1.gain.value = new Number(sldVolume.value).valueOf();
-        lblVolume.textContent = `${Math.round(new Number(sldVolume.value).valueOf() * 100)}%`
+        masterGain.gain.value = Number(sldVolume.value);
+        nodeGain1.gain.value = Number(sldVolume.value);
+        lblVolume.textContent = `${Math.round(Number(sldVolume.value) * 100)}%`
     });
 
 /** Sound is Playing
@@ -99,7 +99,7 @@ const bpm = (speed: number):number => -19.5643 + (76.7883 * speed) + (1.40251 * 
 const convert = (speed: number):number => (60 / bpm(speed)) * 1000;
 
 //Speed of thread
-let speed:number = 1;
+let speed:number = convert(1.7);
 
 /** Sound Thread
  * 
