@@ -25,7 +25,7 @@ const length: number = 0.03;
  * 
  */
 function tick():void {
-    var oscillatorNode = new OscillatorNode(audioContext, {type: 'square'});
+    var oscillatorNode = new OscillatorNode(audioContext, {type: 'sawtooth'});
     oscillatorNode.frequency.value = frequency;
     oscillatorNode.connect( nodeGain1);
     oscillatorNode.start(audioContext.currentTime);
