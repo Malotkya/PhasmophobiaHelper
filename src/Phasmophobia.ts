@@ -20,8 +20,8 @@ export default class Phasmophobia {
     private _induction: CustomSet<Evidence>; 
     private _deduction: Set<Evidence>;
 
-    //number of abailable evidence.
-    private _evidenceThreashold;
+    //Number of evidence needed to rule out a ghost.
+    private _evidenceThreashold: number;
 
     constructor(evidenceList: Array<Evidence>, ghostList: Array<Ghost>){
 
@@ -71,39 +71,39 @@ export default class Phasmophobia {
     /** Update Ghost List Visibility & Order
      * 
      */
-    update(){
+    private update(): void{
         for(let ghost of this._ghostList){
 
             //Count Evidence Not Found
-            let dCount = 0;
+            let dScore = 0;
             this._deduction.forEach(e=>{
                 if(ghost.has(e.name)){
-                    dCount++;
+                    dScore++;
                 }
                 if(ghost.required === e.name){
-                    dCount+=5;
+                    dScore+=DEFAULT_EVIDENCE_COUNT;
                 }
             });
 
             //Count Evidence Found
-            let iCount = 0;
+            let iScore = 0;
             this._induction.forEach(e=>{
                 if(ghost.has(e.name)) {
-                    iCount--;
+                    iScore--;
                 } else {
-                    iCount+=5;
+                    iScore+=DEFAULT_EVIDENCE_COUNT;
                 }
             });
 
             //Hide Ghost if can't be found
-            if(iCount>1 || dCount >= this._evidenceThreashold){
+            if(iScore>1 || dScore >= this._evidenceThreashold){
                 ghost.hide();
             } else {
                 ghost.show();
             }
 
             //Reorder Ghost
-            ghost.order = iCount;
+            ghost.order = iScore;
         };
 
         //Sort the list
@@ -117,7 +117,7 @@ export default class Phasmophobia {
     /** Reset the Game
      * 
      */
-    reset(){
+    public reset(): void{
         this._induction.clear()
         this._deduction.clear();
         this._evidenceList.forEach(e=>e.reset());
@@ -130,9 +130,8 @@ export default class Phasmophobia {
     /** Evidence Count Setter.
      * 
      */
-    set evidenceCount(value: number){
-        let reset = this._induction.setMaxSize(value);
-        reset.forEach(e=>e.reset());
+    public set evidenceCount(value: number){
+        this._induction.setMaxSize(value).forEach(e=>e.reset());
 
         if(value < 1){
             value = 1;
@@ -149,7 +148,7 @@ export default class Phasmophobia {
     /** Evidence Count Getter.
      * 
      */
-    get evidenceCount(){
+    public get evidenceCount(): number{
         return (DEFAULT_EVIDENCE_COUNT + 1) - this._evidenceThreashold;
     }
 }

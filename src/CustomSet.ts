@@ -92,7 +92,7 @@ export default class CustomSet<t>{
      * 
      * @param {Function} callback 
      */
-    public forEach(callback:(value: t,index: number)=>void){
+    public forEach(callback:(value: t,index: number)=>void): void{
         this._list.forEach(callback);
     }
 }

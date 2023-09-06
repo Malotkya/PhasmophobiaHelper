@@ -79,7 +79,7 @@ export default class Evidence{
     /** Evidence Found
      * 
      */
-    public found(){
+    public found(): void{
         this._element.classList.add("yes");
         this._element.classList.remove("no");
         this._btnReset.style.display = "";
@@ -90,7 +90,7 @@ export default class Evidence{
     /** Evidence Not Found
      * 
      */
-    public notFound(){
+    public notFound(): void{
         this._element.classList.add("no");
         this._element.classList.remove("yes");
         this._btnReset.style.display = "";
@@ -101,7 +101,7 @@ export default class Evidence{
     /** Reset Evidence
      * 
      */
-    public reset(){
+    public reset(): void{
         this._element.classList.remove("yes");
         this._element.classList.remove("no");
         this._btnReset.style.display = "none";
@@ -112,14 +112,14 @@ export default class Evidence{
     /** Name Getter
      * 
      */
-    get name(){
+    public get name(): string{
         return this._name.textContent;
     }
 
     /** List Item Element Style Getter
      * 
      */
-    get style(){
+    public get style(): CSSStyleDeclaration{
         return this._element.style;
     }
 
@@ -129,7 +129,7 @@ export default class Evidence{
      * 
      * @param {Function} callback 
      */
-    public includeEvent(callback:(e:MouseEvent)=>void){
+    public includeEvent(callback:(e:MouseEvent)=>void): void{
         this._name.addEventListener("click", callback);
         this._btnInclude.addEventListener("click", callback);
     }
@@ -140,7 +140,7 @@ export default class Evidence{
      * 
      * @param {Function} callback 
      */
-    public excludeEvent(callback:(e:MouseEvent)=>void){
+    public excludeEvent(callback:(e:MouseEvent)=>void): void{
         this._btnExclude.addEventListener("click", callback);
     }
 
@@ -150,7 +150,7 @@ export default class Evidence{
      * 
      * @param {Function} callback  
      */
-    public resetEvent(callback:(e:MouseEvent)=>void){
+    public resetEvent(callback:(e:MouseEvent)=>void): void{
         this._btnReset.addEventListener("click", callback);
     }
 }
@@ -163,11 +163,5 @@ export default class Evidence{
  * @returns {Array<Evidence>}
  */
 export async function createAllEvidence(target: Element): Promise<Array<Evidence>>{
-    const output: Array<Evidence> = [];
-
-    for(let e of EVIDENCE_TYPES){
-        output.push(new Evidence(e, target));
-    }
-
-    return output;
+    return EVIDENCE_TYPES.map((e:string)=>new Evidence(e,target));
 }

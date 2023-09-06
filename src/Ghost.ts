@@ -133,7 +133,7 @@ export default class Ghost{
     /** Cross Off Ghost from List
      * 
      */
-    public crossOff(){
+    public crossOff(): void{
         this.style.textDecoration = "line-through";
         this._btnRemove.textContent = Icons.RESET;
         let order = this.order
@@ -144,7 +144,7 @@ export default class Ghost{
     /** Un Cross Off Ghost from List
      * 
      */
-    public unCrossOff(){
+    public unCrossOff(): void{
         this._btnRemove.textContent = Icons.EX;
         this.style.textDecoration = "";
         let order = this.order
@@ -155,21 +155,21 @@ export default class Ghost{
     /** Hide Ghost from List
      * 
      */
-    public hide(){
+    public hide(): void{
         this._element.classList.add("no");
     }
 
     /** Show Ghost on List
      * 
      */
-    public show(){
+    public show(): void{
         this._element.classList.remove("no");
     }
 
     /** Reset Ghost on List
      * 
      */
-    public reset(){
+    public reset(): void{
         this.unCrossOff();
         this.show();
         this.order = 0;
@@ -178,7 +178,7 @@ export default class Ghost{
     /** Flip Ghost on list
      * 
      */
-    public flip(){
+    private flip(): void{
         if(this._disproven){
             this.unCrossOff();
         } else {
@@ -197,28 +197,28 @@ export default class Ghost{
     /** Ghost List Item Style Element
      * 
      */
-    get style(){
+    private get style(): CSSStyleDeclaration{
         return this._styleElement.style;
     }
 
     /** Required Evidence Getter
      * 
      */
-    get required(){
+    public get required(): string{
         return this._required;
     }
 
     /** Ghost Name Getter
      * 
      */
-    get name(){
+    public get name(): string{
         return this._name.textContent;
     }
 
     /** Ghost List Item Order Getter
      * 
      */
-    get order(){
+    public get order(){
         let hidden: Boolean = this._element.classList.contains("no");
         return Number(this._element.style.order) + (Number(this._disproven || hidden) * 10);
     }
@@ -226,7 +226,7 @@ export default class Ghost{
     /** Ghost List Item Order Setter
      * 
      */
-    set order(value: number){
+    public set order(value: number){
         this._element.style.order = (value + (Number(this._disproven) * 10)).toString();
     }
 
@@ -234,7 +234,7 @@ export default class Ghost{
      * 
      * @param {Element} target 
      */
-    display(target: Element){
+    public display(target: Element): void{
         target.innerHTML = "";
         target.append(this._name);
         target.append(this._evidence);
