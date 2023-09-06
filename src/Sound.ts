@@ -3,6 +3,8 @@
  * 
  * Help From:
  * https://stackoverflow.com/questions/48938140/cross-browser-html5-javascript-generate-single-tick-sound
+ * 
+ * @author Alex Malotky
  */
 
 /** Audio Context Section
@@ -118,6 +120,14 @@ function soundThread():void {
  */
 export function generateSound(s: number):void {  
     speed = convert(s);
+    startSound();
+    
+}
+
+/** Start Sound
+ * 
+ */
+export function startSound():void {
     btnMain.textContent = RUNNING_STRING;
 }
 
