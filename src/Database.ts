@@ -2,7 +2,7 @@
  * 
  * @author Alex Malotky
  */
-import {initializeApp} from "firebase/app";
+import {initializeApp, FirebaseApp} from "firebase/app";
 import {getFirestore, Firestore, collection, getDocs} from "firebase/firestore";
 
 // Your web app's Firebase configuration
@@ -27,11 +27,13 @@ export interface GhostData {
     info?: Array<string>,
     required?: string,
     link?: string,
-    warning?: string
+    warning?: string,
+    speed?: number|Array<number>,
+    hunt?: number|Array<number>
 }
 
-const app = initializeApp(firebaseConfig);
-const database = getFirestore(app);
+const app: FirebaseApp = initializeApp(firebaseConfig);
+const database:Firestore = getFirestore(app);
 
 /** Get Ghost Data
      * 
