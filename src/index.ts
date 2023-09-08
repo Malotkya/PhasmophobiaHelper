@@ -1,4 +1,5 @@
 import createCheckList from "./CheckList";
+import makeInterface from "./Util/Sound";
 
 window.onload = () => {
 
@@ -7,5 +8,7 @@ window.onload = () => {
     const header: HTMLElement = document.querySelector("header");
     main.innerHTML = "";
 
-    createCheckList(main, header);
+    createCheckList(main).then(()=>{
+        header.appendChild(makeInterface());
+    });
 }
