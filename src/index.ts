@@ -3,7 +3,7 @@
  * @author Alex Malotky
  */
 import Phasmophobia from "./Phasmophobia";
-import { createInputElements, createEvidenceListElement, createGhostListElement, createDisplayTargetElement } from "./Html";
+import { createInputElements, createEvidenceListElement, createGhostListElement, createDisplayTargetElement, addAlternativeEvidence } from "./Html";
 import Evidence, {createAllEvidence} from "./Evidence";
 import Ghost, {createAllGhosts} from "./Ghost";
 import makeInterface from "./Sound";
@@ -19,6 +19,7 @@ window.onload = () => {
     const [evidenceSectionElement, evidenceListElement] = createEvidenceListElement();
     const [ghostSectionElement, ghostListElement] = createGhostListElement();
     const [displaySectionElement, displayTargetElement] = createDisplayTargetElement();
+    const alternativeListElement = addAlternativeEvidence(evidenceSectionElement);
 
     createAllGhosts(ghostListElement, displayTargetElement).then((ghostList:Array<Ghost>)=>{
 

@@ -153,7 +153,7 @@ export function createSpeedSelector(){
     });
 
     const label = document.createElement("label");
-    label.className = "evidence";
+    label.className = "alternative";
     label.setAttribute("for", "speed");
     label.appendChild(text);
     label.appendChild(input);
@@ -186,7 +186,7 @@ export function createHuntSelector(){
     });
 
     const label = document.createElement("label");
-    label.className = "evidence";
+    label.className = "alternative";
     label.setAttribute("for", "hunt");
     label.appendChild(text);
     label.appendChild(input);

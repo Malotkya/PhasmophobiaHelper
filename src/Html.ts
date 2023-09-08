@@ -1,3 +1,5 @@
+import { createSpeedSelector, createHuntSelector } from "./Alternative";
+
 /** Create Input HTML Elements
  * 
  * @param {HTMLElement} target 
@@ -73,6 +75,18 @@ export function createEvidenceListElement(): Array<HTMLElement>{
  */
 export function createGhostListElement(): Array<HTMLElement>{
     return createListElement("ghost-section", "ghost-list", "Ghosts:");
+}
+
+export function addAlternativeEvidence(target: HTMLElement): HTMLElement{
+    const list = document.createElement("div");
+    list.id = "alternative-list";
+    
+    list.appendChild(createHuntSelector());
+    list.appendChild(createSpeedSelector());
+
+    target.appendChild(list);
+
+    return list;
 }
 
 /** Create Display Target Element
