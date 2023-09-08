@@ -7,7 +7,7 @@
  * @author Alex Malotky
  */
 
-import { SOUND } from "../Util/UnicodeIcons";
+import { SOUND } from "./UnicodeIcons";
 
 /** Audio Context Section
  * 
