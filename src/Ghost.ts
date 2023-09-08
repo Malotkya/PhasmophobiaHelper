@@ -238,10 +238,12 @@ export default class Ghost{
                     if(s > AVERAGE_SPEED)
                         return true;
                 }
+
+                return false;
             }
         }
 
-        return false;
+        return true;
     }
 
     /** Is Ghost Slow
@@ -257,10 +259,12 @@ export default class Ghost{
                     if(s < AVERAGE_SPEED)
                         return true;
                 }
+
+                return false;
             }
         }
 
-        return false;
+        return true;
     }
 
     /** Is Ghost Average
@@ -297,10 +301,12 @@ export default class Ghost{
                     if(h > NORMAL_HUNT)
                         return true;
                 }
+
+                return false;
             }
         }
 
-        return false;
+        return true;
     }
 
     /** Does Ghost Hunt Late
@@ -316,10 +322,12 @@ export default class Ghost{
                     if(h < NORMAL_HUNT)
                         return true;
                 }
+
+                return false;
             }
         }
 
-        return false;
+        return true;
     }
 
     /** Does Ghost Hunt Normal
