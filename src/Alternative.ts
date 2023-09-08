@@ -68,7 +68,7 @@ export const HUNT_TYPES = [
 export function createHuntSelector(): Array<HTMLElement|HTMLSelectElement>{
     const text = document.createElement("span");
     text.className = "name";
-    text.textContent = "Hunt: ";
+    text.textContent = "Hunts: ";
 
     const input = document.createElement("select");
     input.id = HUNT_ID;

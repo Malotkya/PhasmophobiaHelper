@@ -24,11 +24,11 @@ header, footer {
     flex-grow: 0;
 }
 
-header input {
+.input input {
     width: 6ch;
 }
 
-header .input{
+.input{
     flex-grow: 1;
     display: flex;
     flex-flow: row nowrap;
