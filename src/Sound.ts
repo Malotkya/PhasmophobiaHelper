@@ -7,6 +7,8 @@
  * @author Alex Malotky
  */
 
+import { SOUND } from "./UnicodeIcons";
+
 /** Audio Context Section
  * 
  * All the objects used to create the beep.
@@ -136,6 +138,13 @@ export function startSound():void {
  */
 export function stopSound(): void{
     btnMain.textContent = DEFULT_STRING;
+}
+
+export function createSoundButton(speed: number): HTMLButtonElement{
+    const button = document.createElement("button");
+    button.textContent = SOUND;
+    button.addEventListener("click", ()=>generateSound(speed));
+    return button;
 }
 
 /** Make Volume Interface

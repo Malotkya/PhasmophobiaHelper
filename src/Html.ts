@@ -66,7 +66,18 @@ function createListElement(articleId: string, listId:string, title: string): Arr
  * @returns {[HTMLElement, HTMLElement]}
  */
 export function createEvidenceListElement(): Array<HTMLElement>{
-    return createListElement("evidence-section", "evidence-list", "Evidence:");
+    const [section, list] = createListElement("evidence-section", "evidence-list", "Evidence:");
+
+    const alternative = document.createElement("section");
+    alternative.id = "alternative-list";
+    alternative.appendChild(createHuntSelector());
+    alternative.appendChild(createSpeedSelector());
+    section.appendChild(alternative);
+
+    return [
+        section,
+        list
+    ];
 }
 
 /** Create Ghost List Element
@@ -75,18 +86,6 @@ export function createEvidenceListElement(): Array<HTMLElement>{
  */
 export function createGhostListElement(): Array<HTMLElement>{
     return createListElement("ghost-section", "ghost-list", "Ghosts:");
-}
-
-export function addAlternativeEvidence(target: HTMLElement): HTMLElement{
-    const list = document.createElement("div");
-    list.id = "alternative-list";
-    
-    list.appendChild(createHuntSelector());
-    list.appendChild(createSpeedSelector());
-
-    target.appendChild(list);
-
-    return list;
 }
 
 /** Create Display Target Element

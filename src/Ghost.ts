@@ -6,6 +6,7 @@ import * as Icons from "./UnicodeIcons";
 import {verifyIfEvidence} from "./Evidence"
 import {getGhosts, GhostData} from "./Database";
 import { AVERAGE_SPEED, NORMAL_HUNT } from "./Alternative";
+import {createSoundButton} from "./Sound";
 
 /** Create All Ghost Objects
  * 
@@ -67,13 +68,31 @@ export default class Ghost{
             this._info.innerHTML += "<p class='warn'>" + data.warning + "</p>";
         }
 
+        //Main Information
+        const list = document.createElement("ul");
+        this._info.appendChild(list);
+
         //Alternative Ghost Information
         this._hunt = data.hunt;
         this._speed = data.speed;
 
-        //Main Information
-        const list = document.createElement("ul");
-        this._info.appendChild(list);
+        if(data.speed){
+            const li = document.createElement("li");
+            if(typeof data.speed === "number") {
+                li.textContent = `Moves at ${data.speed}m/s`;
+                li.appendChild(createSoundButton(data.speed));
+            } else {
+                li.textContent = 'Moves at: ';
+                li.innerText += data.speed[0] + "m/s ";
+                li.appendChild(createSoundButton(data.speed[0]));
+                for(let i=1; i<data.speed.length; i++){
+                    li.innerText += `,  ${data.speed[i]}m/s `;
+                    li.appendChild(createSoundButton(data.speed[i]));
+                }
+            }
+            list.appendChild(li);
+        }
+        
         if(data.info){
             data.info.forEach((item:string)=>{
                 const li = document.createElement("li");

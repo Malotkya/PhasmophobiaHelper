@@ -114,6 +114,12 @@ ul, ol {
     cursor: default;
 }
 
+.alternative{
+    display: grid;
+    grid-template-columns: auto auto;
+    cursor: default;
+}
+
 .ghost{
     display: grid;
     grid-template-columns: auto 1.5em;
