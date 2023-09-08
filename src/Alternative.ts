@@ -22,24 +22,16 @@ export const HUNT_TYPES = [
 class Alternative_Type{
     private _speedState:string;
     private _huntState:string;
-    private _publicGhostList:Array<Ghost>|undefined;
-    private _privateGhostList:Array<Ghost>;
 
     constructor(){
-        this._privateGhostList = [];
         this._speedState = "";
         this._huntState = "";
-    }
-    
-    public init(list: Array<Ghost>): void{
-        this._publicGhostList = list;
     }
 
     public speedEvent(s: string): void{
         for(let t of SPEED_TYPES){
             if(t === s){
                 this._speedState = t;
-                this.sort();
                 return;
             }
         }
@@ -51,7 +43,6 @@ class Alternative_Type{
         for(let t of HUNT_TYPES){
             if(t === s){
                 this._huntState = t;
-                this.sort();
                 return;
             }
         }
@@ -62,73 +53,61 @@ class Alternative_Type{
     public reset(): void {
         this._huntState = "";
         this._speedState = "";
-        this.sort();
     }
 
-    private sort(): void{
-        //Reset Lists
-        this._publicGhostList = this._publicGhostList.concat(this._privateGhostList);
-
-        this._privateGhostList = this._publicGhostList.filter((ghost:Ghost)=> {
+    public update(list: Array<Ghost>): Array<Ghost>{
+        return list.filter((ghost:Ghost)=> {
             switch(this._speedState){
                 case SPEED_TYPES[1]:
                     if(!ghost.isFastSpeed())
-                        return true;
+                        return false;
                     break;
 
                 case SPEED_TYPES[2]:
                     if(!ghost.isAverageSpeed())
-                        return true;
+                        return false;
                     break;
 
                 case SPEED_TYPES[3]:
                     if(!ghost.isSlowSpeed())
-                        return true;
+                        return false;
                     break;
 
                 case SPEED_TYPES[4]:
                     if(!(ghost.isSlowSpeed() && ghost.isFastSpeed()))
-                        return true;
+                        return false;
                     break;
             }
 
             switch(this._huntState){
                 case HUNT_TYPES[1]:
                     if(!ghost.isEarlyHunter())
-                        return true;
+                        return false;
                     break;
 
                 case HUNT_TYPES[2]:
                     if(!ghost.isNormalHunter())
-                        return true;
+                        return false;
                     break;
 
                 case HUNT_TYPES[3]:
                     if(!ghost.isLateHunter())
-                        return true;
+                        return false;
                     break;
                 
                 case HUNT_TYPES[4]:
                     if(!(ghost.isEarlyHunter() && ghost.isLateHunter()))
-                        return true;
+                        return false;
                     break;
             }
 
-            return false;
+            return true;
         });
-
-        this._publicGhostList = this._publicGhostList.filter((ghost:Ghost)=>!this._privateGhostList.includes(ghost));
-        this.update();
-    }
-
-    public update(): void{
-        for(let ghost of this._privateGhostList)
-            ghost.hide();
     }
     
 } const Alternative = new Alternative_Type();
 
-export function createSpeedSelector(){
+export function createSpeedSelector(): Array<HTMLElement|HTMLSelectElement>{
     const text = document.createElement("span");
     text.className = "name";
     text.textContent = "Speed: ";
@@ -143,8 +122,11 @@ export function createSpeedSelector(){
         input.appendChild(option);
     }
 
-    input.addEventListener("change", event=>{
+    input.addEventListener("click", event=>{
         event.stopPropagation();
+    });
+
+    input.addEventListener("change", event=>{
         try {
             Alternative.speedEvent(SPEED_TYPES[Number(input.value)]);
         } catch(e:any){
@@ -158,10 +140,13 @@ export function createSpeedSelector(){
     label.appendChild(text);
     label.appendChild(input);
 
-    return label;
+    return [
+        label,
+        input
+    ];
 }
 
-export function createHuntSelector(){
+export function createHuntSelector(): Array<HTMLElement|HTMLSelectElement>{
     const text = document.createElement("span");
     text.className = "name";
     text.textContent = "Hunt: ";
@@ -176,8 +161,11 @@ export function createHuntSelector(){
         input.appendChild(option);
     }
 
-    input.addEventListener("change", event=>{
+    input.addEventListener("click", event=>{
         event.stopPropagation();
+    });
+
+    input.addEventListener("change", event=>{
         try{
             Alternative.huntEvent(HUNT_TYPES[Number(input.value)]);
         } catch(e:any){
@@ -191,7 +179,10 @@ export function createHuntSelector(){
     label.appendChild(text);
     label.appendChild(input);
 
-    return label;
+    return [
+        label,
+        input
+    ];
 }
 
 export default Alternative;

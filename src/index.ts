@@ -2,11 +2,12 @@
  * 
  * @author Alex Malotky
  */
-import Phasmophobia from "./Phasmophobia";
-import { createInputElements, createEvidenceListElement, createGhostListElement, createDisplayTargetElement, addAlternativeEvidence } from "./Html";
+import CheckList from "./CheckList";
+import { createInputElements, createEvidenceListElement, createGhostListElement, createDisplayTargetElement, addAlternativeElements} from "./Html";
 import Evidence, {createAllEvidence} from "./Evidence";
 import Ghost, {createAllGhosts} from "./Ghost";
 import makeInterface from "./Sound";
+import alternative from "./Alternative";
 
 //On Load Event
 window.onload = () => {
@@ -19,12 +20,11 @@ window.onload = () => {
     const [evidenceSectionElement, evidenceListElement] = createEvidenceListElement();
     const [ghostSectionElement, ghostListElement] = createGhostListElement();
     const [displaySectionElement, displayTargetElement] = createDisplayTargetElement();
-    const alternativeListElement = addAlternativeEvidence(evidenceSectionElement);
 
     createAllGhosts(ghostListElement, displayTargetElement).then((ghostList:Array<Ghost>)=>{
 
         //Display First Ghost
-        ghostList[0].display(displayTargetElement);
+        ghostList[0].display();
 
         createAllEvidence(evidenceListElement).then((evidenceList: Array<Evidence>)=>{
 
@@ -34,22 +34,56 @@ window.onload = () => {
             main.appendChild(displaySectionElement);
 
             //Create Game
-            let game = new Phasmophobia(evidenceList, ghostList);
+            const checkList = new CheckList(evidenceList, ghostList);
 
             //Create Inputs
             const [numEvidence, btnReset] = createInputElements(header);
+            const [selHunt, selSpeed] = addAlternativeElements(evidenceSectionElement);
+
+            //Reset Event
             btnReset.addEventListener("click", ()=>{
-                game.reset();
-                ghostList[0].display(displayTargetElement);
+                checkList.reset();
+                alternative.reset();
+                selHunt.value = "0";
+                selSpeed.value = "0";
+
+                ghostListElement.innerHTML = "";
+                for(let ghost of ghostList){
+                    ghostListElement.appendChild(ghost.element)
+                }
+
+                ghostList[0].display();
             });
-            numEvidence.addEventListener("change", event=>game.evidenceCount = Number(numEvidence.value))
-            numEvidence.value = game.evidenceCount.toString();
+
+            //Evidence Number Change Event
+            numEvidence.addEventListener("change", event=>{
+                checkList.evidenceCount = Number(numEvidence.value)
+            });
+
+            numEvidence.value = checkList.evidenceCount.toString();
 
             header.appendChild(makeInterface());
-        });
 
-        evidenceListElement.addEventListener("click", ()=>{
-            ghostList[0].display(displayTargetElement);
+            //Update Event
+            evidenceSectionElement.addEventListener("click", ()=>{
+                let list = ghostList;
+                list = checkList.update(list);
+                list = alternative.update(list);
+
+                //Sort the list
+                list.sort((lhs:Ghost,rhs:Ghost):number=>{
+                    if(lhs.order === rhs.order)
+                        return lhs.name.localeCompare(rhs.name);
+                    return lhs.order - rhs.order;
+                });
+
+                ghostListElement.innerHTML = "";
+                for(let ghost of list){
+                    ghostListElement.appendChild(ghost.element);
+                }
+
+                list[0].display();
+            });
         });
     });
 }

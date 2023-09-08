@@ -66,18 +66,28 @@ function createListElement(articleId: string, listId:string, title: string): Arr
  * @returns {[HTMLElement, HTMLElement]}
  */
 export function createEvidenceListElement(): Array<HTMLElement>{
-    const [section, list] = createListElement("evidence-section", "evidence-list", "Evidence:");
+    return createListElement("evidence-section", "evidence-list", "Evidence:");
+}
+
+/** Create Alternative Evidence Input Elements
+ * 
+ * @returns {[HTMLElement, HTMLElement]}
+ */
+export function addAlternativeElements(target: HTMLElement): Array<HTMLSelectElement>{
+    const [huntElement, huntInput] = createHuntSelector();
+    const [speedElement, speedInput] = createSpeedSelector();
 
     const alternative = document.createElement("section");
     alternative.id = "alternative-list";
-    alternative.appendChild(createHuntSelector());
-    alternative.appendChild(createSpeedSelector());
-    section.appendChild(alternative);
+    alternative.appendChild(huntElement);
+    alternative.appendChild(speedElement);
+
+    target.appendChild(alternative);
 
     return [
-        section,
-        list
-    ];
+        huntInput as HTMLSelectElement,
+        speedInput as HTMLSelectElement
+    ]
 }
 
 /** Create Ghost List Element

@@ -16,8 +16,12 @@ import {createSoundButton} from "./Sound";
  * @param {Element} display 
  * @returns {Array<Ghost>}
  */
-export async function createAllGhosts(target: Element, display: Element): Promise<Array<Ghost>>{
-    return (await getGhosts()).map((data: GhostData)=>new Ghost(target, display, data));
+export async function createAllGhosts(target: HTMLElement, display: HTMLElement): Promise<Array<Ghost>>{
+    const list = (await getGhosts()).map((data: GhostData)=>new Ghost(display, data));
+    for(let ghost of list){
+        target.appendChild(ghost.element);
+    }
+    return list;
 }
 
 /** Ghost Class
@@ -39,9 +43,12 @@ export default class Ghost{
     //List Elements
     private _element: HTMLElement;
     private _styleElement: HTMLElement;
+
+    private _target: HTMLElement;
     
-    constructor(target: Element, display: Element, data: GhostData){
+    constructor(target: HTMLElement, data: GhostData){
         this._disproven = false;
+        this._target = target;
         
         //Name Information
         this._name = document.createElement("h2");
@@ -136,9 +143,7 @@ export default class Ghost{
         this._element.className = "ghost";
         this._element.appendChild(this._styleElement);
         this._element.appendChild(this._btnRemove);
-        this._element.addEventListener("click", event=>this.display(display));
-
-        target.appendChild(this._element);
+        this._element.addEventListener("click", event=>this.display());
     }
 
     /** Has Evidence
@@ -374,14 +379,18 @@ export default class Ghost{
         this._element.style.order = (value + (Number(this._disproven) * 10)).toString();
     }
 
+    public get element(): HTMLElement{
+        return this._element;
+    }
+
     /** Display Ghost Information
      * 
      * @param {Element} target 
      */
-    public display(target: Element): void{
-        target.innerHTML = "";
-        target.append(this._name);
-        target.append(this._evidence);
-        target.append(this._info);
+    public display(): void{
+        this._target.innerHTML = "";
+        this._target.append(this._name);
+        this._target.append(this._evidence);
+        this._target.append(this._info);
     }
 }
