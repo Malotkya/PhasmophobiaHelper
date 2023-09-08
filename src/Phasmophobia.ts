@@ -4,9 +4,11 @@
  */
 import Ghost from "./Ghost";
 import Evidence from "./Evidence";
+import Alternative from "./Alternative";
 import CustomSet from "./CustomSet";
 
 const DEFAULT_EVIDENCE_COUNT = 3;
+const EVIDENCE_SCORE_OVERFLOW = 5;
 
 /** Phasmophobia Class
  * 
@@ -63,6 +65,7 @@ export default class Phasmophobia {
         //Create lists
         this._induction = new CustomSet(DEFAULT_EVIDENCE_COUNT);
         this._deduction = new Set();
+        Alternative.init(ghostList);
         
         //Initial Information
         this._evidenceThreashold = 1;
@@ -81,7 +84,7 @@ export default class Phasmophobia {
                     dScore++;
                 }
                 if(ghost.required === e.name){
-                    dScore+=DEFAULT_EVIDENCE_COUNT;
+                    dScore+=EVIDENCE_SCORE_OVERFLOW;
                 }
             });
 
@@ -91,7 +94,7 @@ export default class Phasmophobia {
                 if(ghost.has(e.name)) {
                     iScore--;
                 } else {
-                    iScore+=DEFAULT_EVIDENCE_COUNT;
+                    iScore+=EVIDENCE_SCORE_OVERFLOW;
                 }
             });
 
@@ -105,6 +108,8 @@ export default class Phasmophobia {
             //Reorder Ghost
             ghost.order = iScore;
         };
+
+        Alternative.update();
 
         //Sort the list
         this._ghostList.sort((lhs:Ghost,rhs:Ghost):number=>{
@@ -121,10 +126,11 @@ export default class Phasmophobia {
         this._induction.clear()
         this._deduction.clear();
         this._evidenceList.forEach(e=>e.reset());
+        Alternative.reset();
         this._ghostList.sort((lhs:Ghost, rhs:Ghost)=>{
             lhs.reset();
             return lhs.name.localeCompare(rhs.name);
-        })
+        });
     }
 
     /** Evidence Count Setter.

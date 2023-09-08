@@ -5,6 +5,7 @@
 import * as Icons from "./UnicodeIcons";
 import {verifyIfEvidence} from "./Evidence"
 import {getGhosts, GhostData} from "./Database";
+import { AVERAGE_SPEED, NORMAL_HUNT } from "./Alternative";
 
 /** Create All Ghost Objects
  * 
@@ -31,6 +32,8 @@ export default class Ghost{
     //Ghost Info
     private _disproven: boolean;
     private _required: string;
+    private _hunt: number|Array<number>;
+    private _speed: number|Array<number>;
 
     //List Elements
     private _element: HTMLElement;
@@ -63,6 +66,10 @@ export default class Ghost{
         if(data.warning){
             this._info.innerHTML += "<p class='warn'>" + data.warning + "</p>";
         }
+
+        //Alternative Ghost Information
+        this._hunt = data.hunt;
+        this._speed = data.speed;
 
         //Main Information
         const list = document.createElement("ul");
@@ -192,6 +199,124 @@ export default class Ghost{
      */
     public isCorssedOff(): boolean{
         return this._disproven;
+    }
+
+    /** Is Ghost Fast
+     * 
+     * @returns {boolean}
+     */
+    public isFastSpeed(): boolean {
+        if(this._speed){
+            if(typeof this._speed === "number"){
+                return this._speed > AVERAGE_SPEED;
+            } else {
+                for(let s of this._speed){
+                    if(s > AVERAGE_SPEED)
+                        return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /** Is Ghost Slow
+     * 
+     * @returns {boolean}
+     */
+    public isSlowSpeed(): boolean {
+        if(this._speed){
+            if(typeof this._speed === "number"){
+                return this._speed < AVERAGE_SPEED;
+            } else {
+                for(let s of this._speed){
+                    if(s < AVERAGE_SPEED)
+                        return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /** Is Ghost Average
+     * 
+     * @returns {boolean}
+     */
+    public isAverageSpeed(): boolean {
+        if(this._speed){
+            if(typeof this._speed === "number"){
+                return this._speed == AVERAGE_SPEED;
+            } else {
+                for(let s of this._speed){
+                    if(s == AVERAGE_SPEED)
+                        return true;
+                }
+
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /** Does Ghost Hunt Early
+     * 
+     * @returns {boolean}
+     */
+    public isEarlyHunter(): boolean {
+        if(this._hunt){
+            if(typeof this._hunt === "number"){
+                return this._hunt > NORMAL_HUNT;
+            } else {
+                for(let h of this._hunt){
+                    if(h > NORMAL_HUNT)
+                        return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /** Does Ghost Hunt Late
+     * 
+     * @returns {boolean}
+     */
+    public isLateHunter(): boolean {
+        if(this._hunt){
+            if(typeof this._hunt === "number"){
+                return this._hunt < NORMAL_HUNT;
+            } else {
+                for(let h of this._hunt){
+                    if(h < NORMAL_HUNT)
+                        return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /** Does Ghost Hunt Normal
+     * 
+     * @returns {boolean}
+     */
+    public isNormalHunter(): boolean {
+        if(this._hunt){
+            if(typeof this._hunt === "number"){
+                return this._hunt == NORMAL_HUNT;
+            } else {
+                for(let h of this._hunt){
+                    if(h == NORMAL_HUNT)
+                        return true;
+                }
+
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /** Ghost List Item Style Element
