@@ -33,7 +33,7 @@ window.onload = () => {
             main.appendChild(displaySectionElement);
 
             //Create Inputs
-            const [numEvidence, btnReset] = createInputElements(header);
+            const [numEvidence, btnReset] = createInputElements(evidenceSectionElement);
             const alternativeList = addAlternativeElements(evidenceSectionElement);
             header.appendChild(makeInterface());
 
