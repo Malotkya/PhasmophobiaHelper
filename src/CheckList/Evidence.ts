@@ -2,7 +2,7 @@
  * 
  * @author Alex Malotky
  */
-import * as Icons from "./UnicodeIcons";
+import * as Icons from "./Util/UnicodeIcons";
 
 /** Evidence Types
  * 

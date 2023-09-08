@@ -4,7 +4,7 @@
  */
 import Ghost from "./Ghost";
 import Evidence from "./Evidence";
-import CustomSet from "./CustomSet";
+import CustomSet from "../Util/CustomSet";
 
 const DEFAULT_EVIDENCE_COUNT = 3;
 const EVIDENCE_SCORE_OVERFLOW = 5;

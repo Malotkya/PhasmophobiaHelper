@@ -2,9 +2,9 @@
  * 
  * @author Alex Malotky
  */
-import * as Icons from "./UnicodeIcons";
+import * as Icons from "../Util/UnicodeIcons";
 import {verifyIfEvidence} from "./Evidence"
-import {getGhosts, GhostData} from "./Database";
+import {getGhosts, GhostData} from "../Util/Database";
 import { AVERAGE_SPEED, NORMAL_HUNT } from "./Alternative";
 import {createSoundButton} from "./Sound";
 

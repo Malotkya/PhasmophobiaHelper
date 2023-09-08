@@ -2,7 +2,7 @@ import { createSpeedSelector, createHuntSelector } from "./Alternative";
 
 /** Create Input HTML Elements
  * 
- * @param {HTMLElement} target 
+ * @param {HTMLElement} section 
  * @returns {[HTMLInputElement, HTMLButtonElement]} [numEvidenceInput, btnReset]
  */
 export function createInputElements(section: HTMLElement): Array<HTMLInputElement|HTMLButtonElement>{
