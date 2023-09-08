@@ -55,7 +55,7 @@ label span {
     height: 4ch;
 }
 
-main{
+#checklist-main{
     display: flex;
     flex-flow: column nowrap;
     flex-grow: 1;
@@ -116,7 +116,7 @@ ul, ol {
 
 .alternative{
     display: grid;
-    grid-template-columns: auto auto;
+    grid-template-columns: 50% 50%;
     cursor: default;
 }
 
@@ -185,7 +185,7 @@ footer {
 }
 
 @media(min-width: 500px){
-    main {
+    #checklist-main {
         display: grid;
         grid-template-columns: 200px auto;
     }
@@ -220,7 +220,7 @@ footer {
         max-width: 1000px;
         margin: auto;
     }
-    main {
+    #checklist-main {
         display: flex;
         flex-flow: row nowrap;
     }

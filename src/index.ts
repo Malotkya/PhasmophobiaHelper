@@ -1,4 +1,5 @@
 import createCheckList from "./CheckList";
+import createTimer from "./Timer";
 import makeInterface from "./Util/Sound";
 
 window.onload = () => {
@@ -8,7 +9,14 @@ window.onload = () => {
     const header: HTMLElement = document.querySelector("header");
     main.innerHTML = "";
 
-    createCheckList(main).then(()=>{
-        header.appendChild(makeInterface());
+    createCheckList().then(checkList=>{
+
+        createTimer().then(timer=>{
+
+            main.appendChild(checkList);
+            main.appendChild(timer);
+            
+            header.appendChild(makeInterface());
+        });
     });
 }

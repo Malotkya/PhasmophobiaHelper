@@ -7,7 +7,10 @@ import Evidence, {createAllEvidence} from "./Evidence";
 import Ghost, {createAllGhosts} from "./Ghost";
 import Phasmophobia from "./Phasmophobia";
 
-export default async function createCheckList(main: HTMLElement){
+export default async function createCheckList(): Promise<HTMLElement>{
+    const element = document.createElement("div");
+    element.id = "checklist-main";
+
     const [evidenceSectionElement, evidenceListElement] = createEvidenceListElement();
     const [ghostSectionElement, ghostListElement] = createGhostListElement();
     const [displaySectionElement, displayTargetElement] = createDisplayTargetElement();
@@ -20,9 +23,9 @@ export default async function createCheckList(main: HTMLElement){
     const evidenceList = await createAllEvidence(evidenceListElement);
         
     //Display Everything
-    main.appendChild(evidenceSectionElement);
-    main.appendChild(ghostSectionElement);
-    main.appendChild(displaySectionElement);
+    element.appendChild(evidenceSectionElement);
+    element.appendChild(ghostSectionElement);
+    element.appendChild(displaySectionElement);
 
     //Create Inputs
     const [numEvidence, btnReset] = createInputElements(evidenceSectionElement);
@@ -47,4 +50,6 @@ export default async function createCheckList(main: HTMLElement){
     evidenceSectionElement.addEventListener("click", ()=>{
         game.update();
     });
+
+    return element;
 }
