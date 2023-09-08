@@ -1,16 +1,58 @@
+
+/** Alternative.ts
+ * 
+ * Alternative Evidence
+ * 
+ * @author Alex Malotky
+ * 
+ */
 import Ghost from "./Ghost";
 
+//Ghost Speed Constants
+const SPEED_ID = "speed";
 export const AVERAGE_SPEED = 1.7;
-export const NORMAL_HUNT = 50;
-
 export const SPEED_TYPES = [
     "",
     "Fast",
     "Average",
     "Slow",
     "Both"
-]
+];
 
+/** Create Speed Selector
+ * 
+ * @returns {[HTMLElement, HTMLSelectElement]}
+ */
+export function createSpeedSelector(): Array<HTMLElement|HTMLSelectElement>{
+    const text = document.createElement("span");
+    text.className = "name";
+    text.textContent = "Speed: ";
+
+    const input = document.createElement("select");
+    input.id = SPEED_ID;
+    for(let i in SPEED_TYPES){
+        const option = document.createElement("option");
+        option.value = i;
+        option.textContent = SPEED_TYPES[i];
+
+        input.appendChild(option);
+    }
+
+    const label = document.createElement("label");
+    label.className = "alternative";
+    label.setAttribute("for", SPEED_ID);
+    label.appendChild(text);
+    label.appendChild(input);
+
+    return [
+        label,
+        input
+    ];
+}
+
+//Ghost Hunt Constants
+const HUNT_ID = "hunt"
+export const NORMAL_HUNT = 50;
 export const HUNT_TYPES = [
     "",
     "Early",
@@ -19,83 +61,174 @@ export const HUNT_TYPES = [
     "Both"
 ];
 
-class Alternative_Type{
-    private _speedState:string;
-    private _huntState:string;
+/** Create Hunt Selector
+ * 
+ * @returns {[HTMLElement, HTMLSelectElement]}
+ */
+export function createHuntSelector(): Array<HTMLElement|HTMLSelectElement>{
+    const text = document.createElement("span");
+    text.className = "name";
+    text.textContent = "Hunt: ";
 
-    constructor(){
-        this._speedState = "";
-        this._huntState = "";
+    const input = document.createElement("select");
+    input.id = HUNT_ID;
+    for(let i in HUNT_TYPES){
+        const option = document.createElement("option");
+        option.value = i;
+        option.textContent = HUNT_TYPES[i];
+
+        input.appendChild(option);
     }
 
-    public speedEvent(s: string): void{
-        for(let t of SPEED_TYPES){
-            if(t === s){
-                this._speedState = t;
-                return;
-            }
+    const label = document.createElement("label");
+    label.className = "alternative";
+    label.setAttribute("for", HUNT_ID);
+    label.appendChild(text);
+    label.appendChild(input);
+
+    return [
+        label,
+        input
+    ];
+}
+
+/** Alternative Check List
+ * 
+ */
+export default class Alternative{
+    //States
+    private _speedState:number;
+    private _huntState:number;
+
+    //Elements
+    private _inputs: Array<HTMLSelectElement|HTMLInputElement>
+
+    /** Constructor
+     * 
+     * @param {Array<HTMLSelectElement|HTMLInputElement>} list 
+     * @param {Function} updateEvent 
+     */
+    constructor(list: Array<HTMLSelectElement|HTMLInputElement>, updateEvent:()=>void){
+        this._speedState = 0;
+        this._huntState = 0;
+        this._inputs = list;
+
+        for(let input of list){
+            input.addEventListener("click", event=>{
+                event.stopPropagation();
+            });
+            
+            input.addEventListener("change", event=>{
+                try{
+                    this.event(input.id, Number(input.value));
+                } catch(e:any){
+                    console.error(e);
+                }
+                updateEvent();
+            });
         }
-        
-        throw new Error("Unkown Speed Event!");
     }
 
-    public huntEvent(s: string): void{
-        for(let t of HUNT_TYPES){
-            if(t === s){
-                this._huntState = t;
-                return;
-            }
+    /** Alternative Events
+     * 
+     * @param {string} type - id of element calling event
+     * @param {number} value - event number/value
+     */
+    private event(type: string, value: number){
+        switch(type){
+            case SPEED_ID:
+                this.speedEvent(value);
+                break;
+
+            case HUNT_ID:
+                this.huntEvent(value);
+                break;
+
+            default:
+                throw new Error("Unknown Alternate Evidence: " + type);
         }
-        
-        throw new Error("Unkown Hunt Event!");
     }
 
+    /** Speed Event
+     * 
+     * @param {number} e 
+     */
+    public speedEvent(e: number): void{
+        if(e < 0 || e >= HUNT_TYPES.length)
+            throw new Error("Unkown Speed Event!");
+
+        this._speedState = e;
+    }
+
+    /** Hunt Event
+     * 
+     * @param {number} e 
+     */
+    public huntEvent(e: number): void{
+        if(e < 0 || e >= HUNT_TYPES.length)
+            throw new Error("Unkown Hunt Event!");
+
+        this._huntState = e;
+    }
+
+    /** Reset Event
+     * 
+     */
     public reset(): void {
-        this._huntState = "";
-        this._speedState = "";
+        this._huntState = 0;
+        this._speedState = 0;
+        for(let input of this._inputs)
+            input.value = "0";
     }
 
+    /** Update Event
+     * 
+     * Filters ghost from list based on inputs/states
+     * 
+     * @param {Array<Ghost>} list 
+     * @returns {Array<Ghost>}
+     */
     public update(list: Array<Ghost>): Array<Ghost>{
         return list.filter((ghost:Ghost)=> {
             switch(this._speedState){
-                case SPEED_TYPES[1]:
+                case 1:
                     if(!ghost.isFastSpeed())
                         return false;
                     break;
 
-                case SPEED_TYPES[2]:
+                case 2:
                     if(!ghost.isAverageSpeed())
                         return false;
                     break;
 
-                case SPEED_TYPES[3]:
+                case 3:
                     if(!ghost.isSlowSpeed())
                         return false;
                     break;
 
-                case SPEED_TYPES[4]:
+                case 4:
                     if(!(ghost.isSlowSpeed() && ghost.isFastSpeed()))
                         return false;
                     break;
             }
 
             switch(this._huntState){
-                case HUNT_TYPES[1]:
+                case 1:
                     if(!ghost.isEarlyHunter())
                         return false;
                     break;
 
-                case HUNT_TYPES[2]:
+                case 2:
                     if(!ghost.isNormalHunter())
                         return false;
                     break;
 
-                case HUNT_TYPES[3]:
+                case 3:
                     if(!ghost.isLateHunter())
                         return false;
                     break;
                 
-                case HUNT_TYPES[4]:
+                case 4:
                     if(!(ghost.isEarlyHunter() && ghost.isLateHunter()))
                         return false;
                     break;
@@ -105,84 +238,4 @@ class Alternative_Type{
         });
     }
     
-} const Alternative = new Alternative_Type();
-
-export function createSpeedSelector(): Array<HTMLElement|HTMLSelectElement>{
-    const text = document.createElement("span");
-    text.className = "name";
-    text.textContent = "Speed: ";
-
-    const input = document.createElement("select");
-    input.id = "speed";
-    for(let i in SPEED_TYPES){
-        const option = document.createElement("option");
-        option.value = i;
-        option.textContent = SPEED_TYPES[i];
-
-        input.appendChild(option);
-    }
-
-    input.addEventListener("click", event=>{
-        event.stopPropagation();
-    });
-
-    input.addEventListener("change", event=>{
-        try {
-            Alternative.speedEvent(SPEED_TYPES[Number(input.value)]);
-        } catch(e:any){
-            console.warn("Unknown speed value: " + input.value);
-        }
-    });
-
-    const label = document.createElement("label");
-    label.className = "alternative";
-    label.setAttribute("for", "speed");
-    label.appendChild(text);
-    label.appendChild(input);
-
-    return [
-        label,
-        input
-    ];
 }
-
-export function createHuntSelector(): Array<HTMLElement|HTMLSelectElement>{
-    const text = document.createElement("span");
-    text.className = "name";
-    text.textContent = "Hunt: ";
-
-    const input = document.createElement("select");
-    input.id = "hunt";
-    for(let i in HUNT_TYPES){
-        const option = document.createElement("option");
-        option.value = i;
-        option.textContent = HUNT_TYPES[i];
-
-        input.appendChild(option);
-    }
-
-    input.addEventListener("click", event=>{
-        event.stopPropagation();
-    });
-
-    input.addEventListener("change", event=>{
-        try{
-            Alternative.huntEvent(HUNT_TYPES[Number(input.value)]);
-        } catch(e:any){
-            console.warn("Unknown hunt value: " + input.value);
-        }
-    });
-
-    const label = document.createElement("label");
-    label.className = "alternative";
-    label.setAttribute("for", "hunt");
-    label.appendChild(text);
-    label.appendChild(input);
-
-    return [
-        label,
-        input
-    ];
-}
-
-export default Alternative;

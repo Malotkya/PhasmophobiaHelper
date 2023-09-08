@@ -23,7 +23,7 @@ export default class CheckList {
     //Number of evidence needed to rule out a ghost.
     private _evidenceThreashold: number;
 
-    constructor(evidenceList: Array<Evidence>, ghostList: Array<Ghost>){
+    constructor(evidenceList: Array<Evidence>){
 
         this._evidenceList = evidenceList;
 
