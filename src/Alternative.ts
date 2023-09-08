@@ -50,7 +50,7 @@ class Alternative_Type{
     public huntEvent(s: string): void{
         for(let t of HUNT_TYPES){
             if(t === s){
-                this._speedState = t;
+                this._huntState = t;
                 this.sort();
                 return;
             }
@@ -143,7 +143,7 @@ export function createSpeedSelector(){
         input.appendChild(option);
     }
 
-    input.addEventListener("click", event=>{
+    input.addEventListener("change", event=>{
         event.stopPropagation();
         try {
             Alternative.speedEvent(SPEED_TYPES[Number(input.value)]);
@@ -176,7 +176,7 @@ export function createHuntSelector(){
         input.appendChild(option);
     }
 
-    input.addEventListener("click", event=>{
+    input.addEventListener("change", event=>{
         event.stopPropagation();
         try{
             Alternative.huntEvent(HUNT_TYPES[Number(input.value)]);
