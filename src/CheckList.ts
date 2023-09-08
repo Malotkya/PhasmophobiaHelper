@@ -4,7 +4,6 @@
  */
 import Ghost from "./Ghost";
 import Evidence from "./Evidence";
-import Alternative from "./Alternative";
 import CustomSet from "./CustomSet";
 
 const DEFAULT_EVIDENCE_COUNT = 3;
@@ -13,9 +12,8 @@ const EVIDENCE_SCORE_OVERFLOW = 5;
 /** Phasmophobia Class
  * 
  */
-export default class Phasmophobia {
+export default class CheckList {
     //list used by game
-    private _ghostList: Array<Ghost>
     private _evidenceList: Array<Evidence>
 
     //custom sets holding evidence proven/disproven
@@ -39,7 +37,6 @@ export default class Phasmophobia {
                 if(replaced)
                     replaced.reset();
                 this._deduction.delete(evidence);
-                this.update();
             });
 
             //Evidence Not Found
@@ -47,7 +44,6 @@ export default class Phasmophobia {
                 evidence.notFound();
                 this._induction.delete(evidence);
                 this._deduction.add(evidence);
-                this.update();
             });
 
             //Evidence Reset
@@ -55,17 +51,12 @@ export default class Phasmophobia {
                 evidence.reset();
                 this._induction.delete(evidence);
                 this._deduction.delete(evidence);
-                this.update();
             })
         });
-        
-        //Ghosts
-        this._ghostList = ghostList;
 
         //Create lists
         this._induction = new CustomSet(DEFAULT_EVIDENCE_COUNT);
         this._deduction = new Set();
-        Alternative.init(ghostList);
         
         //Initial Information
         this._evidenceThreashold = 1;
@@ -74,8 +65,8 @@ export default class Phasmophobia {
     /** Update Ghost List Visibility & Order
      * 
      */
-    private update(): void{
-        for(let ghost of this._ghostList){
+    public update(list: Array<Ghost>): Array<Ghost>{
+        return list.filter((ghost:Ghost)=>{
 
             //Count Evidence Not Found
             let dScore = 0;
@@ -98,24 +89,14 @@ export default class Phasmophobia {
                 }
             });
 
-            //Hide Ghost if can't be found
-            if(iScore>1 || dScore >= this._evidenceThreashold){
-                ghost.hide();
-            } else {
-                ghost.show();
-            }
-
             //Reorder Ghost
             ghost.order = iScore;
-        };
 
-        Alternative.update();
+            //Hide Ghost if can't be found
+            if(iScore>1 || dScore >= this._evidenceThreashold)
+                return false;
 
-        //Sort the list
-        this._ghostList.sort((lhs:Ghost,rhs:Ghost):number=>{
-            if(lhs.order === rhs.order)
-                return lhs.name.localeCompare(rhs.name);
-            return lhs.order - rhs.order;
+            return true;
         });
     }
 
@@ -126,11 +107,6 @@ export default class Phasmophobia {
         this._induction.clear()
         this._deduction.clear();
         this._evidenceList.forEach(e=>e.reset());
-        Alternative.reset();
-        this._ghostList.sort((lhs:Ghost, rhs:Ghost)=>{
-            lhs.reset();
-            return lhs.name.localeCompare(rhs.name);
-        });
     }
 
     /** Evidence Count Setter.
@@ -148,7 +124,6 @@ export default class Phasmophobia {
         }
 
         this._evidenceThreashold = (DEFAULT_EVIDENCE_COUNT + 1) - value;
-        this.update();
     }
 
     /** Evidence Count Getter.
