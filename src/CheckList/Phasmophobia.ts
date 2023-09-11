@@ -65,6 +65,7 @@ export default class Phasmophobia {
 
         this._target.innerHTML = "";
         for(let ghost of this._mainGhostList){
+            ghost.reset();
             this._target.appendChild(ghost.element)
         }
 

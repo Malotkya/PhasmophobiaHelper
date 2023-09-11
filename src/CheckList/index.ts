@@ -42,12 +42,13 @@ export default async function createCheckList(): Promise<HTMLElement>{
     numEvidence.value = game.evidenceCount.toString();
     
     //Reset Event
-    btnReset.addEventListener("click", ()=>{
+    btnReset.addEventListener("click", event=>{
+        event.stopPropagation();
         game.reset();
     });
 
     //Update Event
-    evidenceSectionElement.addEventListener("click", ()=>{
+    evidenceSectionElement.addEventListener("click", event=>{
         game.update();
     });
 
