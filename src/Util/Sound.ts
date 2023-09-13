@@ -16,7 +16,7 @@ import { SOUND } from "./UnicodeIcons";
 const audioContext = new (window.AudioContext)();
 const masterGain = audioContext.createGain();
     masterGain.gain.value = 0.5;
-    masterGain.connect(audioContext.destination);
+    masterGain.connect(audioContext.destination); 
 const nodeGain1 = audioContext.createGain();
     nodeGain1.gain.value = 0.5;
     nodeGain1.connect(masterGain);
@@ -140,11 +140,8 @@ export function stopSound(): void{
     btnMain.textContent = DEFULT_STRING;
 }
 
-export function createSoundButton(speed: number): HTMLButtonElement{
-    const button = document.createElement("button");
-    button.textContent = SOUND;
-    button.addEventListener("click", ()=>generateSound(speed));
-    return button;
+export function createSoundButton(speed: number): string{
+    return `${speed}m/s <button class='speed' value='${speed}'>${SOUND}</button>`
 }
 
 /** Make Volume Interface

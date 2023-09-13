@@ -6,6 +6,7 @@ import { createInputElements, createEvidenceListElement, createGhostListElement,
 import Evidence, {createAllEvidence} from "./Evidence";
 import Ghost, {createAllGhosts} from "./Ghost";
 import Phasmophobia from "./Phasmophobia";
+import { generateSound } from "../Util/Sound";
 
 export default async function createCheckList(): Promise<HTMLElement>{
     const element = document.createElement("div");
@@ -51,6 +52,20 @@ export default async function createCheckList(): Promise<HTMLElement>{
     evidenceSectionElement.addEventListener("click", event=>{
         game.update();
     });
+
+    //Sound Event
+    displayTargetElement.addEventListener("click", event=>{
+        const target:Element = (<Element>event.target);
+        if(target.className === "speed"){
+            event.stopPropagation();
+            const speed: number = Number(target.getAttribute("value"));
+            if(isNaN(speed)){
+                console.warn(target.getAttribute("value") + "is not a number!");
+            } else {
+                generateSound(speed);
+            }
+        }
+    })
 
     return element;
 }

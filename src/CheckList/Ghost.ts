@@ -86,15 +86,25 @@ export default class Ghost{
         if(data.speed){
             const li = document.createElement("li");
             if(typeof data.speed === "number") {
-                li.textContent = `Moves at ${data.speed}m/s`;
-                li.appendChild(createSoundButton(data.speed));
+                li.innerHTML += "Moves at " + createSoundButton(data.speed);
             } else {
-                li.textContent = 'Moves at: ';
-                li.innerText += data.speed[0] + "m/s ";
-                li.appendChild(createSoundButton(data.speed[0]));
-                for(let i=1; i<data.speed.length; i++){
-                    li.innerText += `,  ${data.speed[i]}m/s `;
-                    li.appendChild(createSoundButton(data.speed[i]));
+                switch (data.speed.length){
+                    case 0:
+                        console.warn(`Empty speed array on ghost: '${data.name}'!`);
+                        break;
+                    
+                    case 1:
+                        li.innerHTML += "Moves at " + createSoundButton(data.speed[0]);
+                        break;
+                    
+                    case 2:
+                        li.innerHTML += "Moves at " + createSoundButton(data.speed[0])
+                            + " and " + createSoundButton(data.speed[1]);
+                        break;
+
+                    default:
+                        li.innerHTML += "Moves between " + createSoundButton(data.speed[0])
+                            + " and " + createSoundButton(data.speed[data.speed.length-1]); 
                 }
             }
             list.appendChild(li);
