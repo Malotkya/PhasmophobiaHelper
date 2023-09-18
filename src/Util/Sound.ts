@@ -13,13 +13,11 @@ import { SOUND } from "./UnicodeIcons";
  * 
  * All the objects used to create the beep.
  */
+const INIT_VOLUME = 0.25
 const audioContext = new (window.AudioContext)();
 const masterGain = audioContext.createGain();
-    masterGain.gain.value = 0.5;
+    masterGain.gain.value = INIT_VOLUME;
     masterGain.connect(audioContext.destination); 
-const nodeGain1 = audioContext.createGain();
-    nodeGain1.gain.value = 0.5;
-    nodeGain1.connect(masterGain);
 
 //Constants used to define and generate tic
 const frequency: number = 103;
@@ -31,7 +29,7 @@ const length: number = 0.03;
 function tick():void {
     var oscillatorNode = new OscillatorNode(audioContext, {type: 'sawtooth'});
     oscillatorNode.frequency.value = frequency;
-    oscillatorNode.connect( nodeGain1);
+    oscillatorNode.connect( masterGain );
     oscillatorNode.start(audioContext.currentTime);
     oscillatorNode.stop( audioContext.currentTime + length);
 }
@@ -68,23 +66,22 @@ const sldVolume = document.createElement("input");
     sldVolume.min = "0";
     sldVolume.max = "1";
     sldVolume.step = "0.01";
-    sldVolume.value = "0.5";
+    sldVolume.value = String(INIT_VOLUME);
     sldVolume.style.width = "200px";
 
 const lblVolume = document.createElement("span");
-    lblVolume.textContent = "50%";
+    lblVolume.textContent = `${INIT_VOLUME * 100}%`;
 
     sldVolume.addEventListener("change", ()=>{
         masterGain.gain.value = Number(sldVolume.value);
-        nodeGain1.gain.value = Number(sldVolume.value);
         lblVolume.textContent = `${Math.round(Number(sldVolume.value) * 100)}%`
     });
 
 /** Sound is Playing
  * 
- * @returns {Boolean}
+ * @returns {boolean}
  */
-const isPlaying = ():Boolean => btnMain.textContent === RUNNING_STRING;
+const isPlaying = ():boolean => btnMain.textContent === RUNNING_STRING;
 
 /** In Beats per Minute
  * 
