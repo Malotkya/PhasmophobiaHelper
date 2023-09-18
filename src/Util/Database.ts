@@ -3,7 +3,7 @@
  * @author Alex Malotky
  */
 import {initializeApp, FirebaseApp} from "firebase/app";
-import {getFirestore, Firestore, collection, getDocs} from "firebase/firestore";
+import {getFirestore, Firestore, collection, getDocs, DocumentReference} from "firebase/firestore";
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -32,6 +32,11 @@ export interface GhostData {
     hunt?: number|Array<number>
 }
 
+export interface EvidenceData {
+    id: string,
+    name: string
+}
+
 const app: FirebaseApp = initializeApp(firebaseConfig);
 const database:Firestore = getFirestore(app);
 
@@ -40,7 +45,10 @@ const database:Firestore = getFirestore(app);
      * @returns {Array<GhostData>}
      */
 export async function getGhosts(): Promise<Array<GhostData>>{
+    const evidence:any = {};
+    (await getEvidence()).forEach(e=>evidence[e.id] = e.name);
     const raw = await getDocs(collection(database, "Ghosts"));
+
     const output: Array<GhostData> = [];
 
     raw.forEach(result=>{
@@ -52,10 +60,49 @@ export async function getGhosts(): Promise<Array<GhostData>>{
         } else {
 
             if(typeof data.evidence === "undefined") {
-                console.error(`No evidence on ghost '${data.name}' and will be droped.`)
+                console.error(`No evidence on ghost '${data.name}' and will be droped.`);
             } else {
+                //Link to Evidence Name
+                data.evidence = data.evidence.map((ref:DocumentReference)=>{
+                    const e:string = evidence[ref.id];
+                    if(typeof e === "undefined"){
+                        console.warn(`Unknown Evidence Reference: ${ref.id} on ghost '${data.name}'!`);
+                    }
+                    return e;
+                });
+
+                if(data.required){
+                    const e:string = evidence[data.required.id];
+                    if(typeof e === "undefined"){
+                        console.warn(`Unknown Required Evidence Reference: ${data.required.id} on ghost '${data.name}'!`);
+                    }
+                    data.required = e;
+                }
+
                 output.push(data);
             }
+        }
+    });
+
+    //Sort by name.
+    output.sort((a,b)=>a.name.localeCompare(b.name));
+
+    return output;
+}
+
+export async function getEvidence():Promise<Array<EvidenceData>>{
+    const raw = await getDocs(collection(database, "Evidence"));
+    const output: Array<EvidenceData> = [];
+
+    raw.forEach(result=>{
+        const data: any = result.data();
+        if(typeof data.name === "string"){
+            output.push({
+                id: result.id,
+                name: data.name
+            });
+        } else {
+            console.error("Unknown evidence object and will be dropped:\n" + JSON.stringify(data, null, 2));
         }
     });
 

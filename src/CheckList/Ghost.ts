@@ -3,7 +3,6 @@
  * @author Alex Malotky
  */
 import * as Icons from "../Util/UnicodeIcons";
-import {verifyIfEvidence} from "./Evidence"
 import {getGhosts, GhostData} from "../Util/Database";
 import { AVERAGE_SPEED, NORMAL_HUNT } from "./Alternative";
 import {createSoundButton} from "../Util/Sound";
@@ -58,9 +57,6 @@ export default class Ghost{
         //Main Evidence Information
         this._evidence = document.createElement("ol");
         data.evidence.forEach((s:string)=>{
-            if( !verifyIfEvidence(s) )
-                console.warn(`Unknown Evidence type '${s}' on ghost '${data.name}'!`);
-
             let item = document.createElement("li");
             item.textContent = s;
             this._evidence.appendChild(item);
@@ -122,8 +118,6 @@ export default class Ghost{
         
         //Required Evidence Information
         if(data.required){
-            if( !verifyIfEvidence(data.required))
-                console.warn(`Unknown REQUIRED Evidence type '${data.required}' on ghost '${data.name}'!`);
 
             this._required = data.required;
             list.innerHTML += `<li>Will always have ${data.required} as an evidence.</li>`
