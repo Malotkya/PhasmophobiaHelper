@@ -102,18 +102,25 @@ const bpm = (speed: number):number => -19.5643 + (76.7883 * speed) + (1.40251 * 
  */
 const convert = (speed: number):number => (60 / bpm(speed)) * 1000;
 
-//Speed of thread
+//Numbers used by sound thread.
 let speed:number = convert(1.7);
+let lastPlayed:number = Date.now();
+const REFRESH_RATE:number = 100;
 
 /** Sound Thread
  * 
  * Calls itself to continualy keep playing sound.
  */
 function soundThread():void {
-    if(isPlaying())
-        tick();
+    if(isPlaying()){
+        const now:number = Date.now();
+        if(now >= lastPlayed+speed){
+            tick();
+            lastPlayed = now;
+        }
+    }
 
-        setTimeout(soundThread, speed);
+    window.setTimeout(soundThread, REFRESH_RATE);
 }; soundThread();
 
 /** Generate Sound
