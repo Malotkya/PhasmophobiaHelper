@@ -3,34 +3,19 @@
  * @author Alex Malotky
  */
 import * as Icons from "../Util/UnicodeIcons";
+import {getEvidence, EvidenceData} from "../Util/Database";
 
-/** Evidence Types
+/** Create All Evidence Objects
  * 
- * enum like constants used to keep track of evidence in ghosts.
- */
-export const EVIDENCE_TYPES = [
-    "D.O.T.s Projector", 
-    "EMF Level 5",
-    "Freezing Temps",
-    "Ultraviolet",
-    "Ghost Orbs",
-    "Ghost Writing",
-    "Spirit Box"
-];
-
-/** Verify If Evidence
+ * Creates a list with all Evidence Objects.
  * 
- * @param {string} s 
- * @returns {boolean}
+ * @param {Element}target 
+ * @returns {Array<Evidence>}
  */
-export function verifyIfEvidence(s:string): boolean {
-    for(let e of EVIDENCE_TYPES){
-        if(s === e)
-            return true;
-    }
-
-    return false;
+export async function createAllEvidence(target: Element): Promise<Array<Evidence>>{
+    return (await getEvidence()).map((e:EvidenceData)=>new Evidence(e.name,target));
 }
+
 /** Evidence Class
  * 
  */
@@ -153,15 +138,4 @@ export default class Evidence{
     public resetEvent(callback:(e:MouseEvent)=>void): void{
         this._btnReset.addEventListener("click", callback);
     }
-}
-
-/** Create All Evidence Objects
- * 
- * Creates a list with all Evidence Objects.
- * 
- * @param {Element}target 
- * @returns {Array<Evidence>}
- */
-export async function createAllEvidence(target: Element): Promise<Array<Evidence>>{
-    return EVIDENCE_TYPES.map((e:string)=>new Evidence(e,target));
 }
