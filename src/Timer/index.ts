@@ -6,9 +6,10 @@ const timer = document.createElement("div");
     timer.id = "timer-main";
 
 const list = document.createElement("ul");
+new StopWatch(list);
 createAllTimers(list);
 new HuntTimer(list);
-new StopWatch(list);
+
 
 timer.appendChild(list);
 
