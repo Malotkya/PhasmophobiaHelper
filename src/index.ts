@@ -11,7 +11,9 @@ app.add("Check List", CheckList());
 app.add("Timer", Timer());
 
 app.onReady(()=>{
-    const header: HTMLElement = document.querySelector("header");
-    header.appendChild(makeInterface());
-    header.appendChild(getClock());
+    const container: HTMLElement = document.createElement("div");
+    container.className = "status";
+    container.appendChild(getClock());
+    container.appendChild(makeInterface());
+    document.querySelector("header").appendChild(container);
 });
