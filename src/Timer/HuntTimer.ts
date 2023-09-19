@@ -60,6 +60,7 @@ export default class HuntTimer extends Timer {
 
         //Hunt Intensity Selector
         this._selIntensity = document.createElement("select");
+        this._selIntensity.id = "selIntensity";
         for(let index in INTENSITY_OPTIONS){
             let option = document.createElement("option");
             option.textContent = INTENSITY_OPTIONS[index];
@@ -70,9 +71,15 @@ export default class HuntTimer extends Timer {
             event.stopPropagation();
             this.updateValue();
         });
+        const lblIntensity = document.createElement("label");
+        lblIntensity.setAttribute("for", "selIntensity");
+        lblIntensity.textContent = "Duration:\n";
+        lblIntensity.appendChild(this._selIntensity);
+
 
         //Max Size Selector
         this._selSize = document.createElement("select");
+        this._selSize.id = "selMapSize";
         for(let index in SIZE_OPTIONS){
             let option = document.createElement("option");
             option.textContent = SIZE_OPTIONS[index];
@@ -83,6 +90,10 @@ export default class HuntTimer extends Timer {
             event.stopPropagation();
             this.updateValue();
         });
+        const lblSize = document.createElement("label");
+        lblSize.setAttribute("for", "selMapSize");
+        lblSize.textContent = "Map Size:\n";
+        lblSize.appendChild(this._selSize);
 
         //Cursed Checkbox
         this._chbCursed = document.createElement("input");
@@ -90,16 +101,21 @@ export default class HuntTimer extends Timer {
         this._chbCursed.id = "chbCursed";
         const lblCursed = document.createElement("label");
         lblCursed.setAttribute("for", "chbCursed");
-        lblCursed.textContent = "Cursed ";
-        lblCursed.appendChild(this._chbCursed);
-        this._chbCursed.addEventListener("click", event=>{
+        lblCursed.textContent += " Cursed";
+        lblCursed.insertBefore(this._chbCursed, lblCursed.childNodes[0]);
+        this._chbCursed.addEventListener("change", event=>{
             event.stopPropagation();
             this.updateValue();
         });
 
-        this._titleElement.appendChild(this._selIntensity);
-        this._titleElement.appendChild(this._selSize);
-        this._titleElement.appendChild(lblCursed);
+        const container = document.createElement("div");
+        container.className = "input";
+
+        container.appendChild(lblSize);
+        container.appendChild(lblIntensity);
+        container.appendChild(lblCursed);
+
+        this._element.appendChild(container);
     }
 
     /** Update Timer Value

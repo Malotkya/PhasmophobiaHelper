@@ -2,7 +2,7 @@
  * 
  * @author Alex Malotky
  */
-import {Task, addTask, formatTime, formatSeconds} from "./Clock";
+import {Task, addTask, removeTask, formatTime, formatSeconds} from "./Clock";
 
 //Minute in Miliseconds
 export const MINUTE: number = 60000;
@@ -85,6 +85,8 @@ export default class Timer implements Task{
     protected _startElement: HTMLElement;
     protected _valueElement: HTMLElement;
     protected _infoElement: HTMLElement
+    protected _button: HTMLElement;
+    protected _element: HTMLElement;
 
     //Instance Variables
     private _name: string;
@@ -98,49 +100,67 @@ export default class Timer implements Task{
      * @param {HTMLElement} target 
      */
     constructor(data: TimerData, target: HTMLElement){
+        //Create Elements
+        this._titleElement = document.createElement("div");
+        this._titleElement.className = "title";
+        this._startElement = document.createElement("div");
+        this._startElement.className = "time";
+        this._valueElement = document.createElement("div");
+        this._valueElement.className = "time value";
+        this._infoElement  = document.createElement("div");
+        this._infoElement.className = "info";
+
+        //Title
+        const title = document.createElement("h2");
+        title.textContent = data.name;
+
+        //Control buttons
+        this._button = document.createElement("button");
+        this._button.textContent = "Start";
+        this._button.addEventListener("click", event=>{
+            event.stopPropagation();
+            if(this.isRunning()) {
+                this.stop();
+            } else {
+                this.start();
+            }
+        });
+
+        this._titleElement.appendChild(title);
+        this._titleElement.appendChild(this._button);
+        
+        //Display Row
+        this._element = document.createElement("li");
+        this._element.appendChild(this._titleElement);
+        this._element.appendChild(this._startElement);
+        this._element.appendChild(this._valueElement);
+        this._element.appendChild(this._infoElement);
+
         //Initalize instance info.
         this._name = data.name;
-        this._start = 0;
+        this.startTime = 0;
         this._steps = data.list;
         this._index = this._steps.length;
 
-        //Create Elements
-        this._titleElement = document.createElement("td");
-        this._startElement = document.createElement("td");
-        this._valueElement = document.createElement("td");
-        this._infoElement  = document.createElement("td");
-
-        //Control buttons
-        const button = document.createElement("button");
-        button.textContent = data.name;
-        button.addEventListener("click", event=>{
-            event.stopPropagation();
-            this.start();
-        });
-
-        this._titleElement.appendChild(button);
-
         //Update Display Elements
         this.updateElements();
-        
-        //Display Row
-        const row = document.createElement("tr");
-        row.appendChild(this._titleElement);
-        row.appendChild(this._startElement);
-        row.appendChild(this._valueElement);
-        row.appendChild(this._infoElement);
 
-        target.appendChild(row);
+        target.appendChild(this._element);
     }
 
     /** Start Timer
      * 
      */
     public start(): void {
-        this._start = Date.now();
-        this._startElement.textContent = formatTime(this._start);
+        this.startTime = Date.now();
         this._index = 0;
+        this._button.textContent = "Stop";
         addTask(this);
+    }
+
+    public stop(): void{
+        this._button.textContent = "Start";
+        removeTask(this);
     }
 
     /** Update Timer
@@ -150,16 +170,20 @@ export default class Timer implements Task{
      * @param {number} now - millisecons
      * @returns {boolean}
      */
-    public update(now: number): boolean{
-        if(this._index >= this._steps.length)
-            return true;
+    public update(now: number): void{
+        if(this._index >= this._steps.length) {
+            this.stop();
+        }
 
         let current = this._steps[this._index].time;
         let delta = now - this._start;
         while(delta > current){
             if(++this._index >= this._steps.length){
                 this.updateElements();
-                return true;
+                this.stop();
+                return;
+            } else if(this._index === this._steps.length-1){
+                this._button.textContent = "Start";
             }
 
             current = this._steps[this._index].time;
@@ -167,7 +191,6 @@ export default class Timer implements Task{
         }
 
         this.updateElements(current - delta);
-        return false;
     }
 
     /** Update Elements
@@ -177,20 +200,7 @@ export default class Timer implements Task{
      * @param {number} value 
      */
     private updateElements(value?:number): void {
-        //Update value of timer
-        if(typeof value === "undefined" || this._index === this._steps.length-1){
-            this._valueElement.textContent = "---"
-        } else {
-            this._valueElement.textContent = formatSeconds(value / 1000)
-        }
-
-        //Update start of timer
-        if(this._start === 0){
-            this._startElement.textContent = formatTime();
-        } else {
-            this._startElement.textContent = formatTime(this._start);
-        }
-
+        this.value = value / 1000;
         //Update timer info
         if(this._index >= this._steps.length){
             this._infoElement.textContent = "";
@@ -199,13 +209,28 @@ export default class Timer implements Task{
         }
     }
 
-    //Get the time of the timer
-    get time():number{
-        return this._start;
+    public isRunning(){
+        return this._button.textContent === "Stop";
     }
 
     //Get the id of the timer
     get id():string{
         return this._name;
+    }
+
+    set value(value: number){
+        if(isNaN(value) || this._index === this._steps.length-1){
+            this._valueElement.textContent = "----"
+        } else {
+            this._valueElement.textContent = formatSeconds(value)
+        }
+    }
+
+    set startTime(value: number){
+        this._start = value;
+        if(value === 0)
+            this._startElement.textContent = formatTime();
+        else
+        this._startElement.textContent = formatTime(value);
     }
 }
