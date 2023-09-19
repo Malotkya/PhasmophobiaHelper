@@ -13,11 +13,11 @@ const clock = document.createElement("span");
  */
 export interface Task{
     id: string,
-    update:(time:number)=>boolean
+    update:(time:number)=>void
 }
 
 //Queue of Tasks
-const queue: Set<Task> = new Set();
+const queue: Map<string, Task> = new Map();
 
 // Clock thread that updates clock and queue.
 const REFRESH_RATE = 100;
@@ -28,8 +28,11 @@ function clockThread(): void{
     //Launch any schuduled tasks
     let index = 0;
     queue.forEach((task:Task)=>{
-        if(task.update(now))
-            queue.delete(task);
+        try{
+            task.update(now);
+        } catch (e: any){
+            console.error(e);
+        }
     });
 
     window.setTimeout(clockThread, REFRESH_RATE);
@@ -40,7 +43,11 @@ function clockThread(): void{
  * @param {Task} t 
  */
 export function addTask(t:Task){
-    queue.add(t);
+    queue.set(t.id, t);
+}
+
+export function removeTask(t:Task){
+    queue.delete(t.id);
 }
 
 /** Format Time
@@ -85,6 +92,9 @@ export function formatSeconds(value: number): string{
  * 
  * @returns {HTMLElement}
  */
-export default function getClock(): HTMLElement{
-    return clock;
+export default function mageInterface(): HTMLElement{
+    const div = document.createElement("div");
+    div.className = "input";
+    div.appendChild(clock);
+    return div;
 }
