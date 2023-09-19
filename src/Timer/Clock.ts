@@ -72,13 +72,13 @@ export function formatTime(t?: number|Date):string{
  */
 export function formatSeconds(value: number): string{
     const m:number = Math.floor(value / 60);
-    const s:number = Math.round(value % 60);
+    const s:string = `0${Math.round(value % 60)}`;
 
     if(m === 0){
         return value.toFixed(1);
     }
     
-    return `${m}:${s}`;
+    return `${m}:${s.slice(-2)}`;
 }
 
 /** Get Clock Html Element
