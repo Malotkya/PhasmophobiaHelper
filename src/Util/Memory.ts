@@ -1,9 +1,26 @@
+/** Memory.ts
+ * 
+ * Used to persist desired attributes of HTMLElements
+ * 
+ * @author Alex Malotky
+ */
+
+/** Attribute Interface
+ * 
+ */
 interface attribute {
     name: string,
     value: string
 }
 
-export default function Memory(element: HTMLInputElement|HTMLSelectElement, initValue?: string|attribute){
+/** Memory Function
+ * 
+ * Defaults to "value" attribute if no attribute is specified.
+ * 
+ * @param element 
+ * @param initValue 
+ */
+export default function Memory(element: HTMLElement, initValue?: string|attribute){
     let init: attribute;
     if(typeof initValue === "undefined"){
         init = {
@@ -16,9 +33,12 @@ export default function Memory(element: HTMLInputElement|HTMLSelectElement, init
             value: initValue
         };
     } else {
+        if(initValue.name === "")
+            initValue.name = "value";
         init = initValue;
     }
 
+    //Make sure element has an id.
     if(element.id.length !== 0){
         const key: string = `${element.id}:${init.name}`;
 
@@ -35,42 +55,52 @@ export default function Memory(element: HTMLInputElement|HTMLSelectElement, init
         setValue(element, init.name, value);
         let event = new Event('change');
         element.dispatchEvent(event);
+    } else {
+        console.error("No id on element:");
+        console.error(element);
     }
 }
 
-function getValue(element: HTMLInputElement|HTMLSelectElement, attribute: string): string{
+/** Get attribute value based on Element type and Attribute.
+ * 
+ * @param {HTMLElement} element 
+ * @param {string} attribute 
+ * @returns {string}
+ */
+function getValue(element: HTMLElement, attribute: string): string{
     switch(attribute){
         case "value":
-            return element.value;
+            if(element instanceof HTMLInputElement || element instanceof HTMLSelectElement || element instanceof HTMLTextAreaElement)
+                return element.value;
 
         case "checked":
             if(element instanceof HTMLInputElement)
                 return String(element.checked);
-            
-            console.warn("No attribute 'checked' on HTMLSelectElement");
-            return  String(false);
 
         default:
-            console.warn(`Unknown attribute '${attribute}' for element '${element.id}'!`);
-            return (element as any)[attribute];
+            return element.getAttribute(attribute);
     }
 }
 
-function setValue(element: HTMLInputElement|HTMLSelectElement, attribute:string, value:string): void{
+/** Set attribute value based on Element type and Attribute.
+ * 
+ * @param {HTMLElement} element 
+ * @param {string} attribute 
+ * @param {string} value 
+ */
+function setValue(element: HTMLElement, attribute:string, value:string): void{
     switch(attribute){
         case "value":
-            element.value = value;
-            break;
+            if(element instanceof HTMLInputElement || element instanceof HTMLSelectElement) {
+                element.value = value;
+                break;
+            }
 
         case "checked":
             if(element instanceof HTMLInputElement)
                 element.checked = value === 'true';
-            else
-                console.warn("No attribute 'checked' on HTMLSelectElement");
-            break;
 
         default:
-            console.warn(`Unknown attribute '${attribute}' for element '${element.id}'!`);
-            (element as any)[attribute] = value;
+            element.setAttribute(attribute, value);
     }
 }
