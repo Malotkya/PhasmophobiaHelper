@@ -7,6 +7,7 @@ import Evidence, {createAllEvidence} from "./Evidence";
 import Ghost, {createAllGhosts} from "./Ghost";
 import Phasmophobia from "./Phasmophobia";
 import { generateSound } from "../Util/Sound";
+import Memory from "../Util/Memory";
 
 //Main Check List Element
 const checkList = document.createElement("div");
@@ -39,7 +40,8 @@ createAllGhosts(ghostListElement, displayTargetElement).then((ghostList:Array<Gh
             game.evidenceCount = Number(numEvidence.value);
             game.update();
         });
-        numEvidence.value = game.evidenceCount.toString();
+        numEvidence.id = "numEvidence";
+        Memory(numEvidence as HTMLInputElement, game.evidenceCount.toString());
             
         //Reset Event
         btnReset.addEventListener("click", event=>{

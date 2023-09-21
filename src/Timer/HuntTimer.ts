@@ -1,4 +1,5 @@
 import Timer, {MINUTE} from "./Timer";
+import Memory from "../Util/Memory";
 
 //Durations of Hunts in Milliseconds
 // Gotten from: https://phasmophobia.fandom.com/wiki/Hunt#Start_of_a_hunt
@@ -71,6 +72,8 @@ export default class HuntTimer extends Timer {
             event.stopPropagation();
             this.updateValue();
         });
+        Memory(this._selIntensity, "0");
+        
         const lblIntensity = document.createElement("label");
         lblIntensity.setAttribute("for", "selIntensity");
         lblIntensity.textContent = "Duration:\n";
@@ -90,6 +93,8 @@ export default class HuntTimer extends Timer {
             event.stopPropagation();
             this.updateValue();
         });
+        Memory(this._selSize, "0");
+
         const lblSize = document.createElement("label");
         lblSize.setAttribute("for", "selMapSize");
         lblSize.textContent = "Map Size:\n";
@@ -99,6 +104,8 @@ export default class HuntTimer extends Timer {
         this._chbCursed = document.createElement("input");
         this._chbCursed.type = "checkbox";
         this._chbCursed.id = "chbCursed";
+        Memory(this._chbCursed, {name:"checked", value:String(false)});
+
         const lblCursed = document.createElement("label");
         lblCursed.setAttribute("for", "chbCursed");
         lblCursed.textContent += " Cursed";
@@ -123,7 +130,7 @@ export default class HuntTimer extends Timer {
      */
     private updateValue(){
         //Get and Validate Hunt Intensity Value
-        let intensity: number = Number(this._selIntensity.value);
+        let intensity: number = Number(this._selIntensity? this._selIntensity.value: 0);
         if(isNaN(intensity) || intensity < 0){
             intensity = 0;
         } else if(intensity >= INTENSITY_OPTIONS.length){
@@ -131,7 +138,7 @@ export default class HuntTimer extends Timer {
         }
 
         //Get and Validate Map Size Value
-        let size: number = Number(this._selSize.value);
+        let size: number = Number(this._selSize? this._selSize.value: 0);
         if(isNaN(size) || size < 0){
             size = 0;
         } else if(size >= SIZE_OPTIONS.length){
@@ -139,7 +146,7 @@ export default class HuntTimer extends Timer {
         }
 
         //Get If Cursed Hunt
-        let cursed: number = Number(this._chbCursed.checked);
+        let cursed: number = Number(this._chbCursed? this._chbCursed.checked: false);
 
         //Calculate Value
         const value = HUNT_DURATION[intensity][size] + (CURSED * cursed);

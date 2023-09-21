@@ -8,6 +8,7 @@
  */
 
 import { SOUND } from "./UnicodeIcons";
+import Memory from "./Memory";
 
 /** Audio Context Section
  * 
@@ -66,7 +67,6 @@ const sldVolume = document.createElement("input");
     sldVolume.min = "0";
     sldVolume.max = "1";
     sldVolume.step = "0.01";
-    sldVolume.value = String(INIT_VOLUME);
     sldVolume.style.width = "200px";
 
 const lblVolume = document.createElement("span");
@@ -76,6 +76,8 @@ const lblVolume = document.createElement("span");
         masterGain.gain.value = Number(sldVolume.value);
         lblVolume.textContent = `${Math.round(Number(sldVolume.value) * 100)}%`
     });
+
+    Memory(sldVolume, String(INIT_VOLUME));
 
 /** Sound is Playing
  * 
