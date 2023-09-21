@@ -8,7 +8,7 @@ const app = new App();
 
 app.add("", CheckList());
 app.add("Check List", CheckList());
-app.add("Timer", Timer());
+app.add("Timers", Timer());
 
 app.onReady(()=>{
     const container: HTMLElement = document.createElement("div");
