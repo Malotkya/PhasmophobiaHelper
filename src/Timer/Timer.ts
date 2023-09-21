@@ -82,7 +82,6 @@ export const TIMER_TYPES: Array<TimerData> = [
 export default class Timer implements Task{
     //HTML Elements
     protected _titleElement: HTMLElement;
-    protected _startElement: HTMLElement;
     protected _valueElement: HTMLElement;
     protected _infoElement: HTMLElement
     protected _button: HTMLElement;
@@ -101,20 +100,15 @@ export default class Timer implements Task{
      */
     constructor(data: TimerData, target: HTMLElement){
         //Create Elements
-        this._titleElement = document.createElement("div");
+        this._titleElement = document.createElement("h2");
+        this._titleElement.textContent = data.name;
         this._titleElement.className = "title";
-        this._startElement = document.createElement("div");
-        this._startElement.className = "time";
-        this._valueElement = document.createElement("div");
-        this._valueElement.className = "time value";
-        this._infoElement  = document.createElement("div");
+        this._valueElement = document.createElement("span");
+        this._valueElement.className = "time";
+        this._infoElement  = document.createElement("p");
         this._infoElement.className = "info";
 
-        //Title
-        const title = document.createElement("h2");
-        title.textContent = data.name;
-
-        //Control buttons
+        //Control button
         this._button = document.createElement("button");
         this._button.textContent = "Start";
         this._button.addEventListener("click", event=>{
@@ -125,14 +119,11 @@ export default class Timer implements Task{
                 this.start();
             }
         });
-
-        this._titleElement.appendChild(title);
-        this._titleElement.appendChild(this._button);
         
         //Display Row
         this._element = document.createElement("li");
         this._element.appendChild(this._titleElement);
-        this._element.appendChild(this._startElement);
+        this._element.appendChild(this._button);
         this._element.appendChild(this._valueElement);
         this._element.appendChild(this._infoElement);
 
@@ -195,7 +186,7 @@ export default class Timer implements Task{
 
     /** Update Elements
      * 
-     * Defaults to "---" if no value is entered.
+     * Defaults to "----" if no value is entered.
      * 
      * @param {number} value 
      */
@@ -228,9 +219,5 @@ export default class Timer implements Task{
 
     set startTime(value: number){
         this._start = value;
-        if(value === 0)
-            this._startElement.textContent = formatTime();
-        else
-        this._startElement.textContent = formatTime(value);
     }
 }

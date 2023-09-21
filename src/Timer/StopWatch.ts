@@ -15,6 +15,7 @@ export default class StopWatch extends Timer {
      */
     constructor(target: HTMLElement){
         super({name: "Stop Watch", list:[]}, target);
+        this._element.removeChild(this._infoElement);
     }
 
     /** Update Timer

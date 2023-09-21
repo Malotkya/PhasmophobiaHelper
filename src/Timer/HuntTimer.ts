@@ -46,7 +46,7 @@ export default class HuntTimer extends Timer {
      */
     constructor(target: HTMLElement){
         super({
-            name: "Hunt",
+            name: "Hunt Duration",
             list: [
                 {
                     time: HUNT_DURATION[0][0],
@@ -122,7 +122,8 @@ export default class HuntTimer extends Timer {
         container.appendChild(lblIntensity);
         container.appendChild(lblCursed);
 
-        this._element.appendChild(container);
+        this._element.insertBefore(container, this._button);
+        this._element.id = "huntTimer";
     }
 
     /** Update Timer Value
