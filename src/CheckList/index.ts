@@ -41,7 +41,7 @@ createAllGhosts(ghostListElement, displayTargetElement).then((ghostList:Array<Gh
             game.update();
         });
         numEvidence.id = "numEvidence";
-        Memory(numEvidence as HTMLInputElement, game.evidenceCount.toString());
+        Memory(numEvidence, game.evidenceCount.toString());
             
         //Reset Event
         btnReset.addEventListener("click", event=>{
