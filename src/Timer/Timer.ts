@@ -58,11 +58,11 @@ export const TIMER_TYPES: Array<TimerData> = [
         ]
     },
     {
-        "name": "Hunt Ends",
+        "name": "Hunt Cooldown",
         "list": [
             {
                 time: 20000,
-                info: "Ghosts can hunt with a special ability or curse."
+                info: "Ghosts can't hunt."
             },
             {
                 time: 25000,
