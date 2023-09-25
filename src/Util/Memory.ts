@@ -13,46 +13,46 @@ interface attribute {
     value: string
 }
 
-/** Memory Function
+/** Persist Attributes Function
  * 
  * Defaults to "value" attribute if no attribute is specified.
  * 
  * @param element 
  * @param initValue 
  */
-export default function Memory(element: HTMLElement, initValue?: string|attribute){
-    let init: attribute;
+export function persistAttribute(element: HTMLElement, initValue?: string|attribute){
+    let att: attribute;
     if(typeof initValue === "undefined"){
-        init = {
+        att = {
             name: "value",
             value: ""
         };
     } else if (typeof initValue === "string"){
-        init = {
+        att = {
             name: "value",
             value: initValue
         };
     } else {
         if(initValue.name === "")
             initValue.name = "value";
-        init = initValue;
+        att = initValue;
     }
 
     //Make sure element has an id.
     if(element.id.length !== 0){
-        const key: string = `${element.id}:${init.name}`;
+        const key: string = `${element.id}:${att.name}`;
 
         element.addEventListener("change", event=>{
-            localStorage.setItem(key, getValue(element, init.name));
+            localStorage.setItem(key, getValue(element, att.name));
         });
 
         
         let value:string = localStorage.getItem(key);
         if(value === null){
-            value = init.value;
+            value = att.value;
         }
 
-        setValue(element, init.name, value);
+        setValue(element, att.name, value);
         let event = new Event('change');
         element.dispatchEvent(event);
     } else {
@@ -61,7 +61,7 @@ export default function Memory(element: HTMLElement, initValue?: string|attribut
     }
 }
 
-/** Get attribute value based on Element type and Attribute.
+/** Get attribute value based on Element type and Attribute type.
  * 
  * @param {HTMLElement} element 
  * @param {string} attribute 
@@ -82,7 +82,7 @@ function getValue(element: HTMLElement, attribute: string): string{
     }
 }
 
-/** Set attribute value based on Element type and Attribute.
+/** Set attribute value based on Element type and Attribute type.
  * 
  * @param {HTMLElement} element 
  * @param {string} attribute 
@@ -97,10 +97,33 @@ function setValue(element: HTMLElement, attribute:string, value:string): void{
             }
 
         case "checked":
-            if(element instanceof HTMLInputElement)
+            if(element instanceof HTMLInputElement){
                 element.checked = value === 'true';
+                break;
+            }
+                
 
         default:
             element.setAttribute(attribute, value);
     }
+}
+
+/** Cache Database Function
+ * 
+ * @param {string} key 
+ * @param {Function} download 
+ * @returns {any}
+ */
+export async function cache(key: string, download: Function):Promise<any>{
+    const today:string = new Date().toLocaleDateString();
+
+    //Update
+    if(window.localStorage.getItem(`${key}:lastUpdate`) !== today){
+        const data:any = await download();
+        window.localStorage.setItem(`${key}:lastUpdate`, today);
+        window.localStorage.setItem(`${key}:data`, JSON.stringify(data));
+        return data;
+    }
+
+    return JSON.parse(window.localStorage.getItem(`${key}:data`));
 }
