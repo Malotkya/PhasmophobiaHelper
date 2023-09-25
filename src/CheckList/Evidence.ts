@@ -14,21 +14,25 @@ import { cache } from "../Util/Memory";
  * @returns {Array<Evidence>}
  */
 export async function createAllEvidence(target: Element): Promise<Array<Evidence>>{
-    return (await cache("Evidence", getEvidence)).map((e:EvidenceData)=>new Evidence(e.name,target));
+    const list: Array<Evidence> = (await cache("Evidence", getEvidence)).map((e:EvidenceData)=>new Evidence(e.name));
+    for(let evidence of list){
+        target.appendChild(evidence);
+    }
+    return list;
 }
 
 /** Evidence Class
  * 
  */
-export default class Evidence{
+export default class Evidence extends HTMLLIElement{
     private _name: Element;
     private _btnInclude: HTMLElement;
     private _btnExclude: HTMLElement;
     private _btnReset: HTMLElement;
-    
-    private _element: HTMLElement;
 
-    constructor(name: string, target: Element){
+    constructor(name: string){
+        super();
+
         //Name Element
         this._name = document.createElement("span");
         this._name.textContent = name;
@@ -51,23 +55,21 @@ export default class Evidence{
         this._btnReset.style.display = "none";
 
         //List Item
-        this._element = document.createElement("li");
-        this._element.className = "evidence";
-        this._element.appendChild(this._name);
-        this._element.appendChild(this._btnInclude);
-        this._element.appendChild(this._btnExclude);
-        this._element.appendChild(this._btnReset);
+        this.className = "evidence";
+        this.appendChild(this._name);
+        this.appendChild(this._btnInclude);
+        this.appendChild(this._btnExclude);
+        this.appendChild(this._btnReset);
 
         this.reset();
-        target.appendChild(this._element);
     }
 
     /** Evidence Found
      * 
      */
     public found(): void{
-        this._element.classList.add("yes");
-        this._element.classList.remove("no");
+        this.classList.add("yes");
+        this.classList.remove("no");
         this._btnReset.style.display = "";
         this._btnExclude.style.display = "";
         this._btnInclude.style.display = "none";
@@ -77,8 +79,8 @@ export default class Evidence{
      * 
      */
     public notFound(): void{
-        this._element.classList.add("no");
-        this._element.classList.remove("yes");
+        this.classList.add("no");
+        this.classList.remove("yes");
         this._btnReset.style.display = "";
         this._btnExclude.style.display = "none";
         this._btnInclude.style.display = "";
@@ -88,8 +90,8 @@ export default class Evidence{
      * 
      */
     public reset(): void{
-        this._element.classList.remove("yes");
-        this._element.classList.remove("no");
+        this.classList.remove("yes");
+        this.classList.remove("no");
         this._btnReset.style.display = "none";
         this._btnExclude.style.display = "";
         this._btnInclude.style.display = "";
@@ -100,13 +102,6 @@ export default class Evidence{
      */
     public get name(): string{
         return this._name.textContent;
-    }
-
-    /** List Item Element Style Getter
-     * 
-     */
-    public get style(): CSSStyleDeclaration{
-        return this._element.style;
     }
 
     /** Include Event
@@ -140,3 +135,5 @@ export default class Evidence{
         this._btnReset.addEventListener("click", callback);
     }
 }
+
+customElements.define("evidence-item", Evidence, {extends: "li"});

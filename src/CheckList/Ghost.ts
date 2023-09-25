@@ -17,9 +17,9 @@ import { cache } from "../Util/Memory";
  * @returns {Array<Ghost>}
  */
 export async function createAllGhosts(target: HTMLElement, display: HTMLElement): Promise<Array<Ghost>>{
-    const list = (await cache("Ghost", getGhosts)).map((data: GhostData)=>new Ghost(display, data));
+    const list: Array<Ghost> = (await cache("Ghost", getGhosts)).map((data: GhostData)=>new Ghost(display, data));
     for(let ghost of list){
-        target.appendChild(ghost.element);
+        target.appendChild(ghost);
     }
     return list;
 }
@@ -27,7 +27,7 @@ export async function createAllGhosts(target: HTMLElement, display: HTMLElement)
 /** Ghost Class
  * 
  */
-export default class Ghost{
+export default class Ghost extends HTMLLIElement{
     //Info Elements
     private _name: Element;
     private _info: Element;
@@ -41,12 +41,12 @@ export default class Ghost{
     private _speed: number|Array<number>;
 
     //List Elements
-    private _element: HTMLElement;
     private _styleElement: HTMLElement;
 
     private _target: HTMLElement;
     
     constructor(target: HTMLElement, data: GhostData){
+        super();
         this._disproven = false;
         this._target = target;
         
@@ -144,11 +144,10 @@ export default class Ghost{
         this._styleElement.textContent = data.name;
 
         //List Element
-        this._element = document.createElement("li");
-        this._element.className = "ghost";
-        this._element.appendChild(this._styleElement);
-        this._element.appendChild(this._btnRemove);
-        this._element.addEventListener("click", event=>this.display());
+        this.className = "ghost";
+        this.appendChild(this._styleElement);
+        this.appendChild(this._btnRemove);
+        this.addEventListener("click", event=>this.display());
     }
 
     /** Has Evidence
@@ -170,11 +169,10 @@ export default class Ghost{
      * 
      */
     public crossOff(): void{
-        this.style.textDecoration = "line-through";
+        this._styleElement.style.textDecoration = "line-through";
         this._btnRemove.textContent = Icons.RESET;
-        let order = this.order
+        this.style.order = String(Number(this.style.order) + 10);
         this._disproven = true;
-        this.order = order;
     }
 
     /** Un Cross Off Ghost from List
@@ -182,24 +180,23 @@ export default class Ghost{
      */
     public unCrossOff(): void{
         this._btnRemove.textContent = Icons.EX;
-        this.style.textDecoration = "";
-        let order = this.order
+        this._styleElement.style.textDecoration = "";
+        this.style.order = String(Number(this.style.order) - 10);
         this._disproven = false;
-        this.order = order;
     }
 
     /** Hide Ghost from List
      * 
      */
     public hide(): void{
-        this._element.classList.add("no");
+        this.classList.add("no");
     }
 
     /** Show Ghost on List
      * 
      */
     public show(): void{
-        this._element.classList.remove("no");
+        this.classList.remove("no");
     }
 
     /** Reset Ghost on List
@@ -356,13 +353,6 @@ export default class Ghost{
         return true;
     }
 
-    /** Ghost List Item Style Element
-     * 
-     */
-    private get style(): CSSStyleDeclaration{
-        return this._styleElement.style;
-    }
-
     /** Required Evidence Getter
      * 
      */
@@ -381,19 +371,15 @@ export default class Ghost{
      * 
      */
     public get order(){
-        let hidden: Boolean = this._element.classList.contains("no");
-        return Number(this._element.style.order) + (Number(this._disproven || hidden) * 10);
+        let hidden: Boolean = this.classList.contains("no");
+        return Number(this.style.order) + (Number(this._disproven || hidden) * 10);
     }
 
     /** Ghost List Item Order Setter
      * 
      */
     public set order(value: number){
-        this._element.style.order = (value + (Number(this._disproven) * 10)).toString();
-    }
-
-    public get element(): HTMLElement{
-        return this._element;
+        this.style.order = (value + (Number(this._disproven) * 10)).toString();
     }
 
     /** Display Ghost Information
@@ -407,3 +393,5 @@ export default class Ghost{
         this._target.append(this._info);
     }
 }
+
+customElements.define("ghost-item", Ghost, {extends: "li"})
