@@ -30,8 +30,11 @@ interface TimerData {
  * @returns {Array<Timer>}
  */
 export function createAllTimers(target: HTMLElement): Array<Timer>{
-    return TIMER_TYPES.map(v=>new Timer(v, target));
-            
+    const list: Array<Timer> = TIMER_TYPES.map(v=>new Timer(v));
+    for(let timer of list){
+        target.appendChild(timer);
+    }
+    return list;
 }
 
 //Types of Timers Used
@@ -79,13 +82,12 @@ export const TIMER_TYPES: Array<TimerData> = [
 /** Timer Class
  * 
  */
-export default class Timer implements Task{
+export default class Timer extends HTMLLIElement implements Task{
     //HTML Elements
     protected _titleElement: HTMLElement;
     protected _valueElement: HTMLElement;
     protected _infoElement: HTMLElement
     protected _button: HTMLElement;
-    protected _element: HTMLElement;
 
     //Instance Variables
     private _name: string;
@@ -96,9 +98,10 @@ export default class Timer implements Task{
     /** Constructor
      * 
      * @param {TimerData} data 
-     * @param {HTMLElement} target 
      */
-    constructor(data: TimerData, target: HTMLElement){
+    constructor(data: TimerData){
+        super();
+
         //Create Elements
         this._titleElement = document.createElement("h2");
         this._titleElement.textContent = data.name;
@@ -121,11 +124,10 @@ export default class Timer implements Task{
         });
         
         //Display Row
-        this._element = document.createElement("li");
-        this._element.appendChild(this._titleElement);
-        this._element.appendChild(this._button);
-        this._element.appendChild(this._valueElement);
-        this._element.appendChild(this._infoElement);
+        this.appendChild(this._titleElement);
+        this.appendChild(this._button);
+        this.appendChild(this._valueElement);
+        this.appendChild(this._infoElement);
 
         //Initalize instance info.
         this._name = data.name;
@@ -135,8 +137,6 @@ export default class Timer implements Task{
 
         //Update Display Elements
         this.updateElements();
-
-        target.appendChild(this._element);
     }
 
     /** Start Timer
@@ -221,3 +221,5 @@ export default class Timer implements Task{
         this._start = value;
     }
 }
+
+customElements.define("timer-item", Timer, {extends: "li"})

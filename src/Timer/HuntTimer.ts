@@ -42,9 +42,8 @@ export default class HuntTimer extends Timer {
 
     /** Constructor
      * 
-     * @param {HTMLElement} target 
      */
-    constructor(target: HTMLElement){
+    constructor(){
         super({
             name: "Hunt Duration",
             list: [
@@ -56,8 +55,8 @@ export default class HuntTimer extends Timer {
                     time: HUNT_DURATION[0][0] + MINUTE,
                     info: "Safe!"
                 }
-            ]}
-            , target);
+            ]
+            });
 
         //Hunt Intensity Selector
         this._selIntensity = document.createElement("select");
@@ -122,8 +121,8 @@ export default class HuntTimer extends Timer {
         container.appendChild(lblIntensity);
         container.appendChild(lblCursed);
 
-        this._element.insertBefore(container, this._button);
-        this._element.id = "huntTimer";
+        this.insertBefore(container, this._button);
+        this.setAttribute("id", "huntTimer");
     }
 
     /** Update Timer Value
@@ -157,3 +156,5 @@ export default class HuntTimer extends Timer {
         this._steps[1].time = value + MINUTE;
     }
 }
+
+customElements.define("hunt-timer-item", HuntTimer, {extends: "li"})

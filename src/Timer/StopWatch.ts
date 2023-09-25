@@ -2,7 +2,6 @@
  * 
  * @author Alex Malotky
  */
-import {addTask, formatTime, formatSeconds} from "./Clock";
 import Timer from "./Timer";
 
 /** StopWatch Class
@@ -11,11 +10,10 @@ import Timer from "./Timer";
 export default class StopWatch extends Timer {
     /** Constructor
      * 
-     * @param {HTMLElement} target 
      */
-    constructor(target: HTMLElement){
-        super({name: "Stop Watch", list:[]}, target);
-        this._element.removeChild(this._infoElement);
+    constructor(){
+        super({name: "Stop Watch", list:[]});
+        this.removeChild(this._infoElement);
     }
 
     /** Update Timer
@@ -31,3 +29,5 @@ export default class StopWatch extends Timer {
         this.value = delta / 1000;
     }
 }
+
+customElements.define("stop-watch-item", StopWatch, {extends: "li"})
