@@ -43,8 +43,7 @@ export default class HTMLToggleInputElement extends HTMLElement {
                 event.stopPropagation();
             } else {
                 this._input.checked = !this._input.checked;
-                this._slider.style.left = this._input.checked? "26px" : "4px";
-                this.style.backgroundColor = this._input.checked? "cyan" : "white";
+                this.update();
                 this.dispatchEvent(new Event("change", {composed: true}));
             }
         });
@@ -76,6 +75,7 @@ export default class HTMLToggleInputElement extends HTMLElement {
 
             this._options = value;
             this._input.checked = false;
+            this.update();
         } else {
             console.error("Options not an Array!");
         }
@@ -91,10 +91,16 @@ export default class HTMLToggleInputElement extends HTMLElement {
         } else if(this._options[1] === value){
             this._input.checked = true;
         }
+        this.update();
     }
 
     get value(){
         return this._options[Number(this._input.checked)];
+    }
+
+    private update(){
+        this._slider.style.left = this._input.checked? "26px" : "4px";
+        this.style.backgroundColor = this._input.checked? "cyan" : "white";
     }
 }
 
