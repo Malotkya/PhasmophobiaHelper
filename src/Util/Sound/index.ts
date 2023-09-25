@@ -9,69 +9,22 @@
 
 import { SOUND } from "../UnicodeIcons";
 import { persistAttribute } from "../Memory";
+import { btnMain, sldVolume, lblVolume } from "./html";
 import * as SC from "./constants"
+import { Fallback } from "./Fallback";
 
-/** Audio Context Section
- * 
- * All the objects used to create the beep.
- */
-const audioContext = new (window.AudioContext)();
-const masterGain = audioContext.createGain();
-    masterGain.gain.value = SC.INITAL_VOLUME;
-    masterGain.connect(audioContext.destination); 
-
-
-
-/** Play Tick Function
- * 
- */
-function tick():void {
-    var oscillatorNode = new OscillatorNode(audioContext, {type: 'sawtooth'});
-    oscillatorNode.frequency.value = SC.TIC_FREQUENCEY;
-    oscillatorNode.connect( masterGain );
-    oscillatorNode.start(audioContext.currentTime);
-    oscillatorNode.stop( audioContext.currentTime + SC.TIC_LENGTH);
+export interface sound_interface {
+    play: ()=>Promise<void>;
+    volume: number,
+    onerror: OnErrorEventHandlerNonNull,
+    currentTime: number
 }
-
-/**HTML Element Section
- * 
- * All HTML Elements that interact with the audio.
- */
-
-/** Button Main
- * 
- */
-const btnMain = document.createElement("button");
-    btnMain.textContent = SC.BUTTON_DEFULT_STRING;
-    btnMain.id = "btnSound";
-
-    btnMain.addEventListener("click", ()=>{
-        if(isPlaying())
-            stopSound();
-        else
-            generateSound(1.7);
-    });
-
-/** Volume Slider
- * 
- */
-const sldVolume = document.createElement("input");
-    sldVolume.type = "range";
-    sldVolume.id = "volume";
-    sldVolume.min = "0";
-    sldVolume.max = "1";
-    sldVolume.step = "0.01";
-    sldVolume.style.width = "200px";
-
-const lblVolume = document.createElement("span");
-    lblVolume.textContent = `${SC.INITAL_VOLUME * 100}%`;
-
-    sldVolume.addEventListener("change", ()=>{
-        masterGain.gain.value = Number(sldVolume.value);
-        lblVolume.textContent = `${Math.round(Number(sldVolume.value) * 100)}%`
-    });
-
-    persistAttribute(sldVolume, String(SC.INITAL_VOLUME));
+let audio:sound_interface;
+export function setAudioFile(fileName:string){
+    let audio:sound_interface = new Audio(fileName);
+    audio.onerror = () => audio = new Fallback(sldVolume.value);
+    audio.volume = Number(SC.INITAL_VOLUME);
+}
 
 /** Sound is Playing
  * 
@@ -105,7 +58,7 @@ const bpm = (speed: number):number => SC.KNOWN_SPEEDS.get(speed) || bpm_equation
 const convert = (speed: number):number => (60 / speed) * 1000;
 
 //Numbers used by sound thread.
-let speed:number = convert(1.7);
+let speed:number = convert(bpm(1.7));
 let lastPlayed:number = Date.now();
 
 /** Sound Thread
@@ -116,13 +69,27 @@ function soundThread():void {
     if(isPlaying()){
         const now:number = Date.now();
         if(now >= lastPlayed+speed){
-            tick();
+            audio.currentTime = 0
+            audio.play();
             lastPlayed = now;
         }
     }
 
     window.setTimeout(soundThread, SC.REFRESH_RATE);
 }; soundThread();
+
+btnMain.addEventListener("click", ()=>{
+    if(isPlaying())
+        stopSound();
+    else
+        generateSound(bpm(1.7));
+});
+
+sldVolume.addEventListener("change", ()=>{
+    audio.volume = Number(sldVolume.value);
+    lblVolume.textContent = `${Math.round(Number(sldVolume.value) * 100)}%`
+});
+persistAttribute(sldVolume, String(SC.INITAL_VOLUME));
 
 /** Generate Sound
  * 
@@ -131,7 +98,6 @@ function soundThread():void {
 export function generateSound(s: number):void {  
     speed = convert(s);
     startSound();
-    
 }
 
 /** Start Sound
