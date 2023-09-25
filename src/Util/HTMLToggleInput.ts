@@ -1,12 +1,30 @@
+/** HTMLTOggleInput.ts
+ * 
+ * Used to visualize binary options.
+ * 
+ * @author Alex Malotky
+ */
+
+/** HTML Toggle Input Element
+ * 
+ */
 export default class HTMLToggleInputElement extends HTMLElement {
+    //Internal Elements
     private _slider: HTMLSpanElement;
     private _input: HTMLInputElement;
 
+    //Optional Values
     private _options: Array<string>
 
+    /** Constructor
+     * 
+     * @param {string} option1 
+     * @param {string} option2 
+     */
     constructor(option1?:string, option2?: string){
         super();
 
+        //Wrapper Styling
         this.style.position = "relative";
         this.style.display = "inline-block";
         this.style.width = "60px";
@@ -15,11 +33,13 @@ export default class HTMLToggleInputElement extends HTMLElement {
         this.style.backgroundColor = "white";
         this.style.cursor = "pointer";
 
+        //Input Styling
         this._input = document.createElement("input");
         this._input.style.opacity = "0";
         this._input.style.width = "0";
         this._input.style.height = "0";
 
+        //Slider Styling
         this._slider = document.createElement("span");
         this._slider.style.content = "";
         this._slider.style.position = "absolute";
@@ -38,8 +58,10 @@ export default class HTMLToggleInputElement extends HTMLElement {
 
         this._options = [option1, option2];
 
+        //Change value on click.
         this.addEventListener("click", event=>{
             if(event.target === this._input) {
+                //Prevent Double Click
                 event.stopPropagation();
             } else {
                 this._input.checked = !this._input.checked;
@@ -49,10 +71,19 @@ export default class HTMLToggleInputElement extends HTMLElement {
         });
     }
 
+    /** Attributes Getter.
+     * 
+     */
     static get observedAttributes(){
         return ["options", "value"];
     }
 
+    /** Attribute Change Callback
+     * 
+     * @param {string} name of attribute
+     * @param {string} oldValue 
+     * @param {string} newValue 
+     */
     attributeChangedCallback(name:string, oldValue:string, newValue:string){
         switch (name){
             case "options":
@@ -65,6 +96,9 @@ export default class HTMLToggleInputElement extends HTMLElement {
         }
     }
 
+    /** Options Setter
+     * 
+     */
     set options(value: Array<string>){
         if(value.length){
             if(value.length < 2){
@@ -81,10 +115,16 @@ export default class HTMLToggleInputElement extends HTMLElement {
         }
     }
 
+    /** Options Getter
+     * 
+     */
     get options(){
         return this._options;
     }
 
+    /** Value Setter
+     * 
+     */
     set value(value: string){
         if(this._options[0] === value){
             this._input.checked = false;
@@ -94,10 +134,17 @@ export default class HTMLToggleInputElement extends HTMLElement {
         this.update();
     }
 
+    /** Value Getter
+     * 
+     */
     get value(){
         return this._options[Number(this._input.checked)];
     }
 
+    /** Style Updates
+     * 
+     * Called after setting values.
+     */
     private update(){
         this._slider.style.left = this._input.checked? "26px" : "4px";
         this.style.backgroundColor = this._input.checked? "cyan" : "white";
