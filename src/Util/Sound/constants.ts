@@ -3,15 +3,15 @@
  * @author Alex Malotky
  */
 
+//Sound Objects
+export const METRONOME = "/sound/metronome-85688.mp3";
+export const FOOTSTEP  = "Bad Sound";
+
 //Sound Initial Volume
 export const INITAL_VOLUME = 0.25;
 
 //Thread Refresh Rate
-export const REFRESH_RATE = 100;
-
-//Constants used to define and generate tic
-export const TIC_FREQUENCEY: number = 103;
-export const TIC_LENGTH: number = 0.03;
+export const REFRESH_RATE = 10;
 
 //Constants for main button.
 export const BUTTON_RUNNING_STRING = "Stop Sound";
