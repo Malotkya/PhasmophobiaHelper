@@ -134,10 +134,12 @@ label span {
 
 #evidence-section {
     order: -1;
+    min-width: 150px;
 }
 
 #ghost-section{
     order: 1;
+    min-width: 200px;
 }
 
 
