@@ -6,6 +6,7 @@ import * as Icons from "../Util/UnicodeIcons";
 import {getGhosts, GhostData} from "../Util/Database";
 import { AVERAGE_SPEED, NORMAL_HUNT } from "./Alternative";
 import {createSoundButton} from "../Util/Sound";
+import { cache } from "../Util/Memory";
 
 /** Create All Ghost Objects
  * 
@@ -16,7 +17,7 @@ import {createSoundButton} from "../Util/Sound";
  * @returns {Array<Ghost>}
  */
 export async function createAllGhosts(target: HTMLElement, display: HTMLElement): Promise<Array<Ghost>>{
-    const list = (await getGhosts()).map((data: GhostData)=>new Ghost(display, data));
+    const list = (await cache("Ghost", getGhosts)).map((data: GhostData)=>new Ghost(display, data));
     for(let ghost of list){
         target.appendChild(ghost.element);
     }

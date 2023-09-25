@@ -4,6 +4,7 @@
  */
 import * as Icons from "../Util/UnicodeIcons";
 import {getEvidence, EvidenceData} from "../Util/Database";
+import { cache } from "../Util/Memory";
 
 /** Create All Evidence Objects
  * 
@@ -13,7 +14,7 @@ import {getEvidence, EvidenceData} from "../Util/Database";
  * @returns {Array<Evidence>}
  */
 export async function createAllEvidence(target: Element): Promise<Array<Evidence>>{
-    return (await getEvidence()).map((e:EvidenceData)=>new Evidence(e.name,target));
+    return (await cache("Evidence", getEvidence)).map((e:EvidenceData)=>new Evidence(e.name,target));
 }
 
 /** Evidence Class
