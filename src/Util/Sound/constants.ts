@@ -5,7 +5,7 @@
 
 //Sound Objects
 export const METRONOME = "/sound/metronome-85688.mp3";
-export const FOOTSTEP  = "Bad Sound";
+export const FOOTSTEP  = "/sound/footstep.wav";
 
 //Sound Initial Volume
 export const INITAL_VOLUME = 0.25;
