@@ -35,7 +35,7 @@ export default class Phasmophobia {
      * 
      */
     public update(){
-        let list = [].concat(this._mainGhostList);
+        let list: Array<Ghost> = [].concat(this._mainGhostList);
         list = this._checkList.update(list);
         list = this._alternative.update(list);
 
@@ -49,7 +49,7 @@ export default class Phasmophobia {
         //Display new List
         this._target.innerHTML = "";
         for(let ghost of list){
-            this._target.appendChild(ghost.element);
+            this._target.appendChild(ghost);
         }
 
         //Display top ghost
@@ -66,7 +66,7 @@ export default class Phasmophobia {
         this._target.innerHTML = "";
         for(let ghost of this._mainGhostList){
             ghost.reset();
-            this._target.appendChild(ghost.element)
+            this._target.appendChild(ghost)
         }
 
         this._mainGhostList[0].display();
