@@ -16,6 +16,14 @@ export default class CustomSet<t>{
         this._maxSize = maxSize;
     }
 
+    /** Get Iterator
+     * 
+     * @returns {IterableIterator<t>}
+     */
+    public [Symbol.iterator]():IterableIterator<t> {
+        return this._list.values();
+    }
+
     /** Shrink Set
      * 
      * Removes element from list.
@@ -34,11 +42,16 @@ export default class CustomSet<t>{
      * @returns {Array<t>} - list of items remvoed
      */
     setMaxSize(value: number):Array<t>{
+        if(value <= 0)
+            value = 1;
+
         let output: Array<t> = [];
         this._maxSize = value;
+
         while(this._list.length > this._maxSize){
             output.push(this.shrink());
         }
+        
         return output;
     }
 
@@ -53,7 +66,7 @@ export default class CustomSet<t>{
         let output: t|undefined = undefined;
 
         if(!this._list.includes(item)){
-            if(this._list.length === this._maxSize)
+            if(this._list.length >= this._maxSize)
                 output = this.shrink();
 
             this._list.push(item)
