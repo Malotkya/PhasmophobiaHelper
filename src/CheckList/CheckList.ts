@@ -70,24 +70,26 @@ export default class CheckList {
 
             //Count Evidence Not Found
             let dScore = 0;
-            this._deduction.forEach(e=>{
+            for(let e of this._deduction){
                 if(ghost.has(e.name)){
                     dScore++;
                 }
                 if(ghost.required === e.name){
                     dScore+=EVIDENCE_SCORE_OVERFLOW;
                 }
-            });
+            };
 
             //Count Evidence Found
             let iScore = 0;
-            this._induction.forEach(e=>{
-                if(ghost.has(e.name)) {
+            for( let e of this._induction){
+                if(this._evidenceThreashold === DEFAULT_EVIDENCE_COUNT + 1){
+                    return ghost.required === e.name;
+                } else if(ghost.has(e.name)) {
                     iScore--;
-                } else {
+                }else {
                     iScore+=EVIDENCE_SCORE_OVERFLOW;
                 }
-            });
+            };
 
             //Reorder Ghost
             ghost.order = iScore;
@@ -115,13 +117,24 @@ export default class CheckList {
     public set evidenceCount(value: number){
         this._induction.setMaxSize(value).forEach(e=>e.reset());
 
-        if(value < 1){
-            value = 1;
-            alert("There can't be less then 1 evidence!");
+        if(value < 0){
+            value = 0;
+            alert("There can't be less then 0 evidence!");
         } else if(value > DEFAULT_EVIDENCE_COUNT){
             value = DEFAULT_EVIDENCE_COUNT;
             alert(`There can't be more then ${DEFAULT_EVIDENCE_COUNT} evidence!`);
         }
+
+        if(value === 0){
+            for(let e of this._evidenceList){
+                if(e.name !== "Ghost Orbs")
+                    e.style.display = "none";
+            }
+        } else {
+            for(let e of this._evidenceList)
+                e.style.display = "";
+        }
+            
 
         this._evidenceThreashold = (DEFAULT_EVIDENCE_COUNT + 1) - value;
     }
