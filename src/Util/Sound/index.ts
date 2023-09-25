@@ -1,27 +1,28 @@
 /** Alternative.ts
  *  Alternative Evidence Options
  * 
- * Help From:
- * https://stackoverflow.com/questions/48938140/cross-browser-html5-javascript-generate-single-tick-sound
  * 
  * @author Alex Malotky
  */
-
 import { SOUND } from "../UnicodeIcons";
 import { persistAttribute } from "../Memory";
-import { btnMain, sldVolume, lblVolume } from "./html";
+import { btnMain, sldVolume, lblVolume, selAudio } from "./html";
 import * as SC from "./constants"
 import { Fallback } from "./Fallback";
 
-export interface sound_interface {
+/** Sound Interface
+ * 
+ * Contains elements of Audio that is required by this file.
+ */
+export interface audio_interface {
     play: ()=>Promise<void>;
     volume: number,
-    onerror: OnErrorEventHandlerNonNull,
+    onerror?: OnErrorEventHandlerNonNull,
     currentTime: number
 }
-let audio:sound_interface;
+let audio:audio_interface = new Fallback();
 export function setAudioFile(fileName:string){
-    let audio:sound_interface = new Audio(fileName);
+    audio = new Audio(fileName);
     audio.onerror = () => audio = new Fallback(sldVolume.value);
     audio.volume = Number(SC.INITAL_VOLUME);
 }
@@ -78,19 +79,6 @@ function soundThread():void {
     window.setTimeout(soundThread, SC.REFRESH_RATE);
 }; soundThread();
 
-btnMain.addEventListener("click", ()=>{
-    if(isPlaying())
-        stopSound();
-    else
-        generateSound(bpm(1.7));
-});
-
-sldVolume.addEventListener("change", ()=>{
-    audio.volume = Number(sldVolume.value);
-    lblVolume.textContent = `${Math.round(Number(sldVolume.value) * 100)}%`
-});
-persistAttribute(sldVolume, String(SC.INITAL_VOLUME));
-
 /** Generate Sound
  * 
  * @param {number} s - speed of ghost in m/s
@@ -118,6 +106,24 @@ export function createSoundButton(speed: number): string{
     return `${speed}m/s <button class='speed' value='${bpm(speed)}'>${SOUND}</button>`
 }
 
+btnMain.addEventListener("click", ()=>{
+    if(isPlaying())
+        stopSound();
+    else
+        generateSound(bpm(1.7));
+});
+
+sldVolume.addEventListener("change", ()=>{
+    audio.volume = Number(sldVolume.value);
+    lblVolume.textContent = `${Math.round(Number(sldVolume.value) * 100)}%`
+});
+persistAttribute(sldVolume, String(SC.INITAL_VOLUME));
+
+selAudio.addEventListener("change", ()=>{
+    setAudioFile(selAudio.value);
+});
+persistAttribute(selAudio, SC.METRONOME);
+
 /** Make Volume Interface
  * 
  * Creates a nice interface to display on web page.
@@ -135,5 +141,6 @@ export default function makeInterface(): HTMLElement{
 
     div.appendChild(btnMain);
     div.appendChild(label);
+    div.appendChild(selAudio);
     return div;
 }
