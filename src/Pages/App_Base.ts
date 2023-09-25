@@ -1,5 +1,8 @@
 import makeErrorMessage from "./Error";
 
+export const REMOVE_CHAR_REGEX: RegExp = /\/|\s+/gm;
+export const REMOVE_WHITESPACE_REGEX: RegExp = /\s+/gm;
+
 /** Base Application Class
  * 
  * This class is a layer of abstration between the application class and the window/dom elements.
@@ -32,7 +35,7 @@ export default class App_Base{
      * Loads content, title, and description.
      */
     private _handler(): void{
-        const location:string = window.location.pathname.replace(/\/|\s+/gm, "");
+        const location:string = window.location.pathname.replace(REMOVE_CHAR_REGEX, "");
         const element:HTMLElement = this._routes.get(location) || makeErrorMessage("Page not found");
         this._target.innerHTML = "";
         this._target.appendChild(element);

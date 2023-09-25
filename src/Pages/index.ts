@@ -1,5 +1,5 @@
 import NavBar from "./NavBar";
-import App_Base from "./App_Base";
+import App_Base, {REMOVE_WHITESPACE_REGEX} from "./App_Base";
 
 /** Application Class
  * 
@@ -30,7 +30,7 @@ export default class App extends App_Base {
 
         if(name !== "")
             this._navbar.add(name, element);
-        this._routes.set(name.replace(/\s+/gm, ""), element);
+        this._routes.set(name.replace(REMOVE_WHITESPACE_REGEX, ""), element);
     }
 
     /** Public Getter for Route Function

@@ -1,3 +1,5 @@
+import {REMOVE_WHITESPACE_REGEX} from "./App_Base";
+
 /** Navigation Bar Class
  * 
  * @author Alex Malotky
@@ -37,7 +39,7 @@ export default class NavBar{
      */
     public add(name:string, element: HTMLElement):void{
         let link = document.createElement("a");
-        link.href = "/" + name.replace(/\s+/gm, "");
+        link.href = "/" + name.replace(REMOVE_WHITESPACE_REGEX, "");
         link.textContent = name;
 
         this._list.appendChild(link);
