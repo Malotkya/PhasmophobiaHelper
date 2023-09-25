@@ -7,46 +7,67 @@
  */
 import { audio_interface } from ".";
 
-const audioContext = new (window.AudioContext)();
+//Constants used to make Sounds.
 export const TIC_FREQUENCEY: number = 103;
 export const TIC_LENGTH: number = 0.03;
 
+/** Fallback Audio Class
+ * 
+ */
 export class Fallback implements audio_interface{
+    private _context: AudioContext;
     private _masterGain: any;
-    private _nodeGain: any;
 
-    constructor(volume?: string|number){
-        this._masterGain = audioContext.createGain();
-        this._masterGain.connect(audioContext.destination);
+    /** Constructor
+     * 
+     * @param {number} volume 
+     */
+    constructor(volume: string|number = 0.5){
+        this._context = new (window.AudioContext || (window as any).webkitAudioContext)();
 
-        this._nodeGain = audioContext.createGain();
-        this._nodeGain.connect(this._masterGain);
+        this._masterGain = this._context.createGain();
+        this._masterGain.connect(this._context.destination);
 
         if(volume)
             this.volume = Number(volume);
     }
 
+    /** Volume Getter
+     * 
+     */
     get volume(): number{
-        return this._masterGain.value;
+        return this._masterGain.gain.value;
     }
 
+    /** Volume Setter
+     * 
+     */
     set volume(value: number){
-        this._masterGain.value = value;
-        this._nodeGain.value = value;
+        this._masterGain.gain.value = value;
     }
 
+    /** Play Sound
+     * 
+     */
     async play(){
-        var oscillatorNode = new OscillatorNode(audioContext, {type: 'sawtooth'});
+        var oscillatorNode = new OscillatorNode(this._context, {type: 'sawtooth'});
         oscillatorNode.frequency.value = TIC_FREQUENCEY;
-        oscillatorNode.connect( this._nodeGain );
-        oscillatorNode.start(audioContext.currentTime);
-        oscillatorNode.stop(audioContext.currentTime + TIC_LENGTH);
+        oscillatorNode.connect( this._masterGain );
+        oscillatorNode.start(this._context.currentTime);
+        oscillatorNode.stop(this._context.currentTime + TIC_LENGTH);
     }
 
+    /** Current Time Getter
+     * 
+     */
     get currentTime():number{
-        return audioContext.currentTime;
+        return this._context.currentTime;
     }
 
+    /** Current Time Setter
+     * 
+     * Needed for auto_interface, but ignored.
+     */
     set currentTime(value:number){
         //Do Nothing
     }
