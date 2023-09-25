@@ -8,7 +8,7 @@
  */
 
 import { SOUND } from "./UnicodeIcons";
-import Memory from "./Memory";
+import { persistAttribute } from "./Memory";
 
 /** Audio Context Section
  * 
@@ -77,7 +77,7 @@ const lblVolume = document.createElement("span");
         lblVolume.textContent = `${Math.round(Number(sldVolume.value) * 100)}%`
     });
 
-    Memory(sldVolume, String(INIT_VOLUME));
+    persistAttribute(sldVolume, String(INIT_VOLUME));
 
 /** Sound is Playing
  * 
