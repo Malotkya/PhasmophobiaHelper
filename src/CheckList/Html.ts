@@ -11,7 +11,7 @@ export function createInputElements(section: HTMLElement): Array<HTMLInputElemen
     const numEvidence: HTMLInputElement = document.createElement("input");
     numEvidence.type = "number";
     numEvidence.max = "3";
-    numEvidence.min = "1";
+    numEvidence.min = "0";
     
     const btnReset: HTMLButtonElement = document.createElement("button");
     btnReset.textContent = "Reset";
