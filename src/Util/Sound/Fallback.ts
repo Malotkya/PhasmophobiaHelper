@@ -5,7 +5,7 @@
  * Help From:
  * https://stackoverflow.com/questions/48938140/cross-browser-html5-javascript-generate-single-tick-sound
  */
-import { audio_interface } from ".";
+import { audio_interface } from "./Audio";
 
 //Constants used to make Sounds.
 export const TIC_FREQUENCEY: number = 103;
@@ -60,15 +60,7 @@ export class Fallback implements audio_interface{
     /** Current Time Getter
      * 
      */
-    get currentTime():number{
-        return this._context.currentTime;
-    }
-
-    /** Current Time Setter
-     * 
-     * Needed for auto_interface, but ignored.
-     */
-    set currentTime(value:number){
-        //Do Nothing
+    public cloneNode(){
+        return this;
     }
 }
