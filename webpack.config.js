@@ -2,27 +2,22 @@ const path = require('path');
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 
-//test if in dev environment
-const dev = process.argv.includes('dev');
-
-const minify = !dev ?{
-    minimize: true,
-    minimizer: [
-        new CssMinimizerPlugin(),
-        new TerserPlugin()
-    ]
-}: undefined;
+//test if in production environment
+const prod = process.argv.includes('prod');
 
 module.exports = {
-    mode: dev? "development": "production",
+    mode: prod? "production": "development",
     entry: {
-        "index": [
-            path.join(__dirname, "src", "index.ts"),
-            path.join(__dirname, "public", "index.css")
-        ],
-        "firestore": path.join(__dirname, "src", "Firestore.ts")
+        index: {
+            import: [
+                path.join(__dirname, "src", "index.ts"),
+                path.join(__dirname, "public", "index.css")
+            ],
+            dependOn: "firebase"
+        },
+        "firebase": path.join(__dirname, "src", "Firebase.ts")
     },
-    devtool: dev? 'source-map': undefined,
+    devtool: prod?  undefined: 'source-map',
     module: {
         rules: [
             {
@@ -49,5 +44,11 @@ module.exports = {
         filename: '[name].js',
         path: path.join(__dirname, "public")
     },
-    optimization: minify
+    optimization: {
+        minimize: prod,
+        minimizer:[
+            new CssMinimizerPlugin(),
+            new TerserPlugin()
+        ]
+    },
 }

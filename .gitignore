@@ -65,10 +65,11 @@ node_modules/
 # dotenv environment variables file
 .env
 
-
+# build files
 public/index.js
 public/index.js.map
-public/firestore.js
-public/firestore.js.map
-public/index.min.css
 public/index.js.LICENSE.txt
+public/firebase.js
+public/firebase.js.map
+public/firebase.js.LICENSE.txt
+public/index.min.css
