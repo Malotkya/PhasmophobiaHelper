@@ -68,5 +68,7 @@ node_modules/
 
 public/index.js
 public/index.js.map
+public/firestore.js
+public/firestore.js.map
 public/index.min.css
 public/index.js.LICENSE.txt

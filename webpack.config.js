@@ -15,10 +15,13 @@ const minify = !dev ?{
 
 module.exports = {
     mode: dev? "development": "production",
-    entry: [
-        path.join(__dirname, "src", "index.ts"),
-        path.join(__dirname, "public", "index.css")
-    ],
+    entry: {
+        "index": [
+            path.join(__dirname, "src", "index.ts"),
+            path.join(__dirname, "public", "index.css")
+        ],
+        "firestore": path.join(__dirname, "src", "Firestore.ts")
+    },
     devtool: dev? 'source-map': undefined,
     module: {
         rules: [
@@ -43,7 +46,7 @@ module.exports = {
         extensions: ['.tsx', '.ts', '.js'],
     },
     output: { 
-        filename: 'index.js',
+        filename: '[name].js',
         path: path.join(__dirname, "public")
     },
     optimization: minify
