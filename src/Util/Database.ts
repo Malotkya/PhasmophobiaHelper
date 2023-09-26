@@ -2,24 +2,25 @@
  * 
  * @author Alex Malotky
  */
-import { DocumentReference } from "../Firestore";
+import {getFirestore, Firestore, collection, getDocs, DocumentReference, initializeApp, FirebaseApp} from "../Firebase";
+import {cache} from "./Memory";
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+    apiKey: "AIzaSyDQYcZb43MIFQ20F_yYqr2zmsFClaZEcOI",
+    authDomain: "phasmophobiahelper.firebaseapp.com",  
+    projectId: "phasmophobiahelper",  
+    storageBucket: "phasmophobiahelper.appspot.com",
+    messagingSenderId: "145603286815",
+    appId: "1:145603286815:web:c6f8c191bb1e393fae422a",
+    measurementId: "G-7THDK73W9X"
+};
 
 /** Ghost Data Interface
  * 
- * How that ghost data is stored in the database.
+ * How the Ghost Class is expecting the data to be.
  */
-interface GhostResult{
-    id: string,
-    name: string,
-    evidence: Array<DocumentReference>,
-    info?: Array<string>,
-    required?: DocumentReference,
-    link?: string,
-    warning?: string,
-    speed?: number|Array<number>,
-    hunt?: number|Array<number>
-}
-
 export interface GhostData {
     name: string,
     evidence: Array<string>,
@@ -31,92 +32,84 @@ export interface GhostData {
     hunt?: number|Array<number>
 }
 
-interface EvidenceResult {
-    id: string,
-    name: string
-}
-
+/** Evidence Data Interface
+ * 
+ * How the Ghost Class is expecting the data to be.
+ */
 export interface EvidenceData {
     id: string,
     name: string
 }
+
+const app: FirebaseApp = initializeApp(firebaseConfig);
+const database:Firestore = getFirestore(app);
 
 /** Get Ghost Data
      * 
      * @returns {Array<GhostData>}
      */
 export async function getGhosts(): Promise<Array<GhostData>>{
-    const getTable = (await require("../Firestore.ts")).getTable;
-
     const evidence: any = {};
-    (await getEvidence()).forEach(e=>evidence[e.id] = e.name);
-    const raw: Array<GhostResult> = await getTable("Ghosts");
+    (await cache("Evidence", getEvidence)).forEach((e:EvidenceData)=>evidence[e.id] = e.name);
+    const raw = await getDocs(collection(database, "Ghosts"));
 
     const output: Array<GhostData> = [];
 
-    raw.forEach((result:GhostResult)=>{
+    raw.forEach(result=>{
+        const data:any = result.data();
+
         //Convert to GhostData
-        if(typeof result.name === "undefined"){
+        if(typeof data.name === "undefined"){
             console.error("No name on object and will be droped:\n" + JSON.stringify(result, null, 2));
         } else {
 
-            if(typeof result.evidence === "undefined") {
-                console.error(`No evidence on ghost '${result.name}' and will be droped.`);
+            if(typeof data.evidence === "undefined") {
+                console.error(`No evidence on ghost '${data.name}' and will be droped.`);
             } else {
 
                 //Link to Evidence Name
+                data.evidence = data.evidence.map((ref:DocumentReference)=>{
+                    const e:string = evidence[ref.id];
+                    if(typeof e === "undefined"){
+                        console.warn(`Unknown Evidence Reference: ${ref.id} on ghost '${data.name}'!`);
+                    }
+                    return e;
+                });
+
                 let required: string;
-                if(result.required){
-                    required = evidence[result.required.id];
+                if(data.required){
+                    required = evidence[data.required.id];
                     if(typeof required === "undefined"){
-                        console.warn(`Unknown Required Evidence Reference: ${result.required.id} on ghost '${result.name}'!`);
+                        console.warn(`Unknown Required Evidence Reference: ${data.required.id} on ghost '${data.name}'!`);
                     }
                 }
 
-                output.push({
-                    name: result.name,
-                    evidence: result.evidence.map((ref:DocumentReference)=>{
-
-                        //Link to Evidence Name
-                        const e:string = evidence[ref.id];
-                        if(typeof e === "undefined"){
-                            console.warn(`Unknown Evidence Reference: ${ref.id} on ghost '${result.name}'!`);
-                        }
-                        return e;
-                    }),
-                    info: result.info,
-                    required: required,
-                    link: result.link,
-                    warning: result.warning,
-                    speed: result.speed,
-                    hunt: result.hunt
-                });
+                output.push(data);
             }
         }
     });
 
     //Sort by name.
-    output.sort((a,b)=>a.name.localeCompare(b.name));
-
-    return output;
+    return output.sort((a,b)=>a.name.localeCompare(b.name));
 }
 
 export async function getEvidence():Promise<Array<EvidenceData>>{
-    const getTable = (await require("../Firestore.ts")).getTable;
-    const raw: Array<EvidenceResult> = await getTable("Evidence");
-
+    const raw = await getDocs(collection(database, "Evidence"));
+    
     const output: Array<EvidenceData> = [];
 
     raw.forEach(result=>{
-        if(typeof result.name === "string"){
-            output.push(result);
+        const data: any = result.data();
+        if(typeof data.name === "string"){
+            output.push({
+                id: result.id,
+                name: data.name
+            });
         } else {
             console.error("Unknown evidence object and will be dropped:\n" + JSON.stringify(result, null, 2));
         }
     });
 
     //Sort by name.
-    output.sort((a,b)=>a.name.localeCompare(b.name));
-
-    return output;
+    return output.sort((a,b)=>a.name.localeCompare(b.name));
 }
