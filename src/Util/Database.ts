@@ -48,10 +48,11 @@ export async function getGhosts(): Promise<Array<GhostData>>{
 
     raw.forEach(result=>{
         const data:any = result.data();
+        data.id = result.id;
 
         //Convert to GhostData
         if(typeof data.name === "undefined"){
-            console.error("No name on object and will be droped:\n" + JSON.stringify(result, null, 2));
+            console.error("No name on object and will be droped:\n%O", result);
         } else {
 
             if(typeof data.evidence === "undefined") {
@@ -93,13 +94,12 @@ export async function getEvidence():Promise<Array<EvidenceData>>{
 
     raw.forEach(result=>{
         const data: any = result.data();
+        data.id = result.id;
+
         if(typeof data.name === "string"){
-            output.push({
-                id: result.id,
-                name: data.name
-            });
+            output.push(data);
         } else {
-            console.error("Unknown evidence object and will be dropped:\n" + JSON.stringify(result, null, 2));
+            console.error("Unknown evidence object and will be dropped:\n%O", result);
         }
     });
 
