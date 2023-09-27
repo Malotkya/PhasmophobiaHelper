@@ -8,13 +8,10 @@ const prod = process.argv.includes('prod');
 module.exports = {
     mode: prod? "production": "development",
     entry: {
-        index: {
-            import: [
-                path.join(__dirname, "src", "index.ts"),
-                path.join(__dirname, "public", "index.css")
-            ],
-            dependOn: "firebase"
-        },
+        index: [
+            path.join(__dirname, "src", "index.ts"),
+            path.join(__dirname, "public", "index.css")
+        ],
         "firebase": path.join(__dirname, "src", "Firebase.ts")
     },
     devtool: prod?  undefined: 'source-map',
@@ -40,9 +37,15 @@ module.exports = {
     resolve: {
         extensions: ['.tsx', '.ts', '.js'],
     },
+    experiments: {
+        outputModule: true
+    },
     output: { 
         filename: '[name].js',
-        path: path.join(__dirname, "public")
+        path: path.join(__dirname, "public"),
+        library: {
+            type: 'module'
+        }
     },
     optimization: {
         minimize: prod,
