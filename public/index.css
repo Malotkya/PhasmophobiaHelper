@@ -112,6 +112,20 @@ label span {
     height: 4ch;
 }
 
+#audioInterface{
+    display: grid;
+    grid-template-columns: auto auto;
+}
+
+#audioInterface div{
+    display: flex;
+    justify-content: center;
+}
+
+#audioSelectWrapper{
+    grid-column: 1 / 3;
+}
+
 /* Check List Mobile Viewport */
 #checklist-main{
     display: flex;
