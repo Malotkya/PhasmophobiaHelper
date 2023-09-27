@@ -2,20 +2,10 @@
  * 
  * @author Alex Malotky
  */
-import {getFirestore, Firestore, collection, getDocs, DocumentReference, initializeApp, FirebaseApp} from "../Firebase";
+import {QuerySnapshot, DocumentReference} from "../Firebase";
 import {cache} from "./Memory";
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-    apiKey: "AIzaSyDQYcZb43MIFQ20F_yYqr2zmsFClaZEcOI",
-    authDomain: "phasmophobiahelper.firebaseapp.com",  
-    projectId: "phasmophobiahelper",  
-    storageBucket: "phasmophobiahelper.appspot.com",
-    messagingSenderId: "145603286815",
-    appId: "1:145603286815:web:c6f8c191bb1e393fae422a",
-    measurementId: "G-7THDK73W9X"
-};
+
 
 /** Ghost Data Interface
  * 
@@ -41,17 +31,18 @@ export interface EvidenceData {
     name: string
 }
 
-const app: FirebaseApp = initializeApp(firebaseConfig);
-const database:Firestore = getFirestore(app);
-
 /** Get Ghost Data
      * 
      * @returns {Array<GhostData>}
      */
 export async function getGhosts(): Promise<Array<GhostData>>{
+    //@ts-ignore
+    const getTable = (await import(/*webpackIgnore: true*/ "/firebase.js")).getTable;
+
     const evidence: any = {};
     (await cache("Evidence", getEvidence)).forEach((e:EvidenceData)=>evidence[e.id] = e.name);
-    const raw = await getDocs(collection(database, "Ghosts"));
+
+    const raw:QuerySnapshot = await getTable("Ghosts");
 
     const output: Array<GhostData> = [];
 
@@ -94,7 +85,9 @@ export async function getGhosts(): Promise<Array<GhostData>>{
 }
 
 export async function getEvidence():Promise<Array<EvidenceData>>{
-    const raw = await getDocs(collection(database, "Evidence"));
+    //@ts-ignore
+    const getTable = (await import(/*webpackIgnore: true*/ "/firebase.js")).getTable;
+    const raw: QuerySnapshot = await getTable("Evidence");
     
     const output: Array<EvidenceData> = [];
 
