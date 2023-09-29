@@ -4,7 +4,7 @@
  */
 import * as Icons from "../Util/UnicodeIcons";
 import {getGhosts, GhostData} from "../Util/Database";
-import { AVERAGE_SPEED, NORMAL_HUNT } from "./Alternative";
+import { AVERAGE_SPEED, NORMAL_HUNT } from "./AlternativeList";
 import {createSoundButton} from "../Util/Sound";
 import { cache } from "../Util/Memory";
 
@@ -384,13 +384,20 @@ export default class Ghost extends HTMLLIElement{
 
     /** Display Ghost Information
      * 
-     * @param {Element} target 
      */
     public display(): void{
         this._target.innerHTML = "";
         this._target.append(this._name);
         this._target.append(this._evidence);
         this._target.append(this._info);
+    }
+
+    /** Ghost is Displayed
+     * 
+     * @returns {boolean}
+     */
+    public isDisplayed(): boolean {
+        return this._target.childNodes[0] === this._name;
     }
 }
 

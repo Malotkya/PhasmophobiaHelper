@@ -5,15 +5,15 @@
  */
 import Evidence from "./Evidence";
 import Ghost from "./Ghost";
-import CheckList from "./CheckList";
-import Alternative from "./Alternative";
+import EvidenceList from "./EvidenceList";
+import AlternativeList from "./AlternativeList";
 
 /** Phasmophobia Class
  * 
  */
 export default class Phasmophobia {
-    private _checkList: CheckList;
-    private _alternative: Alternative;
+    private _evidenceList: EvidenceList;
+    private _alternativeList: AlternativeList;
     private _mainGhostList: Array<Ghost>;
     private _target: HTMLElement;
 
@@ -25,8 +25,8 @@ export default class Phasmophobia {
      * @param {HTMLElement} target 
      */
     constructor(evidenceList: Array<Evidence>, ghostList: Array<Ghost>, alternativeList: Array<HTMLSelectElement>, target: HTMLElement){
-        this._checkList = new CheckList(evidenceList);
-        this._alternative = new Alternative(alternativeList, ()=>this.update());
+        this._evidenceList = new EvidenceList(evidenceList);
+        this._alternativeList = new AlternativeList(alternativeList, ()=>this.update());
         this._mainGhostList = ghostList
         this._target = target;
     }
@@ -36,8 +36,8 @@ export default class Phasmophobia {
      */
     public update(){
         let list: Array<Ghost> = [].concat(this._mainGhostList);
-        list = this._checkList.update(list);
-        list = this._alternative.update(list);
+        list = this._evidenceList.update(list);
+        list = this._alternativeList.update(list);
 
         //Sort the list
         list.sort((lhs:Ghost,rhs:Ghost):number=>{
@@ -48,20 +48,24 @@ export default class Phasmophobia {
 
         //Display new List
         this._target.innerHTML = "";
+        let needsUpdate: boolean = true;
         for(let ghost of list){
             this._target.appendChild(ghost);
+            if(ghost.isDisplayed())
+                needsUpdate = false;
         }
 
         //Display top ghost
-        list[0].display();
+        if(needsUpdate)
+            list[0].display();
     }
 
     /** Reset Game Event
      * 
      */
     public reset(){
-        this._checkList.reset();
-        this._alternative.reset();
+        this._evidenceList.reset();
+        this._alternativeList.reset();
 
         this._target.innerHTML = "";
         for(let ghost of this._mainGhostList){
@@ -76,7 +80,7 @@ export default class Phasmophobia {
      * 
      */
     get evidenceCount(){
-        return this._checkList.evidenceCount;
+        return this._evidenceList.evidenceCount;
     }
 
     /**Evidence Count Setter Passthrough
@@ -84,6 +88,6 @@ export default class Phasmophobia {
      * @param {number} value
      */
     set evidenceCount(value: number){
-        this._checkList.evidenceCount = value;
+        this._evidenceList.evidenceCount = value;
     }
 }
