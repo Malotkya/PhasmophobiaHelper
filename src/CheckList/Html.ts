@@ -1,4 +1,4 @@
-import { createSpeedSelector, createHuntSelector } from "./Alternative";
+import { createSpeedSelector, createHuntSelector } from "./AlternativeList";
 
 /** Create Input HTML Elements
  * 
