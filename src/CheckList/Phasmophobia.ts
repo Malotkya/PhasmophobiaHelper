@@ -4,6 +4,7 @@
  * 
  */
 import Evidence from "./Evidence";
+import Alternative from "./Alternative";
 import Ghost from "./Ghost";
 import EvidenceList from "./EvidenceList";
 import AlternativeList from "./AlternativeList";
@@ -24,9 +25,9 @@ export default class Phasmophobia {
      * @param {Array<HTMLSelectElement|HTMLInputELement>} alternativeList 
      * @param {HTMLElement} target 
      */
-    constructor(evidenceList: Array<Evidence>, ghostList: Array<Ghost>, alternativeList: Array<HTMLSelectElement>, target: HTMLElement){
+    constructor(evidenceList: Array<Evidence>, ghostList: Array<Ghost>, huntList: Array<Alternative>, speedList: Array<Alternative>, target: HTMLElement){
         this._evidenceList = new EvidenceList(evidenceList);
-        this._alternativeList = new AlternativeList(alternativeList, ()=>this.update());
+        this._alternativeList = new AlternativeList(huntList, speedList);
         this._mainGhostList = ghostList
         this._target = target;
     }
