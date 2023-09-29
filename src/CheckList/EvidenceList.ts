@@ -1,4 +1,4 @@
-/** Phasmophobia.ts
+/** EvidenceList.ts
  * 
  * @author Alex Malotky
  */
@@ -9,10 +9,10 @@ import CustomSet from "../Util/CustomSet";
 const DEFAULT_EVIDENCE_COUNT = 3;
 const EVIDENCE_SCORE_OVERFLOW = 5;
 
-/** Phasmophobia Class
+/** Evidence List
  * 
  */
-export default class CheckList {
+export default class EvidenceList {
     //list used by game
     private _evidenceList: Array<Evidence>
 
