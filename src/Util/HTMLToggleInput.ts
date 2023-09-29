@@ -59,7 +59,7 @@ export default class HTMLToggleInputElement extends HTMLElement {
 
         this._input.addEventListener("change", event=>{
             this.update();
-        })
+        });
     }
 
     /** Attributes Getter.
