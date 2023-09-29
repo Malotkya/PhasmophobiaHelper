@@ -75,6 +75,7 @@ export async function getGhosts(): Promise<Array<GhostData>>{
                         console.warn(`Unknown Required Evidence Reference: ${data.required.id} on ghost '${data.name}'!`);
                     }
                 }
+                data.required = required;
 
                 output.push(data);
             }
