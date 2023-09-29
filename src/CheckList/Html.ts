@@ -1,5 +1,3 @@
-import { createSpeedSelector, createHuntSelector } from "./AlternativeList";
-
 /** Create Input HTML Elements
  * 
  * @param {HTMLElement} section 
@@ -36,7 +34,7 @@ export function createInputElements(section: HTMLElement): Array<HTMLInputElemen
  * @param {string} title
  * @returns {[HTMLElement, HTMLElement]} [articleElement, unorderListElement]
  */
-function createListElement(articleId: string, listId:string, title: string): Array<HTMLElement>{
+function createListElement(listId:string, title: string): Array<HTMLElement>{
     const header: HTMLElement = document.createElement("h2");
     header.textContent = title;
 
@@ -47,6 +45,15 @@ function createListElement(articleId: string, listId:string, title: string): Arr
     section.appendChild(header);
     section.appendChild(list);
 
+    return [
+        section,
+        list
+    ];
+}
+
+function createArticleListElement(articleId: string, listId:string, title: string): Array<HTMLElement>{
+    const [section, list] = createListElement(listId, title);
+
     const article: HTMLElement = document.createElement("article");
     article.id = articleId;
     article.appendChild(section);
@@ -54,7 +61,7 @@ function createListElement(articleId: string, listId:string, title: string): Arr
     return [
         article,
         list
-    ];
+    ]
 }
 
 /** Create Evidence List Element
@@ -62,28 +69,24 @@ function createListElement(articleId: string, listId:string, title: string): Arr
  * @returns {[HTMLElement, HTMLElement]}
  */
 export function createEvidenceListElement(): Array<HTMLElement>{
-    return createListElement("evidence-section", "evidence-list", "Evidence:");
+    return createArticleListElement("evidence-section", "evidence-list", "Evidence:")
 }
 
 /** Create Alternative Evidence Input Elements
  * 
  * @returns {[HTMLElement, HTMLElement]}
  */
-export function addAlternativeElements(target: HTMLElement): Array<HTMLSelectElement>{
-    const [huntElement, huntInput] = createHuntSelector();
-    const [speedElement, speedInput] = createSpeedSelector();
+export function addAlternativeElements(target: HTMLElement): Array<HTMLElement>{
+    const [speedSection, speedList] = createSpeedListElement();
+    const [huntSection, huntList] = createHuntListElement();
 
-    const alternative = document.createElement("section");
-    alternative.id = "alternative-list";
-    alternative.appendChild(huntElement);
-    alternative.appendChild(speedElement);
-
-    target.appendChild(alternative);
+    target.appendChild(speedSection);
+    target.appendChild(huntSection);
 
     return [
-        huntInput as HTMLSelectElement,
-        speedInput as HTMLSelectElement
-    ]
+        speedList,
+        huntList
+    ];
 }
 
 /** Create Ghost List Element
@@ -91,7 +94,7 @@ export function addAlternativeElements(target: HTMLElement): Array<HTMLSelectEle
  * @returns {[HTMLElement, HTMLElement]}
  */
 export function createGhostListElement(): Array<HTMLElement>{
-    return createListElement("ghost-section", "ghost-list", "Ghosts:");
+    return createArticleListElement("ghost-section", "ghost-list", "Ghosts:");
 }
 
 /** Create Display Target Element
@@ -110,4 +113,12 @@ export function createDisplayTargetElement(): Array<HTMLElement>{
         article,
         section
     ];
+}
+
+function createHuntListElement():Array<HTMLElement>{
+    return createListElement("hunt-list", "Hunts:");
+}
+
+function createSpeedListElement():Array<HTMLElement>{
+    return createListElement("speed-list", "Speed:");
 }

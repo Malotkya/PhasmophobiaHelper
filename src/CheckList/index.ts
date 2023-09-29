@@ -4,6 +4,7 @@
  */
 import { createInputElements, createEvidenceListElement, createGhostListElement, createDisplayTargetElement, addAlternativeElements} from "./Html";
 import Evidence, {createAllEvidence} from "./Evidence";
+import Alternative, {createAllHuntEvidence, createAllSpeedEvidence} from "./Alternative";
 import Ghost, {createAllGhosts} from "./Ghost";
 import Phasmophobia from "./Phasmophobia";
 import { generateSound } from "../Util/Sound";
@@ -17,12 +18,18 @@ const checkList = document.createElement("div");
 const [evidenceSectionElement, evidenceListElement] = createEvidenceListElement();
 const [ghostSectionElement, ghostListElement] = createGhostListElement();
 const [displaySectionElement, displayTargetElement] = createDisplayTargetElement();
+const [speedListElement, huntListElement] = addAlternativeElements(evidenceSectionElement);
 
 createAllGhosts(ghostListElement, displayTargetElement).then((ghostList:Array<Ghost>)=>{
     //Display First Ghost
     ghostList[0].display();
 
     createAllEvidence(evidenceListElement).then((evidenceList:Array<Evidence>)=>{
+
+        //Create Alternative Evidence
+        const speedList = createAllSpeedEvidence(speedListElement);
+        const huntList  = createAllHuntEvidence(huntListElement);
+
         //Display Everything
         checkList.appendChild(evidenceSectionElement);
         checkList.appendChild(ghostSectionElement);
@@ -30,10 +37,9 @@ createAllGhosts(ghostListElement, displayTargetElement).then((ghostList:Array<Gh
 
         //Create Inputs
         const [numEvidence, btnReset] = createInputElements(evidenceSectionElement);
-        const alternativeList = addAlternativeElements(evidenceSectionElement);
 
         //Create Game
-        const game = new Phasmophobia(evidenceList, ghostList, alternativeList, ghostListElement);
+        const game = new Phasmophobia(evidenceList, ghostList, speedList, huntList, ghostListElement);
             
         //Evidence Number Change Event
         numEvidence.addEventListener("change", event=>{
@@ -61,7 +67,7 @@ createAllGhosts(ghostListElement, displayTargetElement).then((ghostList:Array<Gh
                 event.stopPropagation();
                 const speed: number = Number(target.getAttribute("value"));
                 if(isNaN(speed)){
-                    console.warn(target.getAttribute("value") + "is not a number!");
+                    console.warn(target.getAttribute("value") + " is not a number!");
                 } else {
                     generateSound(speed);
                 }
