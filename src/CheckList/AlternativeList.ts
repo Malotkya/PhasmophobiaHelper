@@ -63,6 +63,8 @@ export default class AlternativeList{
     public reset(): void {
         for(let alternative of this._alternativeList)
             alternative.reset();
+        this._induction.clear();
+        this._deduction.clear();
     }
 
     /** Update Event
