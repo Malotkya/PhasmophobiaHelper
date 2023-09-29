@@ -34,7 +34,7 @@ a:visited{
 
 .error {
     color: red;
-    font-size: 2em;
+    font-size: 2rem;
 }
 
 /* Navigation Styling */
@@ -46,9 +46,9 @@ nav {
 
 nav a {
     background-color: #222;
-    font-size: 1.25em;
-    margin: .5em;
-    padding: 0.25em;
+    font-size: 1.25rem;
+    margin: .5rem;
+    padding: 0.25rem;
     text-decoration: none;
     border-radius: 0.25rem;
 }
@@ -84,7 +84,7 @@ header, footer {
     flex-flow: row nowrap;
     justify-content: center;
     align-items: center;
-    font-size: 1.25em;
+    font-size: 1.25rem;
 }
 
 .status {
@@ -134,16 +134,23 @@ label span {
 }
 
 #checklist-main section{
-    margin: 0.25em;
+    margin: 0.25rem;
     background-color: #222;
-    padding: .2em;
+    padding: .2rem;
     border-radius: 0.33rem;
 }
 
 #ghost-list, 
-#evidence-list {
+#evidence-list,
+#speed-list,
+#hunt-list {
     display: flex;
     flex-flow: row wrap;
+    justify-content: space-between;
+}
+
+#display-section {
+    order: -2;
 }
 
 #evidence-section {
@@ -156,19 +163,38 @@ label span {
     min-width: 200px;
 }
 
-
 #evidence-list li,
-#ghost-list li{
+#ghost-list li {
     width: 50%;
     padding: 0 5px;
 }
 
-#evidence-list .yes{
+#hunt-list li,
+#speed-list li{
+    width: 33% ;
+    padding: 0 5px;
+}
+
+#hunt-list li:nth-child(3n),
+#hunt-list li:nth-child(3n-1),
+#speed-list li:nth-child(3n),
+#speed-list li:nth-child(3n-1),
+#ghost-list li:nth-child(2n),
+#evidence-list li:nth-child(2n){
+    border-left: 2px solid #aaa;
+}
+
+
+#evidence-list .yes,
+#speed-list .yes,
+#hunt-list .yes{
     background-color: rgb(25, 68, 25);
     order: -1;
 }
 
-#evidence-list .no{
+#evidence-list .no,
+#speed-list .no,
+#hunt-list .no{
     background-color: rgb(95, 11, 11);
     order: 1;
 }
@@ -179,8 +205,9 @@ label span {
 
 .evidence{
     display: grid;
-    grid-template-columns: auto 1.5em 1.5em;
+    grid-template-columns: auto 1.5rem 1.5rem;
     cursor: default;
+    
 }
 
 .alternative{
@@ -191,7 +218,7 @@ label span {
 
 .ghost{
     display: grid;
-    grid-template-columns: auto 1.5em;
+    grid-template-columns: auto 1.5rem;
     cursor: default;
 }
 
@@ -201,7 +228,7 @@ label span {
 }
 
 #display .name{
-    font-size: 2em;
+    font-size: 2rem;
 }
 
 #display ol{
@@ -219,8 +246,8 @@ label span {
 }
 
 #display ul{
-    margin: 1em;
-    padding: .2em 3ch;
+    margin: 1rem;
+    padding: .2rem 3ch;
     background-color: #444;
     border-radius: 0.25rem;
     list-style-type: circle;
@@ -249,7 +276,7 @@ label span {
     flex-flow: row wrap;
     justify-content: space-around;
     align-items: center;
-    padding: 0.5em 0;
+    padding: 0.5rem 0;
 }
 
 #timer-main li {
@@ -323,11 +350,15 @@ label span {
 
     #display-section{
         grid-row: span 2;
+        order: 1;
     }
 
     #evidence-list li,
-    #ghost-list li{
+    #ghost-list li,
+    #hunt-list li,
+    #speed-list li{
         width: 100%;
+        border: none !important;
     }
 
     @media(max-width: 650px){
