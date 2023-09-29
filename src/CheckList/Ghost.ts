@@ -4,7 +4,7 @@
  */
 import * as Icons from "../Util/UnicodeIcons";
 import {getGhosts, GhostData} from "../Util/Database";
-import { AVERAGE_SPEED, NORMAL_HUNT } from "./AlternativeList";
+import { SPEED_TYPES, HUNT_TYPES } from "./Alternative";
 import {createSoundButton} from "../Util/Sound";
 import { cache } from "../Util/Memory";
 
@@ -227,17 +227,50 @@ export default class Ghost extends HTMLLIElement{
         return this._disproven;
     }
 
+    /** Check the speed of the ghost.
+     * 
+     * @param {number} value 
+     * @returns {boolean}
+     */
+    public checkAlternative(value: number): boolean {
+
+        switch (value){
+            case SPEED_TYPES.Fast:
+                return this.isFastSpeed();
+
+            case SPEED_TYPES.Average:
+                return this.isAverageSpeed();
+
+            case SPEED_TYPES.Slow:
+                return this.isSlowSpeed();
+
+            case HUNT_TYPES.Early:
+                return this.isEarlyHunter();
+
+            case HUNT_TYPES.Normal:
+                return this.isNormalHunter();
+
+            case HUNT_TYPES.Late:
+                return this.isLateHunter();
+
+            default:
+                console.warn("Unknown Alternative Value: " + value);
+        }
+
+        return false;
+    }
+
     /** Is Ghost Fast
      * 
      * @returns {boolean}
      */
-    public isFastSpeed(): boolean {
+    private isFastSpeed(): boolean {
         if(this._speed){
             if(typeof this._speed === "number"){
-                return this._speed > AVERAGE_SPEED;
+                return this._speed > SPEED_TYPES.Average;
             } else {
                 for(let s of this._speed){
-                    if(s > AVERAGE_SPEED)
+                    if(s > SPEED_TYPES.Average)
                         return true;
                 }
 
@@ -252,13 +285,13 @@ export default class Ghost extends HTMLLIElement{
      * 
      * @returns {boolean}
      */
-    public isSlowSpeed(): boolean {
+    private isSlowSpeed(): boolean {
         if(this._speed){
             if(typeof this._speed === "number"){
-                return this._speed < AVERAGE_SPEED;
+                return this._speed < SPEED_TYPES.Average;
             } else {
                 for(let s of this._speed){
-                    if(s < AVERAGE_SPEED)
+                    if(s < SPEED_TYPES.Average)
                         return true;
                 }
 
@@ -273,13 +306,13 @@ export default class Ghost extends HTMLLIElement{
      * 
      * @returns {boolean}
      */
-    public isAverageSpeed(): boolean {
+    private isAverageSpeed(): boolean {
         if(this._speed){
             if(typeof this._speed === "number"){
-                return this._speed == AVERAGE_SPEED;
+                return this._speed == SPEED_TYPES.Average;
             } else {
                 for(let s of this._speed){
-                    if(s == AVERAGE_SPEED)
+                    if(s == SPEED_TYPES.Average)
                         return true;
                 }
 
@@ -294,13 +327,13 @@ export default class Ghost extends HTMLLIElement{
      * 
      * @returns {boolean}
      */
-    public isEarlyHunter(): boolean {
+    private isEarlyHunter(): boolean {
         if(this._hunt){
             if(typeof this._hunt === "number"){
-                return this._hunt > NORMAL_HUNT;
+                return this._hunt > HUNT_TYPES.Normal;
             } else {
                 for(let h of this._hunt){
-                    if(h > NORMAL_HUNT)
+                    if(h > HUNT_TYPES.Normal)
                         return true;
                 }
 
@@ -315,13 +348,13 @@ export default class Ghost extends HTMLLIElement{
      * 
      * @returns {boolean}
      */
-    public isLateHunter(): boolean {
+    private isLateHunter(): boolean {
         if(this._hunt){
             if(typeof this._hunt === "number"){
-                return this._hunt < NORMAL_HUNT;
+                return this._hunt < HUNT_TYPES.Normal;
             } else {
                 for(let h of this._hunt){
-                    if(h < NORMAL_HUNT)
+                    if(h < HUNT_TYPES.Normal)
                         return true;
                 }
 
@@ -336,13 +369,13 @@ export default class Ghost extends HTMLLIElement{
      * 
      * @returns {boolean}
      */
-    public isNormalHunter(): boolean {
+    private isNormalHunter(): boolean {
         if(this._hunt){
             if(typeof this._hunt === "number"){
-                return this._hunt == NORMAL_HUNT;
+                return this._hunt == HUNT_TYPES.Normal;
             } else {
                 for(let h of this._hunt){
-                    if(h == NORMAL_HUNT)
+                    if(h == HUNT_TYPES.Normal)
                         return true;
                 }
 
