@@ -1,5 +1,5 @@
 
-/** Alternative.ts
+/** AlternativeList.ts
  * 
  * Alternative Evidence
  * 
@@ -95,7 +95,7 @@ export function createHuntSelector(): Array<HTMLElement|HTMLSelectElement>{
 /** Alternative Check List
  * 
  */
-export default class Alternative{
+export default class AlternativeList{
     //States
     private _speedState:number;
     private _huntState:number;
