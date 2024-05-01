@@ -2,11 +2,11 @@
  * 
  * @author Alex Malotky
  */
-import * as Icons from "../Util/UnicodeIcons";
-import {getGhosts, GhostData} from "../Util/Database";
-import { SPEED_TYPES, HUNT_TYPES } from "./Alternative";
-import {createSoundButton} from "../Util/Sound";
-import { cache } from "../Util/Memory";
+import * as Icons from "../../Util/UnicodeIcons";
+import {allGhosts, GhostData} from "./data";
+import { SPEED_TYPES, HUNT_TYPES } from "../Alternative";
+import {createSoundButton} from "../../Util/Sound";
+import { cache } from "../../Util/Memory";
 
 /** Create All Ghost Objects
  * 
@@ -16,11 +16,16 @@ import { cache } from "../Util/Memory";
  * @param {Element} display 
  * @returns {Array<Ghost>}
  */
-export async function createAllGhosts(target: HTMLElement, display: HTMLElement): Promise<Array<Ghost>>{
-    const list: Array<Ghost> = (await cache("Ghost", getGhosts)).map((data: GhostData)=>new Ghost(display, data));
-    for(let ghost of list){
+export function createAllGhosts(target: HTMLElement, display: HTMLElement): Array<Ghost>{
+    const list: Array<Ghost> = [];
+    
+    for(let data of allGhosts){
+        const ghost = new Ghost(display, data);
         target.appendChild(ghost);
+        list.push(ghost);
     }
+
+    list[0].display();
     return list;
 }
 

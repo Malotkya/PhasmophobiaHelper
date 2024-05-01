@@ -11,8 +11,7 @@ module.exports = {
         index: [
             path.join(__dirname, "src", "index.ts"),
             path.join(__dirname, "public", "index.css")
-        ],
-        "firebase": path.join(__dirname, "src", "Firebase.ts")
+        ]
     },
     devtool: prod?  undefined: 'source-map',
     module: {

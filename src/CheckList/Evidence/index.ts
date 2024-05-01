@@ -2,9 +2,9 @@
  * 
  * @author Alex Malotky
  */
-import * as Icons from "../Util/UnicodeIcons";
-import {getEvidence, EvidenceData} from "../Util/Database";
-import { cache } from "../Util/Memory";
+import * as Icons from "../../Util/UnicodeIcons";
+import {allEvidence, EvidenceData} from "./data";
+import { cache } from "../../Util/Memory";
 
 /** Create All Evidence Objects
  * 
@@ -13,11 +13,15 @@ import { cache } from "../Util/Memory";
  * @param {Element}target 
  * @returns {Array<Evidence>}
  */
-export async function createAllEvidence(target: Element): Promise<Array<Evidence>>{
-    const list: Array<Evidence> = (await cache("Evidence", getEvidence)).map((e:EvidenceData)=>new Evidence(e.name));
-    for(let evidence of list){
+export function createAllEvidence(target: Element): Array<Evidence>{
+    const list: Array<Evidence> = [];
+
+    for(let data of allEvidence){
+        const evidence = new Evidence(data);
+        list.push(evidence);
         target.appendChild(evidence);
     }
+    
     return list;
 }
 
