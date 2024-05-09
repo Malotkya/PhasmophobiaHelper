@@ -1,14 +1,4 @@
-
-export type EvidenceData =
-    "Spirit Box"|
-    "D.O.T.s Projector"|
-    "EMF Level 5"|
-    "Ghost Orbs"|
-    "Freezing Temps"|
-    "Ultraviolet"|
-    "Ghost Writing";
-
-export const allEvidence:Array<EvidenceData> = [
+export const allEvidence = [
     "Spirit Box",
     "D.O.T.s Projector",
     "EMF Level 5",
@@ -16,4 +6,6 @@ export const allEvidence:Array<EvidenceData> = [
     "Freezing Temps",
     "Ultraviolet",
     "Ghost Writing"
-];
+] as const;
+
+export type EvidenceData = typeof allEvidence[number];

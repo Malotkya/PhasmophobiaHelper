@@ -2,9 +2,11 @@
  * 
  * @author Alex Malotky
  */
-import Ghost from "./Ghost";
-import Evidence from "./Evidence";
-import CustomSet from "../Util/CustomSet";
+import GhostList from "../Ghost/List";
+import { allEvidence } from "./data";
+import Evidence from ".";
+import CustomSet from "../../Util/CustomSet";
+import { createElement as _ } from "../../Util/Element";
 
 const DEFAULT_EVIDENCE_COUNT = 3;
 const EVIDENCE_SCORE_OVERFLOW = 5;
@@ -12,9 +14,9 @@ const EVIDENCE_SCORE_OVERFLOW = 5;
 /** Evidence List
  * 
  */
-export default class EvidenceList {
-    //list used by game
-    private _evidenceList: Array<Evidence>
+export default class EvidenceList extends HTMLElement {
+    private _data: Array<Evidence>
+    private _input: HTMLElement;
 
     //custom sets holding evidence proven/disproven
     private _induction: CustomSet<Evidence>; 
@@ -23,12 +25,11 @@ export default class EvidenceList {
     //Number of evidence needed to rule out a ghost.
     private _evidenceThreashold: number;
 
-    constructor(evidenceList: Array<Evidence>){
+    constructor(){
+        super();
 
-        this._evidenceList = evidenceList;
-
-        //Events for find/not finding evedence.
-        this._evidenceList.forEach(evidence=>{
+        this._data = allEvidence.map(data=>{
+            const evidence = new Evidence(data);
 
             //Evidence Found
             evidence.includeEvent(()=>{
@@ -51,8 +52,25 @@ export default class EvidenceList {
                 evidence.reset();
                 this._induction.delete(evidence);
                 this._deduction.delete(evidence);
-            })
+            });
+
+            return evidence;
         });
+
+        const numEvidence = <HTMLInputElement>_("input", {
+            id: "numEvidence",
+            type: "number",
+            max: 3,
+            min: 0
+        });
+        numEvidence.addEventListener("change", (event:Event)=>{
+            this.evidenceCount = Number(numEvidence.value);
+        });
+
+        this._input = _("div", {class:"input"}, 
+            numEvidence,
+            _("button", {id: "btnReset"}, "Reset")
+        );
 
         //Create lists
         this._induction = new CustomSet(DEFAULT_EVIDENCE_COUNT);
@@ -65,8 +83,10 @@ export default class EvidenceList {
     /** Update Ghost List Visibility & Order
      * 
      */
-    public update(list: Array<Ghost>): Array<Ghost>{
-        return list.filter((ghost:Ghost)=>{
+    public filter(list: GhostList): void {
+        let index:number = 0;
+        while(index<list.length){
+            const ghost = list.at(index);
 
             //Count Evidence Not Found
             let dScore = 0;
@@ -81,25 +101,26 @@ export default class EvidenceList {
 
             //Count Evidence Found
             let iScore = 0;
-            for( let e of this._induction){
-                if(this._evidenceThreashold === DEFAULT_EVIDENCE_COUNT + 1){
-                    return ghost.required === e.name;
-                } else if(ghost.has(e.name)) {
-                    iScore--;
-                }else {
-                    iScore+=EVIDENCE_SCORE_OVERFLOW;
+            if(this._evidenceThreashold === DEFAULT_EVIDENCE_COUNT + 1) {
+                iScore = EVIDENCE_SCORE_OVERFLOW;
+            } else {
+                for( let e of this._induction){
+                    if(ghost.has(e.name)) {
+                        iScore--;
+                    }else {
+                        iScore+=EVIDENCE_SCORE_OVERFLOW;
+                    }
                 }
-            };
+            }
 
-            //Reorder Ghost
-            ghost.order = iScore;
-
-            //Hide Ghost if can't be found
-            if(iScore>1 || dScore >= this._evidenceThreashold)
-                return false;
-
-            return true;
-        });
+            if(iScore>1 || dScore >= this._evidenceThreashold) {
+                list.pull(index);
+            } else {
+                //Reorder Ghost
+                ghost.order = iScore;
+                index++;
+            }
+        }
     }
 
     /** Reset the Game
@@ -108,7 +129,7 @@ export default class EvidenceList {
     public reset(): void{
         this._induction.clear()
         this._deduction.clear();
-        this._evidenceList.forEach(e=>e.reset());
+        this._data.forEach(e=>e.reset());
     }
 
     /** Evidence Count Setter.
@@ -117,7 +138,10 @@ export default class EvidenceList {
     public set evidenceCount(value: number){
         this._induction.setMaxSize(value).forEach(e=>e.reset());
 
-        if(value < 0){
+        if(isNaN(value)) {
+            value = DEFAULT_EVIDENCE_COUNT;
+            alert("Value is not a number!");
+        }else if(value < 0){
             value = 0;
             alert("There can't be less then 0 evidence!");
         } else if(value > DEFAULT_EVIDENCE_COUNT){
@@ -126,12 +150,12 @@ export default class EvidenceList {
         }
 
         if(value === 0){
-            for(let e of this._evidenceList){
+            for(let e of this._data){
                 if(e.name !== "Ghost Orbs")
                     e.style.display = "none";
             }
         } else {
-            for(let e of this._evidenceList)
+            for(let e of this._data)
                 e.style.display = "";
         }
             
@@ -145,4 +169,16 @@ export default class EvidenceList {
     public get evidenceCount(): number{
         return (DEFAULT_EVIDENCE_COUNT + 1) - this._evidenceThreashold;
     }
+
+    connectedCallback() {
+        this.appendChild(_("h2", "Evidence:"));
+        this.appendChild(this._input);
+        this.appendChild(_("ul", {id:"evidence-list"}, this._data));
+    }
+
+    disconectedCallback() {
+        this.innerHTML = "";
+    }
 }
+
+customElements.define("evidence-list", EvidenceList);

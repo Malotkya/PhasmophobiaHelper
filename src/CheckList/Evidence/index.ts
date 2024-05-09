@@ -3,8 +3,7 @@
  * @author Alex Malotky
  */
 import * as Icons from "../../Util/UnicodeIcons";
-import {allEvidence, EvidenceData} from "./data";
-import { cache } from "../../Util/Memory";
+import {allEvidence} from "./data";
 
 /** Create All Evidence Objects
  * 
