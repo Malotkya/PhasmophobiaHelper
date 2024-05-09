@@ -11,6 +11,8 @@ import HTMLToggleInputElement from "../HTMLToggleInput";
 import {bpm, convert} from "./Speed";
 import { setAudioFile, playAudio } from "./Audio";
 
+const SOUND_BUTTON = (value:number) => `${speed}m/s <button class='speed' value='${bpm(speed)}'>${SOUND}</button>`;
+
 /** Main Audio Interface Button
  * 
  */
@@ -127,8 +129,26 @@ export function stopSound(): void{
  * @param {number} speed 
  * @returns {string}
  */
-export function createSoundButton(speed: number): string{
-    return `${speed}m/s <button class='speed' value='${bpm(speed)}'>${SOUND}</button>`
+export function createSoundButton(speed: number|Array<number>): string{
+    if(typeof speed === "number") {
+        return SOUND_BUTTON(speed);
+    } else if(Array.isArray(speed)) {
+        switch(speed.length){
+            case 0:
+                throw new Error(`Empty speed array!`);
+                    
+            case 1:
+                return SOUND_BUTTON(speed[0]);
+                    
+            case 2:
+                return SOUND_BUTTON(speed[0])+" and "+SOUND_BUTTON(speed[1]);
+
+            default:
+                return SOUND_BUTTON(speed[0])+" and "+SOUND_BUTTON(speed[speed.length-1]);
+        }
+    }
+
+    throw new Error("Speed must be a number or an array of numbers!");
 }
 
 /** Make Volume Interface
