@@ -1,83 +1,89 @@
-/** index.ts
+/** Phasmophobia.ts
  * 
- * @author Alex Malotky
+ * Main Game File
+ * 
  */
-import { createInputElements, createEvidenceListElement, createGhostListElement, createDisplayTargetElement, addAlternativeElements} from "./Html";
-import Evidence, {createAllEvidence} from "./Evidence";
-import Alternative, {createAllHuntEvidence, createAllSpeedEvidence} from "./Alternative";
-import Ghost, {createAllGhosts} from "./Ghost";
-import Phasmophobia from "./Phasmophobia";
-import { generateSound } from "../Util/Sound";
-import { persistAttribute } from "../Util/Memory";
+import EvidenceList from "./Evidence/List";
+import { SpeedList, HuntList } from "./Alternative/List";
+import GhostList from "./Ghost/List";
+import { createElement as _ } from "../Util/Element";
 
-//Main Check List Element
-const checkList = document.createElement("div");
-    checkList.id = "checklist-main";
+/** Phasmophobia Class
+ * 
+ */
+export default class CheckList extends HTMLElement{
+    private _evidenceList: EvidenceList;
+    private _speedList: SpeedList;
+    private _huntList: HuntList;
+    private _ghostList: GhostList;
+    private _target: HTMLElement;
 
-//Other Check List Elements
-const [evidenceSectionElement, evidenceListElement] = createEvidenceListElement();
-const [ghostSectionElement, ghostListElement] = createGhostListElement();
-const [displaySectionElement, displayTargetElement] = createDisplayTargetElement();
-const [speedListElement, huntListElement] = addAlternativeElements(evidenceSectionElement);
+    /** Constructor
+     */
+    constructor(){
+        super();
 
-createAllGhosts(ghostListElement, displayTargetElement).then((ghostList:Array<Ghost>)=>{
-    //Display First Ghost
-    ghostList[0].display();
+        this._target = _("div", {id:"display"});
+        this._evidenceList = new EvidenceList();
+        this._ghostList = new GhostList(this._target);
+        this._speedList = new SpeedList();
+        this._huntList = new HuntList();
 
-    createAllEvidence(evidenceListElement).then((evidenceList:Array<Evidence>)=>{
-
-        //Create Alternative Evidence
-        const speedList = createAllSpeedEvidence(speedListElement);
-        const huntList  = createAllHuntEvidence(huntListElement);
-
-        //Display Everything
-        checkList.appendChild(evidenceSectionElement);
-        checkList.appendChild(ghostSectionElement);
-        checkList.appendChild(displaySectionElement);
-
-        //Create Inputs
-        const [numEvidence, btnReset] = createInputElements(evidenceSectionElement);
-
-        //Create Game
-        const game = new Phasmophobia(evidenceList, ghostList, speedList, huntList, ghostListElement);
-            
-        //Evidence Number Change Event
-        numEvidence.addEventListener("change", event=>{
-            game.evidenceCount = Number(numEvidence.value);
-            game.update();
-        });
-        numEvidence.id = "numEvidence";
-        persistAttribute(numEvidence, game.evidenceCount.toString());
-            
-        //Reset Event
-        btnReset.addEventListener("click", event=>{
-            event.stopPropagation();
-            game.reset();
-        });
-
-        //Update Event
-        evidenceSectionElement.addEventListener("click", event=>{
-            game.update();
-        });
-
-        //Sound Event
-        displayTargetElement.addEventListener("click", event=>{
-            const target:Element = (<Element>event.target);
-            if(target.className === "speed"){
-                event.stopPropagation();
-                const speed: number = Number(target.getAttribute("value"));
-                if(isNaN(speed)){
-                    console.warn(target.getAttribute("value") + " is not a number!");
-                } else {
-                    generateSound(speed);
-                }
+        this._evidenceList.addEventListener("click", (event:Event)=>{
+            if((<HTMLElement>event.target).id === "btnReset") {
+                this.reset();
+            } else {
+                this.update();
             }
-        });
+        })
+    }
 
-    }); //End Create Evidence List
+    /** Update Game Event
+     * 
+     */
+    public update(){
+        this._ghostList.reset();
+        this._evidenceList.filter(this._ghostList);
+        this._speedList.filter(this._ghostList);
+        this._huntList.filter(this._ghostList);
+        this._ghostList.update();
+    }
 
-}); //End Create Ghost List
+    /** Reset Game Event
+     * 
+     */
+    public reset(){
+        this._evidenceList.reset();
+        this._huntList.reset();
+        this._speedList.reset();
+        this._ghostList.reset();
+    }
 
-export default function CheckList(): HTMLElement{
-    return checkList;
+    /**Evidence Count Setter Passthrough
+     * 
+     * @param {number} value
+     */
+    set evidenceCount(value: number){
+        this._evidenceList.evidenceCount = value;
+    }
+
+    connectedCallback(){
+        this.appendChild(_("section", {id: "evidence-section"}, 
+            this._evidenceList,
+            this._speedList,
+            this._huntList
+        ));
+        this.appendChild(_("section", {id: "ghost-section"},
+            this._ghostList
+        ));
+        this.appendChild(_("section", {id: "display-section"},
+            this._target
+        ));  
+    }
+
+    disconectedCallback(){
+        this.innerHTML = "";
+    }
 }
+
+customElements.define("check-list", CheckList)

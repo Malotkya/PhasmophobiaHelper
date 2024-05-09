@@ -3,41 +3,20 @@
  * @author Alex Malotky
  */
 import * as Icons from "../../Util/UnicodeIcons";
-import {allGhosts, GhostData} from "./data";
+import {GhostData} from "./data";
 import { SPEED_TYPES, HUNT_TYPES } from "../Alternative";
 import {createSoundButton} from "../../Util/Sound";
-import { cache } from "../../Util/Memory";
-
-/** Create All Ghost Objects
- * 
- * Creates a list of all Ghost objects
- * 
- * @param {Element} target 
- * @param {Element} display 
- * @returns {Array<Ghost>}
- */
-export function createAllGhosts(target: HTMLElement, display: HTMLElement): Array<Ghost>{
-    const list: Array<Ghost> = [];
-    
-    for(let data of allGhosts){
-        const ghost = new Ghost(display, data);
-        target.appendChild(ghost);
-        list.push(ghost);
-    }
-
-    list[0].display();
-    return list;
-}
+import { createElement as _ } from "../../Util/Element";
 
 /** Ghost Class
  * 
  */
 export default class Ghost extends HTMLLIElement{
-    //Info Elements
-    private _name: Element;
+    // Elements
+    private _name: HTMLElement;
     private _info: Element;
     private _evidence: Element;
-    private _btnRemove: Element;
+    
 
     //Ghost Info
     private _disproven: boolean;
@@ -47,112 +26,65 @@ export default class Ghost extends HTMLLIElement{
 
     //List Elements
     private _styleElement: HTMLElement;
+    private _btnRemove: Element;
 
-    private _target: HTMLElement;
+    //private _target: HTMLElement;
     
-    constructor(target: HTMLElement, data: GhostData){
+    constructor(data: GhostData){
         super();
         this._disproven = false;
-        this._target = target;
         
         //Name Information
-        this._name = document.createElement("h2");
-        this._name.className = "name";
-        this._name.textContent = data.name;
+        this._name = _("h2", {class: "name"}, data.name);
 
         //Main Evidence Information
-        this._evidence = document.createElement("ol");
-        data.evidence.forEach((s:string)=>{
-            let item = document.createElement("li");
-            item.textContent = s;
-            this._evidence.appendChild(item);
-        });
+        this._evidence = _("ol",
+            data.evidence.map((s:string)=>_("li", s))
+        )
 
         //Alternative Evidence Information
-        this._info = document.createElement("div");
-        this._info.className = "info";
+        this._info = _("div", {class:"info"},
 
-        //Warning Information
-        if(data.warning){
-            this._info.innerHTML += "<p class='warn'>" + data.warning + "</p>";
-        }
+            //Warning Information
+            data.warning? "<p class='warn'>"+data.warning+"</p>": null,
 
-        //Main Information
-        const list = document.createElement("ul");
-        this._info.appendChild(list);
+            _("ul",
+                //Speed Information
+                data.speed? createSoundButton(data.speed): null,
+
+                //Main Information
+                data.info? data.info.map(s=>_("li", s)): null,
+
+                //Required Information
+                data.required? _("li", data.required): null,
+
+                //Additional Info Link
+                data.link? _("p", _("a", {target:'_blank',  href:data.link}, "More Info")): null
+            )
+        );
 
         //Alternative Ghost Information
         this._hunt = data.hunt;
         this._speed = data.speed;
-
-        if(data.speed){
-            const li = document.createElement("li");
-            if(typeof data.speed === "number") {
-                li.innerHTML += "Moves at " + createSoundButton(data.speed);
-            } else {
-                switch (data.speed.length){
-                    case 0:
-                        console.warn(`Empty speed array on ghost: '${data.name}'!`);
-                        break;
-                    
-                    case 1:
-                        li.innerHTML += "Moves at " + createSoundButton(data.speed[0]);
-                        break;
-                    
-                    case 2:
-                        li.innerHTML += "Moves at " + createSoundButton(data.speed[0])
-                            + " and " + createSoundButton(data.speed[1]);
-                        break;
-
-                    default:
-                        li.innerHTML += "Moves between " + createSoundButton(data.speed[0])
-                            + " and " + createSoundButton(data.speed[data.speed.length-1]); 
-                }
-            }
-            list.appendChild(li);
-        }
-        
-        if(data.info){
-            data.info.forEach((item:string)=>{
-                const li = document.createElement("li");
-                li.innerHTML = item;
-                list.appendChild(li);
-            })
-        } else {
-            console.warn(`No info on ghost '${data.name}'.`);
-        }
         
         //Required Evidence Information
-        if(data.required){
+        this._required = data.required || "";
 
-            this._required = data.required;
-            list.innerHTML += `<li>Will always have ${data.required} as an evidence.</li>`
-        } else {
-            this._required = "";
-        }
-
-        //Additional Information Link
-        if(data.link){
-            this._info.innerHTML += `<p><a target='_blank' href='${data.link}'>More Info</a></p>`;
-        }
 
         //Remove Button List Element
-        this._btnRemove = document.createElement("button");
-        this._btnRemove.textContent = Icons.EX;
+        this._btnRemove = _("button", Icons.EX);
         this._btnRemove.addEventListener("click", event=>{
             event.stopPropagation()
             this.flip()
         });
 
         //Name List Element
-        this._styleElement = document.createElement("span");
-        this._styleElement.textContent = data.name;
+        this._styleElement = _("span", data.name);
 
         //List Element
         this.className = "ghost";
         this.appendChild(this._styleElement);
         this.appendChild(this._btnRemove);
-        this.addEventListener("click", event=>this.display());
     }
 
     /** Has Evidence
@@ -423,19 +355,11 @@ export default class Ghost extends HTMLLIElement{
     /** Display Ghost Information
      * 
      */
-    public display(): void{
-        this._target.innerHTML = "";
-        this._target.append(this._name);
-        this._target.append(this._evidence);
-        this._target.append(this._info);
-    }
-
-    /** Ghost is Displayed
-     * 
-     * @returns {boolean}
-     */
-    public isDisplayed(): boolean {
-        return this._target.childNodes[0] === this._name;
+    public display(target:HTMLElement): void{
+        target.innerHTML = "";
+        target.appendChild(this._name);
+        target.appendChild(this._evidence);
+        target.appendChild(this._info);
     }
 }
 
