@@ -127,13 +127,13 @@ label span {
 }
 
 /* Check List Mobile Viewport */
-#checklist-main{
+check-list{
     display: flex;
     flex-flow: column nowrap;
     flex-grow: 1;
 }
 
-#checklist-main section{
+check-list section:first-child{
     margin: 0.25rem;
     background-color: #222;
     padding: .2rem;
@@ -339,7 +339,7 @@ label span {
     }
 
     /* Check List Tablet Viewport */
-    #checklist-main {
+    check-list {
         display: grid;
         grid-template-columns: 200px auto;
     }
@@ -382,7 +382,7 @@ label span {
     }
 
     /* Check List Styling Desktop Viewport */
-    #checklist-main {
+    check-list {
         display: flex;
         flex-flow: row nowrap;
     }
