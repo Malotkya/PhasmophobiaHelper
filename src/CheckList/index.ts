@@ -28,14 +28,6 @@ export default class CheckList extends HTMLElement{
         this._ghostList = new GhostList(this._target);
         this._speedList = new SpeedList();
         this._huntList = new HuntList();
-
-        this._evidenceList.addEventListener("click", (event:Event)=>{
-            if((<HTMLElement>event.target).id === "btnReset") {
-                this.reset();
-            } else {
-                this.update();
-            }
-        })
     }
 
     /** Update Game Event
@@ -68,11 +60,19 @@ export default class CheckList extends HTMLElement{
     }
 
     connectedCallback(){
-        this.appendChild(_("section", {id: "evidence-section"}, 
+        const evidence = _("section", {id: "evidence-section"}, 
             this._evidenceList,
             this._speedList,
             this._huntList
-        ));
+        );
+        evidence.addEventListener("click", (event:Event)=>{
+            if((<HTMLElement>event.target).id === "btnReset") {
+                this.reset();
+            } else {
+                this.update();
+            }
+        })
+        this.appendChild(evidence);
         this.appendChild(_("section", {id: "ghost-section"},
             this._ghostList
         ));
