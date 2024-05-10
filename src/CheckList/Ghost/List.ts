@@ -12,8 +12,9 @@ export default class GhostList extends HTMLElement {
         this._target = displayTarget;
 
         this.addEventListener("click", (event:Event)=>{
-            const target = (event.target as HTMLElement).closest("ghost-item") as Ghost;
-            this.display(target)
+            const target = (event.target as HTMLElement).closest("li") as Ghost;
+            if(target)
+                this.display(target)
         });
 
         this.reset();
