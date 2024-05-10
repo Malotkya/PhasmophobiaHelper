@@ -2,11 +2,10 @@
  * 
  * @author Alex Malotky
  */
+import { createElement as _ } from "./Element";
 
 //Clock Elements viewd on page.
-const clock = document.createElement("span");
-    clock.id = "clock";
-    clock.style.fontFamily = "monospace";
+const clock = _("span", {id: "clock"});
 
 /** Task Interface
  * 
@@ -92,9 +91,6 @@ export function formatSeconds(value: number): string{
  * 
  * @returns {HTMLElement}
  */
-export default function mageInterface(): HTMLElement{
-    const div = document.createElement("div");
-    div.className = "input";
-    div.appendChild(clock);
-    return div;
+export default function clockInterface(): HTMLElement{
+    return _("div", {class: "input"}, clock);
 }

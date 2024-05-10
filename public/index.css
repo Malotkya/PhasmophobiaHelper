@@ -325,6 +325,10 @@ timer-list .info{
     margin-bottom: 0;
 }
 
+#clock {
+    font-family: monospace;
+}
+
 /*Tablet Viewport */
 @media(min-width: 500px){
 
