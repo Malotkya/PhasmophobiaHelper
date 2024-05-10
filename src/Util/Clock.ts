@@ -91,6 +91,6 @@ export function formatSeconds(value: number): string{
  * 
  * @returns {HTMLElement}
  */
-export default function clockInterface(): HTMLElement{
+export function makeClockInterface(): HTMLElement{
     return _("div", {class: "input"}, clock);
 }
