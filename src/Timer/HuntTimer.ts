@@ -1,5 +1,5 @@
 import Timer, {MINUTE} from "./Timer";
-import { persistAttribute } from "../Util/Memory";
+import { persistAttributes } from "../Util/Memory";
 
 //Durations of Hunts in Milliseconds
 // Gotten from: https://phasmophobia.fandom.com/wiki/Hunt#Start_of_a_hunt
@@ -71,7 +71,7 @@ export default class HuntTimer extends Timer {
             event.stopPropagation();
             this.updateValue();
         });
-        persistAttribute(this._selIntensity, "0");
+        persistAttributes(this._selIntensity, {value:"0"});
         
         const lblIntensity = document.createElement("label");
         lblIntensity.setAttribute("for", "selIntensity");
@@ -92,7 +92,7 @@ export default class HuntTimer extends Timer {
             event.stopPropagation();
             this.updateValue();
         });
-        persistAttribute(this._selSize, "0");
+        persistAttributes(this._selSize, {value:"0"});
 
         const lblSize = document.createElement("label");
         lblSize.setAttribute("for", "selMapSize");
@@ -103,7 +103,7 @@ export default class HuntTimer extends Timer {
         this._chbCursed = document.createElement("input");
         this._chbCursed.type = "checkbox";
         this._chbCursed.id = "chbCursed";
-        persistAttribute(this._chbCursed, {name:"checked", value:String(false)});
+        persistAttributes(this._chbCursed, {checked: "false"});
 
         const lblCursed = document.createElement("label");
         lblCursed.setAttribute("for", "chbCursed");

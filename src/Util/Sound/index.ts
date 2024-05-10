@@ -5,7 +5,7 @@
  * @author Alex Malotky
  */
 import { SOUND } from "../UnicodeIcons";
-import { persistAttribute } from "../Memory";
+import { persistAttributes } from "../Memory";
 import HTMLToggleInputElement from "../HTMLToggleInput";
 
 import {bpm, convert} from "./Speed";
@@ -48,7 +48,7 @@ const lblVolume = document.createElement("span");
     sldVolume.addEventListener("change", ()=>{
         lblVolume.textContent = `${Math.round(Number(sldVolume.value) * 100)}%`
     });
-    persistAttribute(sldVolume, String(INITAL_VOLUME));
+    persistAttributes(sldVolume, {value:String(INITAL_VOLUME)});
 
 /** Audio Select
  * 
@@ -68,7 +68,7 @@ const lblFootstep = document.createElement("span");
     selAudio.addEventListener("change", ()=>{
         setAudioFile(selAudio.value);
     });
-    persistAttribute(selAudio, METRONOME);
+    persistAttributes(selAudio, {value:METRONOME});
 
 /** Sound is Playing
  * 
