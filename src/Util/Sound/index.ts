@@ -7,11 +7,12 @@
 import { SOUND } from "../UnicodeIcons";
 import { persistAttributes } from "../Memory";
 import HTMLToggleInputElement from "../HTMLToggleInput";
+import { createElement as _ } from "../Element";
 
 import {bpm, convert} from "./Speed";
 import { setAudioFile, playAudio } from "./Audio";
 
-const SOUND_BUTTON = (value:number) => `${speed}m/s <button class='speed' value='${bpm(speed)}'>${SOUND}</button>`;
+const SOUND_BUTTON = (value:number) => `${value}m/s <button class='speed' value='${bpm(value)}'>${SOUND}</button>`;
 
 /** Main Audio Interface Button
  * 
@@ -36,13 +37,16 @@ const btnMain = document.createElement("button");
  */
 const INITAL_VOLUME = 0.25;
 
-const sldVolume = document.createElement("input");
-    sldVolume.type = "range";
-    sldVolume.id = "volume";
-    sldVolume.min = "0";
-    sldVolume.max = "1";
-    sldVolume.step = "0.01";
-    sldVolume.style.width = "200px";
+const sldVolume = <HTMLInputElement>_("input", {
+    type: "range",
+    id: "volume",
+    min: 0,
+    max: 1,
+    step: 0.01,
+    style: "width: 200px"
+});
+//sldVolume.style.width = "200px";
+    
 const lblVolume = document.createElement("span");
 
     sldVolume.addEventListener("change", ()=>{
@@ -53,23 +57,20 @@ const lblVolume = document.createElement("span");
 /** Audio Select
  * 
  */
-const METRONOME = "/sound/metronome-85688.mp3";
-const FOOTSTEP  = "/sound/footstep.wav";
+const METRONOME = "./sound/metronome-85688.mp3";
+const FOOTSTEP  = "./sound/footstep.wav";
 
 const selAudio = new HTMLToggleInputElement(METRONOME, FOOTSTEP);
     selAudio.id = "selAudio";
-
-const lblMetronome = document.createElement("span");
-    lblMetronome.textContent = "Metronome";
-
-const lblFootstep = document.createElement("span");
-    lblFootstep.textContent = "Footstep";
-
     selAudio.addEventListener("change", ()=>{
         setAudioFile(selAudio.value);
     });
     persistAttributes(selAudio, {value:METRONOME});
 
+const lblMetronome = _("span", "Metronome");
+const lblFootstep  = _("span", "Footstep");
+
+    
 /** Sound is Playing
  * 
  * @returns {boolean}
@@ -157,34 +158,18 @@ export function createSoundButton(speed: number|Array<number>): string{
  * 
  * @returns {HTMLElement}
  */
-export default function makeInterface(): HTMLElement{
-    
-    const buttonWrapper = document.createElement("div");
-    buttonWrapper.appendChild(btnMain);
-
-    const volumeLabel = document.createElement("label");
-    volumeLabel.setAttribute("for", sldVolume.id);
-    volumeLabel.appendChild(sldVolume);
-    volumeLabel.appendChild(lblVolume);
-    const volumeWrapper = document.createElement("div");
-    volumeWrapper.appendChild(volumeLabel);
-
-    const audioLabel = document.createElement("label");
-    audioLabel.setAttribute("for", selAudio.id);
-    audioLabel.appendChild(lblMetronome);
-    audioLabel.appendChild(selAudio);
-    audioLabel.appendChild(lblFootstep);
-    const audioWrapper = document.createElement("div");
-    audioWrapper.appendChild(audioLabel);
-    audioWrapper.id = "audioSelectWrapper";
-
-    const div = document.createElement("div");
-    div.className = "input";
-    div.id = "audioInterface";
-
-    div.appendChild(buttonWrapper);
-    div.appendChild(volumeWrapper);
-    div.appendChild(audioWrapper);
-
-    return div;
+export function makeSoundInterface(): HTMLElement{
+    return _("div", {id:"audioInterface", class: "input"}, 
+        _("div", btnMain),
+        _("div", 
+            _("lable", {for: sldVolume.id}, sldVolume, lblVolume)
+        ),
+        _("div", {id: "audioSelectWrapper"},
+            _("label", {for: selAudio.id},
+                lblMetronome,
+                selAudio,
+                lblFootstep
+            )
+        )
+    );
 }
