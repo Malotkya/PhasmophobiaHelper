@@ -8,6 +8,7 @@ export default class GhostList extends HTMLElement {
 
     constructor(displayTarget:HTMLElement) {
         super();
+        this.className = "sub-section";
         this._target = displayTarget;
 
         this.addEventListener("click", (event:Event)=>{
@@ -56,7 +57,7 @@ export default class GhostList extends HTMLElement {
 
     connectedCallback() {
         this.appendChild( _("h2", "Ghosts:") );
-        this.appendChild( _("ul", {id:"chost-list"}, this._data) );
+        this.appendChild( _("ul", {class:"ghost-list"}, this._data) );
     }
 
     disconectedCallback() {

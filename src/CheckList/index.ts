@@ -23,7 +23,7 @@ export default class CheckList extends HTMLElement{
     constructor(){
         super();
 
-        this._target = _("div", {id:"display"});
+        this._target = _("div", {id:"display", class: "sub-section"});
         this._evidenceList = new EvidenceList();
         this._ghostList = new GhostList(this._target);
         this._speedList = new SpeedList();

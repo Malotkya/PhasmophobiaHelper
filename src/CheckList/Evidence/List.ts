@@ -26,7 +26,8 @@ export default class EvidenceList extends HTMLElement {
     private _evidenceThreashold: number;
 
     constructor(){
-        super();
+        super()
+        this.className = "sub-section";
 
         this._data = allEvidence.map(data=>{
             const evidence = new Evidence(data);
@@ -173,7 +174,7 @@ export default class EvidenceList extends HTMLElement {
     connectedCallback() {
         this.appendChild(_("h2", "Evidence:"));
         this.appendChild(this._input);
-        this.appendChild(_("ul", {id:"evidence-list"}, this._data));
+        this.appendChild(_("ul", {class:"evidence-list"}, this._data));
     }
 
     disconectedCallback() {

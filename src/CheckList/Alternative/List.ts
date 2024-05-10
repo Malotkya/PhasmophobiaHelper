@@ -29,6 +29,7 @@ export default class AlternativeList extends HTMLElement{
      */
     constructor(title:string, data: AlternativeData){
         super();
+        this.className = "sub-section";
         this._induction = new Set();
         this._deduction = new Set();
 
@@ -103,7 +104,7 @@ export default class AlternativeList extends HTMLElement{
 
     connectedCallback() {
         this.appendChild(_("h2", this._title));
-        this.appendChild(_("ul", {id:"evidence-list"}, this._data));
+        this.appendChild(_("ul", {class:"evidence-list"}, this._data));
     }
 
     disconectedCallback() {

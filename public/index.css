@@ -133,17 +133,16 @@ check-list{
     flex-grow: 1;
 }
 
-check-list section:first-child{
+check-list section .sub-section{
+    display: block;
     margin: 0.25rem;
     background-color: #222;
     padding: .2rem;
     border-radius: 0.33rem;
 }
 
-#ghost-list, 
-#evidence-list,
-#speed-list,
-#hunt-list {
+.ghost-list, 
+.evidence-list {
     display: flex;
     flex-flow: row wrap;
     justify-content: space-between;
@@ -163,8 +162,7 @@ check-list section:first-child{
     min-width: 200px;
 }
 
-#evidence-list li,
-#ghost-list li {
+.evidence, .ghost {
     width: 50%;
     padding: 0 5px;
 }
@@ -179,27 +177,23 @@ check-list section:first-child{
 #hunt-list li:nth-child(3n-1),
 #speed-list li:nth-child(3n),
 #speed-list li:nth-child(3n-1),
-#ghost-list li:nth-child(2n),
-#evidence-list li:nth-child(2n){
+.evidence:nth-child(2n),
+.ghost:nth-child(2n){
     border-left: 2px solid #aaa;
 }
 
 
-#evidence-list .yes,
-#speed-list .yes,
-#hunt-list .yes{
+.evidence-list .yes{
     background-color: rgb(25, 68, 25);
     order: -1;
 }
 
-#evidence-list .no,
-#speed-list .no,
-#hunt-list .no{
+.evidence-list .no{
     background-color: rgb(95, 11, 11);
     order: 1;
 }
 
-#ghost-list .no{
+.ghost-list .no{
     display: none;
 }
 
@@ -353,8 +347,8 @@ check-list section:first-child{
         order: 1;
     }
 
-    #evidence-list li,
-    #ghost-list li,
+    .evidence,
+    .ghost,
     #hunt-list li,
     #speed-list li{
         width: 100%;
