@@ -2,7 +2,7 @@
  * 
  * @author Alex Malotky
  */
-import {Task, addTask, removeTask, formatTime, formatSeconds} from "./Clock";
+import {Task, addTask, removeTask, formatTime, formatSeconds} from "../Util/Clock";
 import { TimerData } from "./data";
 import { createElement as _ } from "../Util/Element";
 
