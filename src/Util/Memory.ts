@@ -9,9 +9,8 @@ import HTMLToggleInputElement from "./HTMLToggleInput";
 /** Attribute Interface
  * 
  */
-interface attribute {
-    name: string,
-    value: string
+interface attributes{
+    [name:string]:string
 }
 
 /** Persist Attributes Function
@@ -21,44 +20,34 @@ interface attribute {
  * @param element 
  * @param initValue 
  */
-export function persistAttribute(element: HTMLElement, initValue?: string|attribute){
-    let att: attribute;
-    if(typeof initValue === "undefined"){
-        att = {
-            name: "value",
-            value: ""
-        };
-    } else if (typeof initValue === "string"){
-        att = {
-            name: "value",
-            value: initValue
-        };
+export function persistAttributes(element: HTMLElement, initValues: attributes){
+    if(typeof initValues !== "object")
+        throw new TypeError("initValues is maleformed!");
+
+    if( !(element instanceof HTMLElement) )
+        throw new TypeError("element must be an HTMLElement!");
+
+    if( element.id.length === 0) {
+        console.error("No id on element:\n%o", element);
     } else {
-        if(initValue.name === "")
-            initValue.name = "value";
-        att = initValue;
-    }
-
-    //Make sure element has an id.
-    if(element.id.length !== 0){
-        const key: string = `${element.id}:${att.name}`;
-
-        element.addEventListener("change", event=>{
-            localStorage.setItem(key, getValue(element, att.name));
-        });
-
-        
-        let value:string = localStorage.getItem(key);
-        if(value === null){
-            value = att.value;
+        const key:string = `${element.id}:attributes`;
+        const value:string = localStorage.getItem(key);
+        if(value){
+            initValues = JSON.parse(value);
         }
 
-        setValue(element, att.name, value);
-        let event = new Event('change');
-        element.dispatchEvent(event);
-    } else {
-        console.error("No id on element:");
-        console.error(element);
+        for(let name in initValues){
+            setValue(element, name, initValues[name]);
+        }
+        //element.dispatchEvent(new Event('change'));
+
+        element.addEventListener("change", event=>{
+            const att:attributes = {};
+            for(let name in initValues)
+                att[name] = getValue(element, name);
+            
+            localStorage.setItem(key, JSON.stringify(att));
+        });
     }
 }
 
