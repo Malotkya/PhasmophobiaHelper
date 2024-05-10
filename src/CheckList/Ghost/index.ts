@@ -57,10 +57,10 @@ export default class Ghost extends HTMLLIElement{
 
                 //Required Information
                 data.required? _("li", data.required): null,
+            ),
 
-                //Additional Info Link
-                data.link? _("p", _("a", {target:'_blank',  href:data.link}, "More Info")): null
-            )
+            //Additional Info Link
+            data.link? _("p", _("a", {target:'_blank',  href:data.link}, "More Info")): null
         );
 
         //Alternative Ghost Information
