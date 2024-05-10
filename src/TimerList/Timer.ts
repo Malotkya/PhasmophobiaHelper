@@ -3,88 +3,16 @@
  * @author Alex Malotky
  */
 import {Task, addTask, removeTask, formatTime, formatSeconds} from "./Clock";
+import { TimerData } from "./data";
+import { createElement as _ } from "../Util/Element";
 
-//Minute in Miliseconds
-export const MINUTE: number = 60000;
-
-/**Step Interface 
- * 
- * Used in Timer Class
- */
-interface step {
-    time: number,
-    info: string
-}
-
-/**Timer Data
- * 
- */
-interface TimerData {
-    name: string,
-    list?: Array<step>
-}
-
-/** Create All Timers
- * 
- * @param {HTMLElement} target 
- * @returns {Array<Timer>}
- */
-export function createAllTimers(target: HTMLElement): Array<Timer>{
-    const list: Array<Timer> = TIMER_TYPES.map(v=>new Timer(v));
-    for(let timer of list){
-        target.appendChild(timer);
-    }
-    return list;
-}
-
-//Types of Timers Used
-export const TIMER_TYPES: Array<TimerData> = [
-    {
-        "name": "Smudge",
-        "list": [
-            {
-                time: 60000,
-                info: "Safe from Hunts"
-            }, 
-            {
-                time: 90000,
-                info: "Demons can Hunt"
-            },
-            {
-                time: 180000,
-                info: "Spirits can't Hunt"
-            },
-            {
-                time: 180000 + MINUTE,
-                info: "Everything can Hunt"
-            }
-        ]
-    },
-    {
-        "name": "Hunt Cooldown",
-        "list": [
-            {
-                time: 20000,
-                info: "Ghosts can't hunt."
-            },
-            {
-                time: 25000,
-                info: "Demons can start hunting again."
-            },
-            {
-                time: 25000 + MINUTE,
-                info: "Everything can hunt again."
-            }
-        ]
-    }
-];
 
 /** Timer Class
  * 
  */
 export default class Timer extends HTMLLIElement implements Task{
     //HTML Elements
-    protected _titleElement: HTMLElement;
+    //protected _titleElement: HTMLElement;
     protected _valueElement: HTMLElement;
     protected _infoElement: HTMLElement
     protected _button: HTMLElement;
@@ -92,28 +20,24 @@ export default class Timer extends HTMLLIElement implements Task{
     //Instance Variables
     private _name: string;
     protected _start: number;
-    protected _steps: Array<step>
+    protected _steps: TimerData
     protected _index: number;
 
     /** Constructor
      * 
+     * @param {string} name;
      * @param {TimerData} data 
      */
-    constructor(data: TimerData){
+    constructor(name:string, data: TimerData){
         super();
+        this._name = name;
+        this.startTime = 0;
+        this._steps = data;
+        this._index = this._steps.length;
 
-        //Create Elements
-        this._titleElement = document.createElement("h2");
-        this._titleElement.textContent = data.name;
-        this._titleElement.className = "title";
-        this._valueElement = document.createElement("span");
-        this._valueElement.className = "time";
-        this._infoElement  = document.createElement("p");
-        this._infoElement.className = "info";
-
-        //Control button
-        this._button = document.createElement("button");
-        this._button.textContent = "Start";
+        this._valueElement = _("span", {class: "time"});
+        this._infoElement  = _("p", {class: "info"});
+        this._button = _("button", "Start");
         this._button.addEventListener("click", event=>{
             event.stopPropagation();
             if(this.isRunning()) {
@@ -122,20 +46,8 @@ export default class Timer extends HTMLLIElement implements Task{
                 this.start();
             }
         });
-        
-        //Display Row
-        this.appendChild(this._titleElement);
-        this.appendChild(this._button);
-        this.appendChild(this._valueElement);
-        this.appendChild(this._infoElement);
 
-        //Initalize instance info.
-        this._name = data.name;
-        this.startTime = 0;
-        this._steps = data.list;
-        this._index = this._steps.length;
-
-        //Update Display Elements
+        //Init Display Elements
         this.updateElements();
     }
 
@@ -219,6 +131,17 @@ export default class Timer extends HTMLLIElement implements Task{
 
     set startTime(value: number){
         this._start = value;
+    }
+
+    connectedCallback(){
+        this.appendChild(_("h2", {class: "title"}, this._name));
+        this.appendChild(this._button);
+        this.appendChild(this._valueElement);
+        this.appendChild(this._infoElement);
+    }
+
+    diconnectedCallback(){
+        this.innerHTML = "";
     }
 }
 

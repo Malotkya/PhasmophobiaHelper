@@ -12,8 +12,7 @@ export default class StopWatch extends Timer {
      * 
      */
     constructor(){
-        super({name: "Stop Watch", list:[]});
-        this.removeChild(this._infoElement);
+        super("Stop Watch", []);
     }
 
     /** Update Timer
@@ -27,6 +26,11 @@ export default class StopWatch extends Timer {
         const delta: number = now - this._start;
 
         this.value = delta / 1000;
+    }
+
+    connectedCallback(): void {
+        super.connectedCallback();
+        this.removeChild(this._infoElement);
     }
 }
 
