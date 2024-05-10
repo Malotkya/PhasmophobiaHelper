@@ -134,4 +134,4 @@ export default class HuntTimer extends Timer {
     }
 }
 
-customElements.define("hunt-timer-item", HuntTimer, {extends: "li"})
+customElements.define("hunt-timer-item", HuntTimer)

@@ -10,7 +10,7 @@ import { createElement as _ } from "../Util/Element";
 /** Timer Class
  * 
  */
-export default class Timer extends HTMLLIElement implements Task{
+export default class Timer extends HTMLElement implements Task{
     //HTML Elements
     //protected _titleElement: HTMLElement;
     protected _valueElement: HTMLElement;
@@ -145,4 +145,4 @@ export default class Timer extends HTMLLIElement implements Task{
     }
 }
 
-customElements.define("timer-item", Timer, {extends: "li"})
+customElements.define("timer-item", Timer)
