@@ -7,6 +7,7 @@ import { allEvidence } from "./data";
 import Evidence from ".";
 import CustomSet from "../../Util/CustomSet";
 import { createElement as _ } from "../../Util/Element";
+import { persistAttributes } from "../../Util/Memory";
 
 const DEFAULT_EVIDENCE_COUNT = 3;
 const EVIDENCE_SCORE_OVERFLOW = 5;
@@ -27,6 +28,7 @@ export default class EvidenceList extends HTMLElement {
 
     constructor(){
         super()
+        this._evidenceThreashold = 1;
         this.className = "sub-section";
 
         this._data = allEvidence.map(data=>{
@@ -64,6 +66,7 @@ export default class EvidenceList extends HTMLElement {
             max: 3,
             min: 0
         });
+        persistAttributes(numEvidence, {value: String(this.evidenceCount)})
         numEvidence.addEventListener("change", (event:Event)=>{
             this.evidenceCount = Number(numEvidence.value);
         });
@@ -77,8 +80,7 @@ export default class EvidenceList extends HTMLElement {
         this._induction = new CustomSet(DEFAULT_EVIDENCE_COUNT);
         this._deduction = new Set();
         
-        //Initial Information
-        this._evidenceThreashold = 1;
+        
     }
 
     /** Update Ghost List Visibility & Order
