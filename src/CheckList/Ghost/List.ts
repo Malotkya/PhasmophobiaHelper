@@ -35,7 +35,7 @@ export default class GhostList extends HTMLElement {
         for(let data of allGhosts){
             this._data.push(new Ghost(data));
         }
-        this.display();
+        this.update();
     }
 
     private display(target?:Ghost|null){
@@ -53,7 +53,7 @@ export default class GhostList extends HTMLElement {
     }
 
     pull(index:number):void {
-        this._data.slice(index, 1);
+        this._data.splice(index, 1);
     }
 
     connectedCallback() {
