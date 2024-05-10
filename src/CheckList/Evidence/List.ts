@@ -179,7 +179,7 @@ export default class EvidenceList extends HTMLElement {
         this.appendChild(_("ul", {class:"evidence-list"}, this._data));
     }
 
-    disconectedCallback() {
+    disconnectedCallback() {
         this.innerHTML = "";
     }
 }

@@ -140,7 +140,7 @@ export default class Timer extends HTMLElement implements Task{
         this.appendChild(this._infoElement);
     }
 
-    diconnectedCallback(){
+    disconnectedCallback(){
         this.innerHTML = "";
     }
 }

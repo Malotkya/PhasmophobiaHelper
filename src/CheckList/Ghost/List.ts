@@ -61,7 +61,7 @@ export default class GhostList extends HTMLElement {
         this.appendChild( _("ul", {class:"ghost-list"}, this._data) );
     }
 
-    disconectedCallback() {
+    disconnectedCallback() {
         this.innerHTML = "";
     }
 }

@@ -83,8 +83,16 @@ export default class Ghost extends HTMLLIElement{
 
         //List Element
         this.className = "ghost";
+        
+    }
+
+    connectedCallback() {
         this.appendChild(this._styleElement);
         this.appendChild(this._btnRemove);
+    }
+
+    disconnectedCallback() {
+        this.innerHTML = "";
     }
 
     /** Has Evidence

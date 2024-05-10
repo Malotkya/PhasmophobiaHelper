@@ -59,12 +59,19 @@ export default class Evidence extends HTMLLIElement{
 
         //List Item
         this.className = "evidence";
+
+        this.reset();
+    }
+
+    connectedCallback(){
         this.appendChild(this._name);
         this.appendChild(this._btnInclude);
         this.appendChild(this._btnExclude);
         this.appendChild(this._btnReset);
+    }
 
-        this.reset();
+    disconnectedCallback() {
+        this.innerHTML = "";
     }
 
     /** Evidence Found

@@ -18,6 +18,10 @@ export default class TimerList extends HTMLElement {
     connectedCallback(){
         this.appendChild(_("ul", this._data.map(e=>_("li", e))))
     }
+
+    disconnectedCallback(){
+        this.innerHTML = "";
+    }
 }
 
 customElements.define("timer-list", TimerList);

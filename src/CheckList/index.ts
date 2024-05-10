@@ -81,7 +81,7 @@ export default class CheckList extends HTMLElement{
         ));  
     }
 
-    disconectedCallback(){
+    disconnectedCallback(){
         this.innerHTML = "";
     }
 }
