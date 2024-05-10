@@ -38,6 +38,7 @@ export default class AlternativeList extends HTMLElement{
         for(const name in data){
             const value = data[name];
             const alternative = new Alternative(name, value);
+            this._data.push(alternative);
 
             //Alternate Found
             alternative.includeEvent(()=>{
