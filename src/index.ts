@@ -1,19 +1,28 @@
 import CheckList from "./CheckList";
-import Timer from "./Timer";
-import makeInterface from "./Util/Sound";
-import getClock from "./Timer/Clock";
-import App from "./Pages";
+import TimerList from "./TimerList";
+import { createElement as _, appendChildren } from "./Util/Element";
+import {makeSoundInterface} from "./Util/Sound";
+import {makeClockInterface} from "./Util/Clock";
 
-const app = new App();
+window.onload = () => {
+    const main = document.querySelector("main");
+    const header = document.querySelector("header");
 
-app.add("", CheckList());
-app.add("Check List", CheckList());
-app.add("Timers", Timer());
+    const navigation = _("nav", 
+        _("a", {href: "#checkList"}, "Check List"),
+        _("a", {href: "#timers"}, "Timers")
+    )
 
-app.onReady(()=>{
-    const container: HTMLElement = document.createElement("div");
-    container.className = "status";
-    container.appendChild(getClock());
-    container.appendChild(makeInterface());
-    document.querySelector("header").appendChild(container);
-});
+    navigation.addEventListener("click", (event:Event)=>{
+
+    });
+
+    header.appendChild(navigation);
+    header.appendChild(_("div", {class: "status"}, 
+        makeClockInterface(),
+        makeSoundInterface()
+    ));
+
+    main.appendChild(new TimerList());
+    main.appendChild(new CheckList());
+}
