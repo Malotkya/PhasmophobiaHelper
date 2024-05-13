@@ -1,5 +1,5 @@
-/** Alternative.ts
- *  Alternative Evidence Options
+/** /Util/Sound
+ *  Sound & Audio Handling
  * 
  * 
  * @author Alex Malotky
@@ -12,7 +12,12 @@ import { createElement as _ } from "../Element";
 import {bpm, convert} from "./Speed";
 import { setAudioFile, playAudio } from "./Audio";
 
-const SOUND_BUTTON = (value:number) => `${value}m/s <button class='speed' value='${bpm(value)}'>${SOUND}</button>`;
+/** Create Sound Button
+ * 
+ * @param {number} value 
+ * @returns {string}
+ */
+const SOUND_BUTTON = (value:number):string => `${value}m/s <button class='speed' value='${bpm(value)}'>${SOUND}</button>`;
 
 /** Main Audio Interface Button
  * 
@@ -36,7 +41,6 @@ const btnMain = document.createElement("button");
  * 
  */
 const INITAL_VOLUME = 0.25;
-
 const sldVolume = <HTMLInputElement>_("input", {
     type: "range",
     id: "volume",
@@ -45,14 +49,11 @@ const sldVolume = <HTMLInputElement>_("input", {
     step: 0.01,
     style: "width: 200px"
 });
-//sldVolume.style.width = "200px";
-    
-const lblVolume = document.createElement("span");
-
-    sldVolume.addEventListener("change", ()=>{
-        lblVolume.textContent = `${Math.round(Number(sldVolume.value) * 100)}%`
-    });
-    persistAttributes(sldVolume, {value:String(INITAL_VOLUME)});
+const lblVolume = _("span", `${INITAL_VOLUME * 100}%`);
+sldVolume.addEventListener("change", ()=>{
+    lblVolume.textContent = `${Math.round(Number(sldVolume.value) * 100)}%`
+});
+persistAttributes(sldVolume, {value:String(INITAL_VOLUME)});
 
 /** Audio Select
  * 
