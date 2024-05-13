@@ -1,6 +1,5 @@
-/** Fallback.ts
- * 
- * Fallback Audio using original bleep.
+/** /Util/Sound/Fallback
+ * Fallback Audio if unable to load Sound Files.
  * 
  * Help From:
  * https://stackoverflow.com/questions/48938140/cross-browser-html5-javascript-generate-single-tick-sound

@@ -1,4 +1,4 @@
-/** UnicodeIcons.ts
+/** /Util/UnicodeIcons
  * 
  * Icons used in buttons.
  * 

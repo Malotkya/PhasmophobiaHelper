@@ -1,4 +1,4 @@
-/** HTMLTOggleInput.ts
+/** /Util/HTMLToggleInput
  * 
  * Used to visualize binary options.
  * 

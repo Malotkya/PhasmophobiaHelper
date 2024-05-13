@@ -1,9 +1,14 @@
-/** Sound Interface
+/** /Util/Sound/Audio
  * 
- * Contains elements of Audio that is required by this file.
+ * @author Alex Malotky
  */
 import { Fallback } from "./Fallback";
 
+/** Audio Interface
+ * 
+ * Contains elements of Audio that is required by this file.
+ * 
+ */
 export interface audio_interface {
     play: ()=>Promise<void>;
     volume: number,

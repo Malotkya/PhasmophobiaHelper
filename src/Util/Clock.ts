@@ -1,4 +1,4 @@
-/** Clock.ts
+/** /Util/Clock
  * 
  * @author Alex Malotky
  */
