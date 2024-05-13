@@ -13,6 +13,34 @@ interface attributes{
     [name:string]:string
 }
 
+/** Persist Key
+ * 
+ * @param {string} id 
+ * @returns {string}
+ */
+const KEY = (id:string):string => `${id}:attributes`;
+
+/** Persist Map
+ * 
+ */
+const persistMap: Map<string, Array<string>> = new Map();
+
+/** Perseist Event Listener
+ * 
+ */
+document.addEventListener("change", function PersistListener(event:Event){
+    const target = event.target as HTMLElement;
+
+    if(target.id && persistMap.has(target.id)){
+        const att:attributes = {};
+
+        for(let name of persistMap.get(target.id))
+            att[name] = getValue(target, name);
+        
+        localStorage.setItem(KEY(target.id), JSON.stringify(att));
+    }
+})
+
 /** Persist Attributes Function
  * 
  * Defaults to "value" attribute if no attribute is specified.
@@ -28,26 +56,17 @@ export function persistAttributes(element: HTMLElement, initValues: attributes){
         throw new TypeError("element must be an HTMLElement!");
 
     if( element.id.length === 0) {
-        console.error("No id on element:\n%o", element);
+        console.warn("No id on element to persist:\n%o", element);
     } else {
-        const key:string = `${element.id}:attributes`;
-        const value:string = localStorage.getItem(key);
+        const value:string = localStorage.getItem(KEY(element.id));
         if(value){
             initValues = JSON.parse(value);
         }
-
         for(let name in initValues){
             setValue(element, name, initValues[name]);
         }
         element.dispatchEvent(new Event('change'));
-        
-        element.addEventListener("change", event=>{
-            const att:attributes = {};
-            for(let name in initValues)
-                att[name] = getValue(element, name);
-            
-            localStorage.setItem(key, JSON.stringify(att));
-        });
+        persistMap.set(element.id, Object.getOwnPropertyNames(initValues));
     }
 }
 
