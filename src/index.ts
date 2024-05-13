@@ -43,10 +43,13 @@ window.onload = () => {
         const link:HTMLAnchorElement|null = (<HTMLElement>event.target).closest("a");
 
         if(link){
+            link.blur();
             const match = link.href.match(ANCHOR_REGEX);
 
             if(match) {
-                routing(match[0])
+                event.preventDefault();
+                window.history.pushState({}, "", link.href);
+                routing(match[0]);
             }
         }
     });
