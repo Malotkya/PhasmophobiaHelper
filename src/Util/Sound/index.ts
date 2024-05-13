@@ -132,20 +132,20 @@ export function stopSound(): void{
  */
 export function createSoundButton(speed: number|Array<number>): string{
     if(typeof speed === "number") {
-        return SOUND_BUTTON(speed);
+        return "Moves at "+SOUND_BUTTON(speed);
     } else if(Array.isArray(speed)) {
         switch(speed.length){
             case 0:
                 throw new Error(`Empty speed array!`);
                     
             case 1:
-                return SOUND_BUTTON(speed[0]);
+                return "Moves at "+SOUND_BUTTON(speed[0]);
                     
             case 2:
-                return SOUND_BUTTON(speed[0])+" and "+SOUND_BUTTON(speed[1]);
+                return "Moves at "+SOUND_BUTTON(speed[0])+" and "+SOUND_BUTTON(speed[1]);
 
             default:
-                return SOUND_BUTTON(speed[0])+" and "+SOUND_BUTTON(speed[speed.length-1]);
+                return "Moves between "+SOUND_BUTTON(speed[0])+" and "+SOUND_BUTTON(speed[speed.length-1]);
         }
     }
 
