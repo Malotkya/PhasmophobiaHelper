@@ -32,14 +32,17 @@ export function persistAttributes(element: HTMLElement, initValues: attributes){
     } else {
         const key:string = `${element.id}:attributes`;
         const value:string = localStorage.getItem(key);
+        let dispatch:Event|null = null;
         if(value){
             initValues = JSON.parse(value);
+            dispatch = new Event('change');
         }
 
         for(let name in initValues){
             setValue(element, name, initValues[name]);
         }
-        //element.dispatchEvent(new Event('change'));
+        if(dispatch)
+            element.dispatchEvent(dispatch);
 
         element.addEventListener("change", event=>{
             const att:attributes = {};
