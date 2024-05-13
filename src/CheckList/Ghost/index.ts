@@ -46,11 +46,11 @@ export default class Ghost extends HTMLLIElement{
         this._info = _("div", {class:"info"},
 
             //Warning Information
-            data.warning? "<p class='warn'>"+data.warning+"</p>": null,
+            data.warning? _("p", {class:'warn'}, data.warning): null,
 
             _("ul",
                 //Speed Information
-                data.speed? createSoundButton(data.speed): null,
+                data.speed? _("li", createSoundButton(data.speed)): null,
 
                 //Main Information
                 data.info? data.info.map(s=>_("li", s)): null,
