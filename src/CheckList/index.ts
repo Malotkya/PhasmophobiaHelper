@@ -7,6 +7,7 @@ import EvidenceList from "./Evidence/List";
 import { SpeedList, HuntList } from "./Alternative/List";
 import GhostList from "./Ghost/List";
 import { createElement as _ } from "../Util/Element";
+import { generateSound } from "../Util/Sound";
 
 /** Phasmophobia Class
  * 
@@ -28,6 +29,19 @@ export default class CheckList extends HTMLElement{
         this._ghostList = new GhostList(this._target);
         this._speedList = new SpeedList();
         this._huntList = new HuntList();
+
+        this._target.addEventListener("click", (event:Event)=>{
+            const target = event.target as HTMLElement;
+
+            if(target.classList.contains("speed")){
+                const value = Number(target.getAttribute("value"));
+                if(isNaN(value)){
+                    alert("Sound value was not a number!");
+                } else {
+                    generateSound(value);
+                }
+            }
+        });
     }
 
     /** Update Game Event
