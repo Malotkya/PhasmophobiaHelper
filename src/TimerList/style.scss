@@ -1,0 +1,86 @@
+@import "../constants.scss";
+
+#clock {
+    font-family: monospace;
+}
+
+timer-list {
+    ul {
+        display: flex;
+        flex-direction: column;
+
+        li {
+            display: flex;
+            justify-content: center;
+            padding: 0 10px;
+
+            & > * {
+                width: 100%;
+                display: flex;
+                flex-flow: row wrap;
+                justify-content: space-around;
+                background-color: $dark-gray;
+                padding: 16px 5px;
+                padding-top: 0;
+                border-radius: 0.25rem;
+                min-height: 150px;
+                margin-bottom: 0.25em;
+            }
+
+            button {
+                height: 4ch;
+            }
+        }
+    }
+
+    h2 {
+        width: 100%;
+    }
+
+    .time {
+        font-family: monospace;
+        padding: 5px;
+    }
+
+    .input {
+        width: 100%;
+        justify-content: space-between;
+        flex-flow: row wrap;
+        justify-content: space-around;
+
+        label {
+            white-space: pre;
+        }
+
+        #chbCursed {
+            margin: 0;
+            width: auto
+        }
+    }
+
+    .info{
+        width: 100%;
+        text-align: center;
+        margin-bottom: 0;
+        min-height: 1em;
+    }
+
+    #huntTimer {
+        min-height: 200px
+    }
+}
+
+@media (min-width: $tablet) {
+    timer-list {
+        ul {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            max-width: 650px;
+            margin: 0 auto;
+
+            li:nth-child(3){
+                grid-column: 1 / 3;
+            }
+        }
+    }
+}

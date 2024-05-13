@@ -1,0 +1,394 @@
+/* Colors */
+/* Break Points */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #111;
+  color: #aaa;
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  min-width: 320px;
+}
+
+h1 {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 0;
+}
+
+h2 {
+  text-align: center;
+}
+
+ul, ol {
+  list-style-type: none;
+  padding: 0;
+}
+
+a:link,
+a:visited {
+  color: cyan;
+}
+
+.error {
+  color: red;
+  font-size: 2rem;
+}
+
+/* Navigation Styling */
+nav {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+nav a {
+  background-color: #222;
+  font-size: 1.25rem;
+  margin: 0.5rem;
+  padding: 0.25rem;
+  text-decoration: none;
+  border-radius: 0.25rem;
+}
+
+nav a:hover, nav a:focus {
+  background-color: #444;
+}
+
+/* Header & Footer Styling */
+header {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+footer {
+  background-color: #222;
+  text-align: center;
+  padding: 10px;
+}
+
+header, footer {
+  flex-grow: 0;
+}
+
+.input input {
+  width: 6ch;
+}
+
+.input {
+  flex-grow: 1;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.25rem;
+}
+
+.status {
+  display: flex;
+  flex-flow: column-reverse wrap;
+  align-items: space-between;
+  width: 100%;
+}
+
+button, input {
+  border: 1px solid transparent;
+  border-radius: 0.25rem;
+  margin: 2px;
+  text-align: center;
+}
+
+label span {
+  border: 1px solid transparent;
+  border-radius: 0.25rem;
+  margin: 2px;
+  text-align: center;
+}
+
+#btnReset, #btnSound {
+  height: 4ch;
+}
+
+/*Tablet Viewport */
+@media (min-width: 500px) {
+  .status {
+    flex-flow: row nowrap;
+  }
+}
+/* Desktop Viewport */
+@media (min-width: 800px) {
+  body {
+    max-width: 1000px;
+  }
+}
+#audioInterface {
+  display: flex;
+  flex-flow: column;
+}
+#audioInterface div {
+  display: flex;
+  justify-content: center;
+}
+
+@media (min-width: 400px) {
+  #audioInterface {
+    display: grid;
+  }
+  #audioInterface #audioSelectWrapper {
+    grid-column: 1/3;
+  }
+}
+/* Colors */
+/* Break Points */
+/* Check List Mobile Viewport */
+check-list {
+  display: flex;
+  flex-flow: column-reverse nowrap;
+  flex-grow: 1;
+}
+check-list section .sub-section {
+  display: block;
+  margin: 0.25rem;
+  background-color: #222;
+  padding: 0.2rem;
+  border-radius: 0.33rem;
+}
+check-list section #display-section {
+  order: -2;
+}
+check-list section #evidence-section {
+  order: -1;
+  min-width: 150px;
+}
+check-list section #ghost-section {
+  order: 1;
+  min-width: 200px;
+}
+check-list .ghost-list,
+check-list .evidence-list {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+}
+check-list .ghost-list .evidence, check-list .ghost-list .ghost,
+check-list .evidence-list .evidence,
+check-list .evidence-list .ghost {
+  width: 100%;
+  padding: 0 5px;
+}
+check-list .ghost-list .evidence:hover, check-list .ghost-list .evidence:focus, check-list .ghost-list .ghost:hover, check-list .ghost-list .ghost:focus,
+check-list .evidence-list .evidence:hover,
+check-list .evidence-list .evidence:focus,
+check-list .evidence-list .ghost:hover,
+check-list .evidence-list .ghost:focus {
+  background-color: #444;
+}
+check-list .evidence-list .yes {
+  background-color: rgb(25, 68, 25);
+  order: -1;
+}
+check-list .evidence-list .no {
+  background-color: rgb(95, 11, 11);
+  order: 1;
+}
+check-list #hunt-list li,
+check-list #speed-list li {
+  width: 33%;
+  padding: 0 5px;
+}
+check-list .ghost-list .no {
+  display: none;
+}
+check-list .evidence {
+  display: grid;
+  grid-template-columns: auto 1.5rem 1.5rem;
+  cursor: default;
+}
+check-list .alternative {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  cursor: default;
+}
+check-list .ghost {
+  display: grid;
+  grid-template-columns: auto 1.5rem;
+  cursor: default;
+}
+check-list #display .name {
+  font-size: 2rem;
+}
+check-list #display ol {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-around;
+  font-weight: bold;
+  margin-bottom: 0;
+}
+check-list #display ol li {
+  background-color: #444;
+  padding: 3px 5px;
+  border-radius: 0.25rem;
+  text-align: center;
+  margin: 5px;
+}
+check-list #display ul {
+  margin: 1rem;
+  padding: 0.2rem 3ch;
+  background-color: #444;
+  border-radius: 0.25rem;
+  list-style-type: circle;
+  margin-bottom: 0;
+}
+check-list #display .info {
+  margin-bottom: 16px;
+}
+check-list #display .info p {
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+  margin-bottom: 0;
+}
+check-list #display .warn {
+  color: red;
+  margin-bottom: 0;
+}
+
+@media (min-width: 400px) {
+  check-list #display ol {
+    flex-direction: row;
+  }
+  check-list .ghost-list .evidence, check-list .ghost-list .ghost,
+  check-list .evidence-list .evidence,
+  check-list .evidence-list .ghost {
+    width: 50%;
+  }
+  check-list #hunt-list li:nth-child(3n),
+  check-list #hunt-list li:nth-child(3n-1),
+  check-list #speed-list li:nth-child(3n),
+  check-list #speed-list li:nth-child(3n-1),
+  check-list .evidence:nth-child(2n),
+  check-list .ghost:nth-child(2n) {
+    border-left: 2px solid #aaa;
+  }
+}
+/*Tablet Viewport */
+@media (min-width: 500px) {
+  check-list {
+    display: grid;
+    grid-template-columns: 200px auto;
+  }
+  check-list #ghost-section {
+    grid-row-start: 2;
+  }
+  check-list #display-section {
+    grid-row: span 2;
+    order: 1;
+  }
+  check-list .ghost-list li,
+  check-list .evidence-list li {
+    width: 100% !important;
+    border: none !important;
+  }
+}
+@media (min-width: 500px) and (max-width: 650px) {
+  check-list #display ol {
+    flex-direction: column;
+  }
+  check-list #display ol li {
+    width: 100%;
+  }
+}
+/* Desktop Viewport */
+@media (min-width: 800px) {
+  check-list {
+    display: flex;
+    flex-flow: row nowrap;
+  }
+  check-list #ghost-section,
+  check-list #evidence-section {
+    max-width: 200px;
+  }
+  check-list #ghost-section {
+    order: -1;
+  }
+  check-list #display ol {
+    justify-content: space-evenly;
+  }
+  check-list #display-section {
+    flex-grow: 1;
+  }
+}
+/* Colors */
+/* Break Points */
+#clock {
+  font-family: monospace;
+}
+
+timer-list ul {
+  display: flex;
+  flex-direction: column;
+}
+timer-list ul li {
+  display: flex;
+  justify-content: center;
+  padding: 0 10px;
+}
+timer-list ul li > * {
+  width: 100%;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+  background-color: #222;
+  padding: 16px 5px;
+  padding-top: 0;
+  border-radius: 0.25rem;
+  min-height: 150px;
+  margin-bottom: 0.25em;
+}
+timer-list ul li button {
+  height: 4ch;
+}
+timer-list h2 {
+  width: 100%;
+}
+timer-list .time {
+  font-family: monospace;
+  padding: 5px;
+}
+timer-list .input {
+  width: 100%;
+  justify-content: space-between;
+  flex-flow: row wrap;
+  justify-content: space-around;
+}
+timer-list .input label {
+  white-space: pre;
+}
+timer-list .input #chbCursed {
+  margin: 0;
+  width: auto;
+}
+timer-list .info {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 0;
+  min-height: 1em;
+}
+timer-list #huntTimer {
+  min-height: 200px;
+}
+
+@media (min-width: 500px) {
+  timer-list ul {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    max-width: 650px;
+    margin: 0 auto;
+  }
+  timer-list ul li:nth-child(3) {
+    grid-column: 1/3;
+  }
+}

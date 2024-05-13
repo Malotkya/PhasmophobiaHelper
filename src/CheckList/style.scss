@@ -1,0 +1,224 @@
+@import "../constants.scss";
+
+/* Check List Mobile Viewport */
+check-list{
+    display: flex;
+    flex-flow: column-reverse nowrap;
+    flex-grow: 1;
+
+    section {
+        .sub-section{
+            display: block;
+            margin: 0.25rem;
+            background-color: $dark-gray;
+            padding: .2rem;
+            border-radius: 0.33rem;
+        }
+
+        #display-section {
+            order: -2;
+        }
+        
+        #evidence-section {
+            order: -1;
+            min-width: 150px;
+        }
+        
+        #ghost-section{
+            order: 1;
+            min-width: 200px;
+        }
+    }
+
+    .ghost-list, 
+    .evidence-list {
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: space-between;
+
+        .evidence, .ghost {
+            width: 100%;
+            padding: 0 5px;
+
+            &:hover, &:focus {
+                background-color: $medium-gray;
+            }
+        }
+    }
+
+    .evidence-list {
+        .yes{
+            background-color: $green;
+            order: -1;
+        }
+
+        .no{
+            background-color: $red;
+            order: 1;
+        }
+    }
+
+    #hunt-list li,
+    #speed-list li{
+        width: 33% ;
+        padding: 0 5px;
+    }
+
+    .ghost-list .no{
+        display: none;
+    }
+
+    .evidence{
+        display: grid;
+        grid-template-columns: auto 1.5rem 1.5rem;
+        cursor: default;
+    }
+    
+    .alternative{
+        display: grid;
+        grid-template-columns: 50% 50%;
+        cursor: default;
+    }
+    
+    .ghost{
+        display: grid;
+        grid-template-columns: auto 1.5rem;
+        cursor: default;
+    }
+
+    #display {
+        .name{
+            font-size: 2rem;
+        }
+
+        ol{
+            display: flex;
+            flex-flow: column nowrap;
+            justify-content: space-around;
+            font-weight: bold;
+            margin-bottom: 0;
+
+            li {
+                background-color: $medium-gray;
+                padding: 3px 5px;
+                border-radius: 0.25rem;
+                text-align: center;
+                margin: 5px;
+            }
+        }
+
+        ul{
+            margin: 1rem;
+            padding: .2rem 3ch;
+            background-color: $medium-gray;
+            border-radius: 0.25rem;
+            list-style-type: circle;
+            margin-bottom: 0;
+        }
+
+        .info {
+            margin-bottom: 16px;
+        }
+        
+        .info p{
+            display: inline-block;
+            width: 100%;
+            text-align: center;
+            margin-bottom: 0;
+        }
+        
+        .warn {
+            color: red;
+            margin-bottom: 0;
+        }
+    }
+}
+
+@media(min-width: 400px){
+    check-list {
+        #display ol {
+            flex-direction: row;
+        }
+
+        .ghost-list, 
+        .evidence-list {
+            .evidence, .ghost {
+                width: 50%;
+            }
+        }
+
+        #hunt-list li:nth-child(3n),
+        #hunt-list li:nth-child(3n-1),
+        #speed-list li:nth-child(3n),
+        #speed-list li:nth-child(3n-1),
+        .evidence:nth-child(2n),
+        .ghost:nth-child(2n){
+            border-left: 2px solid #aaa;
+        }
+        
+    }
+}
+
+
+/*Tablet Viewport */
+@media(min-width: $tablet){
+     check-list {
+        display: grid;
+        grid-template-columns: 200px auto;
+
+        #ghost-section{
+            grid-row-start: 2;
+        }
+    
+        #display-section{
+            grid-row: span 2;
+            order: 1;
+        }
+    
+        .ghost-list li,
+        .evidence-list li{
+            width: 100% !important;
+            border: none !important;
+        }
+    }
+
+    
+
+    @media(max-width: 650px){
+        check-list {
+            #display ol {
+                flex-direction: column;
+            }
+    
+            #display ol li {
+                width: 100%;
+            }
+        }
+    }
+}
+
+/* Desktop Viewport */
+@media(min-width: $desktop){
+
+    check-list {
+        display: flex;
+        flex-flow: row nowrap;
+
+        #ghost-section,
+        #evidence-section {
+            max-width: 200px;
+        }
+
+        #ghost-section{
+            order: -1;
+        }
+
+        #display ol {
+            justify-content: space-evenly;
+        }
+
+        #display-section{
+            flex-grow: 1;
+        }
+    }
+}

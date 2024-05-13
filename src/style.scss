@@ -1,0 +1,133 @@
+@import "./constants.scss";
+
+*{
+    box-sizing: border-box;
+}
+
+body {
+    background-color: $black;
+    color: $light-gray;
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    //min-height: calc(100vh - 1);
+    min-width: 320px;
+}
+
+h1 {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 0;
+}
+
+h2{
+    text-align: center;
+}
+
+ul, ol {
+    list-style-type: none;
+    padding: 0;
+}
+
+a:link,
+a:visited{
+    color: cyan;
+}
+
+.error {
+    color: red;
+    font-size: 2rem;
+}
+
+/* Navigation Styling */
+nav {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+nav a {
+    background-color: $dark-gray;
+    font-size: 1.25rem;
+    margin: .5rem;
+    padding: 0.25rem;
+    text-decoration: none;
+    border-radius: 0.25rem;
+}
+
+nav a:hover, nav a:focus{
+    background-color: $medium-gray;
+}
+
+/* Header & Footer Styling */
+
+header {
+    display: flex;
+    flex-flow: row wrap;
+}
+
+footer {
+    background-color: $dark-gray;
+    text-align: center;
+    padding: 10px;
+}
+
+header, footer {
+    flex-grow: 0;
+}
+
+.input input {
+    width: 6ch;
+}
+
+.input{
+    flex-grow: 1;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.25rem;
+}
+
+.status {
+    display: flex;
+    flex-flow: column-reverse wrap;
+    align-items: space-between;
+    width: 100%;
+}
+
+button, input {
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+    margin: 2px;
+    text-align: center;
+}
+
+label span {
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+    margin: 2px;
+    text-align: center;
+}
+
+#btnReset, #btnSound{
+    height: 4ch;
+}
+
+/*Tablet Viewport */
+@media(min-width: $tablet){
+    .status {
+        flex-flow: row nowrap;
+    }
+}
+
+/* Desktop Viewport */
+@media(min-width: $desktop){
+    body{
+        max-width: 1000px;
+    }
+}
+
+@import "./Util/Sound//style.scss";
+@import './CheckList/style.scss';
+@import "./TimerList/style.scss";
