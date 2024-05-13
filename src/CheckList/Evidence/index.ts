@@ -4,7 +4,7 @@
  */
 import * as Icons from "../../Util/UnicodeIcons";
 import {allEvidence} from "./data";
-
+import { createElement as _ } from "../../Util/Element";
 /** Create All Evidence Objects
  * 
  * Creates a list with all Evidence Objects.
@@ -35,30 +35,12 @@ export default class Evidence extends HTMLLIElement{
 
     constructor(name: string){
         super();
-
-        //Name Element
-        this._name = document.createElement("span");
-        this._name.textContent = name;
-        this._name.className = "name";
-
-        //Include Button
-        this._btnInclude = document.createElement("button");
-        this._btnInclude.textContent = Icons.CHECK_MARK;
-        this._btnInclude.className = "include";
-
-        //Exclude Button
-        this._btnExclude = document.createElement("button");
-        this._btnExclude.textContent = Icons.EX;
-        this._btnExclude.className = "exclude";
-
-        //Reset Button
-        this._btnReset = document.createElement("button");
-        this._btnReset.textContent = Icons.RESET;
-        this._btnReset.className = "reset";
-        this._btnReset.style.display = "none";
-
-        //List Item
         this.className = "evidence";
+
+        this._name       = _("span", {class:"name"}, name);
+        this._btnInclude = _("button", {class:"include"}, Icons.CHECK_MARK);
+        this._btnExclude = _("button", {class: "exclude"}, Icons.EX);
+        this._btnReset   = _("button", {class: "reset", style: "display: none"}, Icons.RESET);
 
         this.reset();
     }
