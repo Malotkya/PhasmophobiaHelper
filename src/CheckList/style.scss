@@ -165,17 +165,24 @@ check-list{
      check-list {
         display: grid;
         grid-template-columns: 200px auto;
+        grid-template-rows: auto auto;
 
         #ghost-section{
             grid-row-start: 2;
+            grid-column-start: 2;
         }
     
         #display-section{
-            grid-row: span 2;
+            grid-column-start: 2;
+            grid-row-start: 1;
             order: 1;
         }
+
+        #evidence-section {
+            grid-row-start: 1;
+            grid-row-end: 3;
+        }
     
-        .ghost-list li,
         .evidence-list li{
             width: 100% !important;
             border: none !important;
@@ -209,16 +216,17 @@ check-list{
             max-width: 200px;
         }
 
-        #ghost-section{
-            order: -1;
-        }
-
         #display ol {
             justify-content: space-evenly;
         }
 
         #display-section{
             flex-grow: 1;
+        }
+
+        .ghost-list li {
+            width: 100% !important;
+            border: none !important;
         }
     }
 }
