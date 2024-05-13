@@ -10,7 +10,7 @@ module.exports = {
     entry: {
         index: [
             path.join(__dirname, "src", "index.ts"),
-            path.join(__dirname, "public", "index.css")
+            path.join(__dirname, "src", "style.scss")
         ]
     },
     devtool: prod?  undefined: 'source-map',
@@ -22,13 +22,13 @@ module.exports = {
                 exclude: /node_modules/
             },
             {
-                test: /\.css$/,
-                exclude: /node_modules/,
-                use:[
+                test: /\.scss$/,
+                use: [
                     {
-                        loader: "file-loader",
-                        options: {name: 'index.min.css'}
-                    }
+                        loader: 'file-loader',
+                        options: { name: 'style.css'}
+                    },
+                    'sass-loader'
                 ]
             }
         ],
