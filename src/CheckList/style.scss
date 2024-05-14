@@ -50,11 +50,19 @@ check-list{
         .yes{
             background-color: $green;
             order: -1;
+
+            &:hover, &:focus {
+                background-color: $light-green;
+            }
         }
 
         .no{
             background-color: $red;
             order: 1;
+
+            &:hover, &:focus {
+                background-color: $light-red;
+            }
         }
     }
 
