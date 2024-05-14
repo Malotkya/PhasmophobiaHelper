@@ -59,7 +59,6 @@ export default class HuntTimer extends Timer {
 
         //Change Event Listener
         this.addEventListener("change", (event:Event)=>{
-            event.stopPropagation();
             this.updateValue();
         })
 
