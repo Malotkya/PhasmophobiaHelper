@@ -148,6 +148,7 @@ export default class HTMLToggleInputElement extends HTMLElement {
     private update(){
         this._slider.style.left = this._input.checked? "calc(2.5em - 2ch - 5px)" : "4px";
         this.style.backgroundColor = this._input.checked? "cyan" : "white";
+        this._input.value = this._options[Number(this._input.checked)];
     }
 }
 
