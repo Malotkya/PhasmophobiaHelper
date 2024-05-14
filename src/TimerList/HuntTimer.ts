@@ -58,9 +58,7 @@ export default class HuntTimer extends Timer {
         ]);
 
         //Change Event Listener
-        this.addEventListener("change", (event:Event)=>{
-            this.updateValue();
-        })
+        this.addEventListener("change", (event:Event)=>this.updateValue());
 
         //Hunt Intensity Selector
         this._selIntensity = <HTMLSelectElement>_("select", {id: "selIntensity"},
@@ -86,7 +84,7 @@ export default class HuntTimer extends Timer {
      */
     private updateValue(){
         //Get and Validate Hunt Intensity Value
-        let intensity: number = Number(this._selIntensity? this._selIntensity.value: 0);
+        let intensity: number = Number(this._selIntensity.value);
         if(isNaN(intensity) || intensity < 0){
             intensity = 0;
         } else if(intensity >= INTENSITY_OPTIONS.length){
@@ -94,7 +92,7 @@ export default class HuntTimer extends Timer {
         }
 
         //Get and Validate Map Size Value
-        let size: number = Number(this._selSize? this._selSize.value: 0);
+        let size: number = Number(this._selSize.value);
         if(isNaN(size) || size < 0){
             size = 0;
         } else if(size >= SIZE_OPTIONS.length){
@@ -102,7 +100,7 @@ export default class HuntTimer extends Timer {
         }
 
         //Get If Cursed Hunt
-        let cursed: number = Number(this._chbCursed? this._chbCursed.checked: false);
+        let cursed: number = Number(this._chbCursed.checked);
 
         //Calculate Value
         const value = HUNT_DURATION[intensity][size] + (CURSED * cursed);
