@@ -37,9 +37,9 @@ export function appendChildren(element:HTMLElement, children:Array<any>) {
         if(Array.isArray(child)) {
             appendChildren(element, child);
         } else if(child instanceof HTMLElement) {
-            element.appendChild(child);
+            element.append(child);
         } else if(child !== undefined && child !== null){
-            element.innerHTML += String(child);
+            element.append(String(child));
         }
     }
 }
