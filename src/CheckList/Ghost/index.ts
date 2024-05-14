@@ -50,7 +50,7 @@ export default class Ghost extends HTMLLIElement{
 
             _("ul",
                 //Speed Information
-                data.speed? _("li", createSoundButton(data.speed)): null,
+                data.speed? createSoundButton(data.speed): null,
 
                 //Main Information
                 data.info? data.info.map(s=>_("li", s)): null,

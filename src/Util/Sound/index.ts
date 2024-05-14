@@ -15,9 +15,9 @@ import { setAudioFile, playAudio } from "./Audio";
 /** Create Sound Button
  * 
  * @param {number} value 
- * @returns {string}
+ * @returns {Array}
  */
-const SOUND_BUTTON = (value:number):string => `${value}m/s <button class='speed' value='${bpm(value)}'>${SOUND}</button>`;
+const SOUND_BUTTON = (value:number):Array<HTMLElement|string> => [`${value}m/s `, _('button',  {class:'speed', value:bpm(value)}, SOUND)];
 
 /** Main Audio Interface Button
  * 
@@ -129,24 +129,24 @@ export function stopSound(): void{
 /** Create Sound Button
  * 
  * @param {number} speed 
- * @returns {string}
+ * @returns {Array}
  */
-export function createSoundButton(speed: number|Array<number>): string{
+export function createSoundButton(speed: number|Array<number>): HTMLElement{
     if(typeof speed === "number") {
-        return "Moves at "+SOUND_BUTTON(speed);
+        return _("li", "Moves at ", SOUND_BUTTON(speed));
     } else if(Array.isArray(speed)) {
         switch(speed.length){
             case 0:
                 throw new Error(`Empty speed array!`);
                     
             case 1:
-                return "Moves at "+SOUND_BUTTON(speed[0]);
+                return _("li", "Moves at ", SOUND_BUTTON(speed[0]));
                     
             case 2:
-                return "Moves at "+SOUND_BUTTON(speed[0])+" and "+SOUND_BUTTON(speed[1]);
+                return _("li", "Moves at ", SOUND_BUTTON(speed[0]), " and ", SOUND_BUTTON(speed[1]));
 
             default:
-                return "Moves between "+SOUND_BUTTON(speed[0])+" and "+SOUND_BUTTON(speed[speed.length-1]);
+                return _("li", "Moves between ", SOUND_BUTTON(speed[0]), " and ", SOUND_BUTTON(speed[speed.length-1]));
         }
     }
 
