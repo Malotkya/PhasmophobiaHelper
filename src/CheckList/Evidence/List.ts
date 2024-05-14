@@ -30,6 +30,8 @@ export default class EvidenceList extends HTMLElement {
         super()
         this._evidenceThreashold = 1;
         this.className = "sub-section";
+        this._induction = new CustomSet(DEFAULT_EVIDENCE_COUNT);
+        this._deduction = new Set();
 
         this._data = allEvidence.map(data=>{
             const evidence = new Evidence(data);
@@ -66,7 +68,6 @@ export default class EvidenceList extends HTMLElement {
             max: 3,
             min: 0
         });
-        persistAttributes(numEvidence, {value: String(this.evidenceCount)})
         numEvidence.addEventListener("change", (event:Event)=>{
             let value:number = Number(numEvidence.value);
             if(isNaN(value)) {
@@ -84,15 +85,12 @@ export default class EvidenceList extends HTMLElement {
             }
             this.evidenceCount = value;
         });
+        persistAttributes(numEvidence, {value: String(this.evidenceCount)})
 
         this._input = _("div", {class:"input"}, 
             numEvidence,
             _("button", {id: "btnReset"}, "Reset")
         );
-
-        //Create lists
-        this._induction = new CustomSet(DEFAULT_EVIDENCE_COUNT);
-        this._deduction = new Set();
     }
 
     /** Update Ghost List Visibility & Order
