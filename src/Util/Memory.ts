@@ -106,12 +106,8 @@ function setValue(element: HTMLElement, attribute:string, value:string): void{
             }
 
         case "checked":
-            const bool = value.toLowerCase() === "true";
             if(element instanceof HTMLInputElement){
-                element.checked = bool;
-                if(bool){
-                    element.setAttribute("checked", value);
-                }
+                element.checked = value.toLowerCase() === "true";
                 break;
             }
                 
