@@ -68,7 +68,21 @@ export default class EvidenceList extends HTMLElement {
         });
         persistAttributes(numEvidence, {value: String(this.evidenceCount)})
         numEvidence.addEventListener("change", (event:Event)=>{
-            this.evidenceCount = Number(numEvidence.value);
+            let value:number = Number(numEvidence.value);
+            if(isNaN(value)) {
+                numEvidence.value = String(DEFAULT_EVIDENCE_COUNT);
+                value = DEFAULT_EVIDENCE_COUNT;
+                alert("Evidence count must be a number!");
+            }else if(value < 0){
+                numEvidence.value = "0";
+                value = 0;
+                alert("There can't be less then 0 evidence!");
+            } else if(value > DEFAULT_EVIDENCE_COUNT){
+                numEvidence.value = String(DEFAULT_EVIDENCE_COUNT);
+                value = DEFAULT_EVIDENCE_COUNT;
+                alert(`There can't be more then ${DEFAULT_EVIDENCE_COUNT} evidence!`);
+            }
+            this.evidenceCount = value;
         });
 
         this._input = _("div", {class:"input"}, 
@@ -79,8 +93,6 @@ export default class EvidenceList extends HTMLElement {
         //Create lists
         this._induction = new CustomSet(DEFAULT_EVIDENCE_COUNT);
         this._deduction = new Set();
-        
-        
     }
 
     /** Update Ghost List Visibility & Order
@@ -140,18 +152,6 @@ export default class EvidenceList extends HTMLElement {
      */
     public set evidenceCount(value: number){
         this._induction.setMaxSize(value).forEach(e=>e.reset());
-
-        if(isNaN(value)) {
-            value = DEFAULT_EVIDENCE_COUNT;
-            alert("Value is not a number!");
-        }else if(value < 0){
-            value = 0;
-            alert("There can't be less then 0 evidence!");
-        } else if(value > DEFAULT_EVIDENCE_COUNT){
-            value = DEFAULT_EVIDENCE_COUNT;
-            alert(`There can't be more then ${DEFAULT_EVIDENCE_COUNT} evidence!`);
-        }
-
         if(value === 0){
             for(let e of this._data){
                 if(e.name !== "Ghost Orbs")
