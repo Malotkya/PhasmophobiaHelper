@@ -56,7 +56,7 @@ export default class Ghost extends HTMLLIElement{
                 data.info? data.info.map(s=>_("li", s)): null,
 
                 //Required Information
-                data.required? _("li", data.required): null,
+                data.required? _("li", "Always has: "+data.required): null,
             ),
 
             //Additional Info Link
