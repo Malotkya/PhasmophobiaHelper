@@ -115,7 +115,13 @@ export default class EvidenceList extends HTMLElement {
             //Count Evidence Found
             let iScore = 0;
             if(this._evidenceThreashold === DEFAULT_EVIDENCE_COUNT + 1) {
-                iScore = EVIDENCE_SCORE_OVERFLOW;
+                for(let e of this._induction) {
+                    if(ghost.required !== e.name){
+                        iScore += EVIDENCE_SCORE_OVERFLOW;
+                    } else {
+                        iScore -= EVIDENCE_SCORE_OVERFLOW;
+                    }
+                }
             } else {
                 for( let e of this._induction){
                     if(ghost.has(e.name)) {
@@ -125,6 +131,7 @@ export default class EvidenceList extends HTMLElement {
                     }
                 }
             }
+            
 
             if(iScore>1 || dScore >= this._evidenceThreashold) {
                 list.pull(index);
@@ -152,8 +159,11 @@ export default class EvidenceList extends HTMLElement {
         this._induction.setMaxSize(value).forEach(e=>e.reset());
         if(value === 0){
             for(let e of this._data){
-                if(e.name !== "Ghost Orbs")
+                if(e.name !== "Ghost Orbs") {
                     e.style.display = "none";
+                    e.reset();
+                }
+                    
             }
         } else {
             for(let e of this._data)
