@@ -15,8 +15,8 @@ window.onload = () => {
     const checkList = new CheckList();
     const timer = new TimerList();
     const navigation = _("nav", 
-        _("a", {href: "#checkList"}, "Check List"),
-        _("a", {href: "#timers"}, "Timers")
+        _("div", _("a", {href: "#checkList"}, "Check List")),
+        _("div", _("a", {href: "#timers"}, "Timers"))
     )
 
     /** Basic Routing
