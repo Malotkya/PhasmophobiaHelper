@@ -25,17 +25,13 @@ const SOUND_BUTTON = (value:number):Array<HTMLElement|string> => [`${value}m/s `
 const BUTTON_RUNNING_STRING = "Stop Sound";
 const BUTTON_DEFULT_STRING = "Play Normal Speed";
 
-const btnMain = document.createElement("button");
-    btnMain.textContent = BUTTON_DEFULT_STRING;
-    btnMain.id = "btnSound";
-
-
-    btnMain.addEventListener("click", ()=>{
-        if(isPlaying())
-            stopSound();
-        else
-            generateSound(bpm(1.7));
-    });
+const btnMain = _("button", {id: "btnSound"}, BUTTON_DEFULT_STRING);
+btnMain.addEventListener("click", ()=>{
+    if(isPlaying())
+        stopSound();
+    else
+        generateSound(bpm(1.7));
+});
 
 /** Volume Slider
  * 
@@ -51,9 +47,37 @@ const sldVolume = <HTMLInputElement>_("input", {
 });
 const lblVolume = _("span", `${INITAL_VOLUME * 100}%`);
 sldVolume.addEventListener("change", ()=>{
-    lblVolume.textContent = `${Math.round(Number(sldVolume.value) * 100)}%`
+    let value = Number(sldVolume.value);
+    if(isNaN(value)){
+        value = 0;
+        sldVolume.value = "0";
+    }
+    lblVolume.textContent = `${Math.round(value * 100)}%`
 });
 persistAttributes(sldVolume, {value:String(INITAL_VOLUME)});
+
+/** Ghost Speed Slider
+ * 
+ */
+const INITAL_SPEED = 1;
+const sldSpeed = <HTMLInputElement>_("input", {
+    type: "range",
+    id: "sldSpeed",
+    min: 0.5,
+    max: 1.5,
+    step: 0.1,
+    style: "width: 200px"
+});
+const lblSpeed = _("span", `${INITAL_SPEED * 100}%`)
+sldSpeed.addEventListener("change", ()=>{
+    let value = Number(sldSpeed.value);
+    if(isNaN(value)) {
+        value = INITAL_SPEED;
+        sldSpeed.value = String(INITAL_SPEED);
+    }
+    lblSpeed.textContent = `${Math.round(value * 100)}%`;
+});
+persistAttributes(sldSpeed, {value:String(INITAL_SPEED)});
 
 /** Audio Select
  * 
@@ -76,7 +100,9 @@ const lblFootstep  = _("span", "Footstep");
  * 
  * @returns {boolean}
  */
-const isPlaying = ():boolean => btnMain.textContent === BUTTON_RUNNING_STRING;
+function isPlaying():boolean{
+    return btnMain.textContent === BUTTON_RUNNING_STRING;
+}
 
 /** - - - - - Sound Thread Section - - - - -
  * 
@@ -94,7 +120,7 @@ const REFRESH_RATE = 10;
 function soundThread():void {
     if(isPlaying()){
         const now:number = Date.now();
-        if(now >= lastPlayed+speed){
+        if( now >= lastPlayed+(speed/ghostSpeed()) ){
             playAudio(Number(sldVolume.value));
             lastPlayed = now;
         }
@@ -111,6 +137,20 @@ export function generateSound(s: number):void {
     speed = convert(s);
     startSound();
 }
+
+/** Set Ghost Speed
+ * 
+ * @param {number} s - 1 = 100% or normal speed
+ */
+export function setGhostSpeed(s:number):void {
+    sldSpeed.value = String(s);
+    sldSpeed.dispatchEvent(new Event("change"));
+}
+
+/** Get Ghost Speed
+ * 
+ */
+const ghostSpeed = ():number => Number(sldSpeed.value);
 
 /** Start Sound
  * 
@@ -165,7 +205,10 @@ export function makeSoundInterface(): HTMLElement{
         _("div", 
             _("lable", {for: sldVolume.id}, sldVolume, lblVolume)
         ),
-        _("div", {id: "audioSelectWrapper"},
+        _("div", {class: "audioSelectWrapper"}, 
+            _("label", {for: sldSpeed.id}, "Ghost Speed:", sldSpeed, lblSpeed)
+        ),
+        _("div", {class: "audioSelectWrapper"},
             _("label", {for: selAudio.id},
                 lblMetronome,
                 selAudio,
