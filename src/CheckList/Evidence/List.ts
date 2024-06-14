@@ -7,7 +7,6 @@ import { allEvidence } from "./data";
 import Evidence from ".";
 import CustomSet from "../../Util/CustomSet";
 import { createElement as _ } from "../../Util/Element";
-import { persistAttributes } from "../../Util/Memory";
 
 const DEFAULT_EVIDENCE_COUNT = 3;
 const EVIDENCE_SCORE_OVERFLOW = 5;
@@ -68,27 +67,8 @@ export default class EvidenceList extends HTMLElement {
             max: 3,
             min: 0
         });
-        numEvidence.addEventListener("change", (event:Event)=>{
-            let value:number = Number(numEvidence.value);
-            if(isNaN(value)) {
-                numEvidence.value = String(DEFAULT_EVIDENCE_COUNT);
-                value = DEFAULT_EVIDENCE_COUNT;
-                alert("Evidence count must be a number!");
-            }else if(value < 0){
-                numEvidence.value = "0";
-                value = 0;
-                alert("There can't be less then 0 evidence!");
-            } else if(value > DEFAULT_EVIDENCE_COUNT){
-                numEvidence.value = String(DEFAULT_EVIDENCE_COUNT);
-                value = DEFAULT_EVIDENCE_COUNT;
-                alert(`There can't be more then ${DEFAULT_EVIDENCE_COUNT} evidence!`);
-            }
-            this.evidenceCount = value;
-        });
-        persistAttributes(numEvidence, {value: String(this.evidenceCount)})
 
         this._input = _("div", {class:"input"}, 
-            numEvidence,
             _("button", {id: "btnReset"}, "Reset")
         );
     }
@@ -156,6 +136,17 @@ export default class EvidenceList extends HTMLElement {
      * 
      */
     public set evidenceCount(value: number){
+        if(isNaN(value)) {
+            value = DEFAULT_EVIDENCE_COUNT;
+            alert("Evidence count must be a number!");
+        }else if(value < 0){
+            value = 0;
+            alert("There can't be less then 0 evidence!");
+        } else if(value > DEFAULT_EVIDENCE_COUNT){
+            value = DEFAULT_EVIDENCE_COUNT;
+            alert(`There can't be more then ${DEFAULT_EVIDENCE_COUNT} evidence!`);
+        }
+
         this._induction.setMaxSize(value).forEach(e=>e.reset());
         if(value === 0){
             for(let e of this._data){
