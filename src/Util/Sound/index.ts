@@ -56,29 +56,6 @@ sldVolume.addEventListener("change", ()=>{
 });
 persistAttributes(sldVolume, {value:String(INITAL_VOLUME)});
 
-/** Ghost Speed Slider
- * 
- */
-const INITAL_SPEED = 1;
-const sldSpeed = <HTMLInputElement>_("input", {
-    type: "range",
-    id: "sldSpeed",
-    min: 0.5,
-    max: 1.5,
-    step: 0.1,
-    style: "width: 200px"
-});
-const lblSpeed = _("span", `${INITAL_SPEED * 100}%`)
-sldSpeed.addEventListener("change", ()=>{
-    let value = Number(sldSpeed.value);
-    if(isNaN(value)) {
-        value = INITAL_SPEED;
-        sldSpeed.value = String(INITAL_SPEED);
-    }
-    lblSpeed.textContent = `${Math.round(value * 100)}%`;
-});
-persistAttributes(sldSpeed, {value:String(INITAL_SPEED)});
-
 /** Audio Select
  * 
  */
@@ -104,6 +81,23 @@ function isPlaying():boolean{
     return btnMain.textContent === BUTTON_RUNNING_STRING;
 }
 
+/** Ghost Speed
+ * 
+ */
+export const INITAL_SPEED = 1;
+let ghostSpeed:number = INITAL_SPEED;
+
+/** Set Ghost Speed
+ * 
+ * @param {number} s - 1 = 100% or normal speed
+ */
+export function setGhostSpeed(s:number):void {
+    if(isNaN(s) || s <= 0)
+        ghostSpeed = INITAL_SPEED;
+    else
+        ghostSpeed = s;
+}
+
 /** - - - - - Sound Thread Section - - - - -
  * 
  */
@@ -120,7 +114,7 @@ const REFRESH_RATE = 10;
 function soundThread():void {
     if(isPlaying()){
         const now:number = Date.now();
-        if( now >= lastPlayed+(speed/ghostSpeed()) ){
+        if( now >= lastPlayed+(speed/ghostSpeed) ){
             playAudio(Number(sldVolume.value));
             lastPlayed = now;
         }
@@ -138,19 +132,7 @@ export function generateSound(s: number):void {
     startSound();
 }
 
-/** Set Ghost Speed
- * 
- * @param {number} s - 1 = 100% or normal speed
- */
-export function setGhostSpeed(s:number):void {
-    sldSpeed.value = String(s);
-    sldSpeed.dispatchEvent(new Event("change"));
-}
 
-/** Get Ghost Speed
- * 
- */
-const ghostSpeed = ():number => Number(sldSpeed.value);
 
 /** Start Sound
  * 
@@ -204,9 +186,6 @@ export function makeSoundInterface(): HTMLElement{
         _("div", btnMain),
         _("div", 
             _("lable", {for: sldVolume.id}, sldVolume, lblVolume)
-        ),
-        _("div", {class: "audioSelectWrapper"}, 
-            _("label", {for: sldSpeed.id}, "Ghost Speed:", sldSpeed, lblSpeed)
         ),
         _("div", {class: "audioSelectWrapper"},
             _("label", {for: selAudio.id},
