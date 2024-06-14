@@ -61,13 +61,6 @@ export default class EvidenceList extends HTMLElement {
             return evidence;
         });
 
-        const numEvidence = <HTMLInputElement>_("input", {
-            id: "numEvidence",
-            type: "number",
-            max: 3,
-            min: 0
-        });
-
         this._input = _("div", {class:"input"}, 
             _("button", {id: "btnReset"}, "Reset")
         );
