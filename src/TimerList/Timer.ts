@@ -18,7 +18,7 @@ export default class Timer extends HTMLElement implements Task{
     protected _button: HTMLElement;
 
     //Instance Variables
-    private _name: string;
+    protected _name: HTMLElement;
     protected _start: number;
     protected _steps: TimerData
     protected _index: number;
@@ -30,7 +30,7 @@ export default class Timer extends HTMLElement implements Task{
      */
     constructor(name:string, data: TimerData){
         super();
-        this._name = name;
+        this._name = _("h2", {class: "title"}, name);
         this.startTime = 0;
         this._steps = data;
         this._index = this._steps.length;
@@ -118,7 +118,7 @@ export default class Timer extends HTMLElement implements Task{
 
     //Get the id of the timer
     get id():string{
-        return this._name;
+        return this._name.textContent;
     }
 
     set value(value: number){
@@ -134,7 +134,7 @@ export default class Timer extends HTMLElement implements Task{
     }
 
     connectedCallback(){
-        this.appendChild(_("h2", {class: "title"}, this._name));
+        this.appendChild(this._name);
         this.appendChild(this._button);
         this.appendChild(this._valueElement);
         this.appendChild(this._infoElement);

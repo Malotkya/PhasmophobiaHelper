@@ -67,7 +67,13 @@ export default class HuntTimer extends Timer {
         this._chbCursed.addEventListener("change", ()=>this.updateValue());
         persistAttributes(this._chbCursed, {checked: "false"});
         
-        this.setAttribute("id", "huntTimer");
+        this._name.innerHTML += "&nbsp;&nbsp;";
+        this._name.appendChild(
+            _("label", {for: "chbCursed", style:"font-weight:normal;font-size: 1.1rem"},
+                this._chbCursed,
+                " Cursed"
+            )
+        );
     }
 
     set intencity(value:number){
@@ -113,18 +119,6 @@ export default class HuntTimer extends Timer {
         //Update Timer
         this._steps[0].time = value;
         this._steps[1].time = value + MINUTE;
-    }
-
-    connectedCallback(): void {
-        super.connectedCallback();
-        this.insertBefore(
-            _("div", {class: "input"},
-                _("label", {for: "chbCursed"},
-                    this._chbCursed,
-                    " Cursed"
-                )
-            )
-        , this._button);
     }
 }
 
