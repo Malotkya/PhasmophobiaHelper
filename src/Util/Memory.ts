@@ -4,7 +4,6 @@
  * 
  * @author Alex Malotky
  */
-import HTMLToggleInputElement from "./HTMLToggleInput";
 
 /** Attribute Interface
  * 
@@ -79,7 +78,7 @@ export function persistAttributes(element: HTMLElement, initValues: attributes){
 function getValue(element: HTMLElement, attribute: string): string{
     switch(attribute){
         case "value":
-            if(element instanceof HTMLInputElement || element instanceof HTMLSelectElement || element instanceof HTMLTextAreaElement || element instanceof HTMLToggleInputElement)
+            if(element instanceof HTMLInputElement || element instanceof HTMLSelectElement || element instanceof HTMLTextAreaElement)
                 return element.value;
 
         case "checked":
@@ -100,7 +99,7 @@ function getValue(element: HTMLElement, attribute: string): string{
 function setValue(element: HTMLElement, attribute:string, value:string): void{
     switch(attribute){
         case "value":
-            if(element instanceof HTMLInputElement || element instanceof HTMLSelectElement || element instanceof HTMLToggleInputElement) {
+            if(element instanceof HTMLInputElement || element instanceof HTMLSelectElement) {
                 element.value = value;
                 break;
             }
