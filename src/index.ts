@@ -1,5 +1,6 @@
 import CheckList from "./CheckList";
 import TimerList from "./TimerList";
+import Settings from "./Settings";
 import { createElement as _, appendChildren } from "./Util/Element";
 import {makeSoundInterface} from "./Util/Sound";
 import {makeClockInterface} from "./Util/Clock";
@@ -14,9 +15,11 @@ window.onload = () => {
 
     const checkList = new CheckList();
     const timer = new TimerList();
+    const settings = new Settings(checkList, timer.huntTimer)
     const navigation = _("nav", 
         _("div", _("a", {href: "#checkList"}, "Check List")),
-        _("div", _("a", {href: "#timers"}, "Timers"))
+        _("div", _("a", {href: "#timers"}, "Timers")),
+        _("div", _("a", {href: "#settings"}, "Settings"))
     )
 
     /** Basic Routing
@@ -32,6 +35,10 @@ window.onload = () => {
 
             case "timers":
                 main.appendChild(timer);
+                break;
+
+            case "settings":
+                main.appendChild(settings);
                 break;
 
             default:
