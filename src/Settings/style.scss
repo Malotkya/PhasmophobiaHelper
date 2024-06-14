@@ -1,0 +1,25 @@
+@import "../constants.scss";
+
+settings-menu {
+    min-width: 320px;
+    max-width: 600px;
+    margin: 0 auto;
+    display: block;
+    background-color: $dark-gray;
+    padding: 0.2rem;
+    border-radius: 0.33rem;
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.3rem;
+
+    label {
+        max-width: 350px;
+        display: flex;
+        margin: 0 auto;
+        justify-content: space-between;
+        margin-bottom: 5px;
+
+        input, select {
+            text-align: center;
+        }
+    }
+}
