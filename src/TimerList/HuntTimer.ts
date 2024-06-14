@@ -17,14 +17,14 @@ const HUNT_DURATION: Array<Array<number>> = [
 ];
 
 //Hunt Intensity Select Options
-const INTENSITY_OPTIONS = [
+export const INTENSITY_OPTIONS = [
     "Amature / Low",
     "Intermediate / Medium",
     "Profesional+ / High"
 ]
 
 //Map Size Select Options
-const SIZE_OPTIONS = [
+export const SIZE_OPTIONS = [
     "Small",
     "Medium",
     "Large"
@@ -38,8 +38,9 @@ const CURSED: number = 20000;
  */
 export default class HuntTimer extends Timer {
     //HTML Input Elements
-    private _selIntensity: HTMLSelectElement;
-    private _selSize: HTMLSelectElement;
+    private _intencity: number;
+    private _size: number;
+
     private _chbCursed: HTMLInputElement;
 
     /** Constructor
@@ -57,53 +58,57 @@ export default class HuntTimer extends Timer {
             }
         ]);
 
-        //Change Event Listener
-        this.addEventListener("change", (event:Event)=>this.updateValue());
-
-        //Hunt Intensity Selector
-        this._selIntensity = <HTMLSelectElement>_("select", {id: "selIntensity"},
-            INTENSITY_OPTIONS.map((value, index)=>_("option", {value:index}, value))
-        );
-        persistAttributes(this._selIntensity, {value:"0"});
-
-        //Max Size Selector
-        this._selSize = <HTMLSelectElement>_("select", {id:"selMapSize"},
-            SIZE_OPTIONS.map((value, index)=>_("option", {value:index}, value))
-        );
-        persistAttributes(this._selSize, {value:"0"});
+        //Default Values
+        this._intencity = 0;
+        this._size = 0;
 
         //Cursed Checkbox
         this._chbCursed = <HTMLInputElement>_("input", {type:"checkbox", id:"chbCursed"});
+        this._chbCursed.addEventListener("change", ()=>this.updateValue());
         persistAttributes(this._chbCursed, {checked: "false"});
         
         this.setAttribute("id", "huntTimer");
+    }
+
+    set intencity(value:number){
+        if(isNaN(value) || value < 0){
+            this._intencity = 0;
+        } else if(value >= INTENSITY_OPTIONS.length){
+            this._intencity = INTENSITY_OPTIONS.length-1;
+        } else {
+            this._intencity = value;
+        }
+        this.updateValue();
+    }
+
+    get intencity():number{
+        return this._intencity;
+    }
+
+    set size(value:number){
+        if(isNaN(value) || value < 0){
+            this._size = 0;
+        } else if(value >= INTENSITY_OPTIONS.length){
+            this._size = SIZE_OPTIONS.length-1;
+        } else {
+            this._size = value;
+        }
+        this.updateValue();
+    }
+
+    get size():number{
+        return this._size;
     }
 
     /** Update Timer Value
      * 
      */
     private updateValue(){
-        //Get and Validate Hunt Intensity Value
-        let intensity: number = Number(this._selIntensity.value);
-        if(isNaN(intensity) || intensity < 0){
-            intensity = 0;
-        } else if(intensity >= INTENSITY_OPTIONS.length){
-            intensity = INTENSITY_OPTIONS.length-1;
-        }
-
-        //Get and Validate Map Size Value
-        let size: number = Number(this._selSize.value);
-        if(isNaN(size) || size < 0){
-            size = 0;
-        } else if(size >= SIZE_OPTIONS.length){
-            size = SIZE_OPTIONS.length-1;
-        }
-
         //Get If Cursed Hunt
         let cursed: number = Number(this._chbCursed.checked);
 
         //Calculate Value
-        const value = HUNT_DURATION[intensity][size] + (CURSED * cursed);
+        const value = HUNT_DURATION[this._intencity][this._size] + (CURSED * cursed);
 
         //Update Timer
         this._steps[0].time = value;
@@ -114,14 +119,6 @@ export default class HuntTimer extends Timer {
         super.connectedCallback();
         this.insertBefore(
             _("div", {class: "input"},
-                _("label", {for: "selMapSize"},
-                    "Map Size:\n",
-                    this._selSize
-                ),
-                _("label", {for:"selIntensity"}, 
-                    "Duration:\n",
-                    this._selIntensity
-                ),
                 _("label", {for: "chbCursed"},
                     this._chbCursed,
                     " Cursed"
