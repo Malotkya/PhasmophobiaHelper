@@ -66,10 +66,4 @@ node_modules/
 .env
 
 # build files
-public/index.js
-public/index.js.map
-public/index.js.LICENSE.txt
-public/firebase.js
-public/firebase.js.map
-public/firebase.js.LICENSE.txt
-public/style.css
+build
