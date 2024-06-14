@@ -5,13 +5,15 @@ import { createElement as _ } from "../Util/Element";
 
 export default class TimerList extends HTMLElement {
     private _data: Array<Timer>;
+    private _hunt: HuntTimer;
 
     constructor(){
         super();
+        this._hunt = new HuntTimer();
         this._data = [
             new Timer("Smudge Cooldown", SMUDGE_DATA),
             new Timer("Hunt Cooldown", HUNT_DATA),
-            new HuntTimer()
+            this._hunt
         ]
     }
 
@@ -21,6 +23,10 @@ export default class TimerList extends HTMLElement {
 
     disconnectedCallback(){
         this.innerHTML = "";
+    }
+
+    get huntTimer():HuntTimer {
+        return this._hunt;
     }
 }
 
