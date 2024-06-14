@@ -71,6 +71,7 @@ export default class CheckList extends HTMLElement{
      */
     set evidenceCount(value: number){
         this._evidenceList.evidenceCount = value;
+        this.update();
     }
 
     connectedCallback(){
