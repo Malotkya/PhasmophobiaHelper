@@ -7,7 +7,7 @@
     "dev": "npx webpack-cli --env dev",
     "watch": "npx webpack-cli --watch",
     "build": "npx webpack-cli --env prod",
-    "clean": "rm ./public/index.js.map && npm run build",
+    "clean": "rm -r ./build && npm run build",
     "deploy": "npm run clean && firebase deploy"
   },
   "author": "",
