@@ -80,13 +80,7 @@ export default class CheckList extends HTMLElement{
             this._speedList,
             this._huntList
         );
-        evidence.addEventListener("click", (event:Event)=>{
-            if((<HTMLElement>event.target).id === "btnReset") {
-                this.reset();
-            } else {
-                this.update();
-            }
-        })
+        evidence.addEventListener("click", ()=>this.update());
         this.appendChild(evidence);
         this.appendChild(_("section", {id: "ghost-section"},
             this._ghostList

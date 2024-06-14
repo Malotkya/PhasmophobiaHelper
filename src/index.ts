@@ -5,7 +5,7 @@ import { createElement as _, appendChildren } from "./Util/Element";
 import {makeSoundInterface} from "./Util/Sound";
 import {makeClockInterface} from "./Util/Clock";
 
-const ANCHOR_REGEX = /(?<=#).*(?=$)/;
+const ANCHOR_REGEX = /(?<=#).*?(?=$|\?)/;
 
 const Error = (message:string) => _("p", {class: "error"}, message);
 
@@ -21,6 +21,9 @@ window.onload = () => {
         _("div", _("a", {href: "#timers"}, "Timers")),
         _("div", _("a", {href: "#settings"}, "Settings"))
     )
+
+    const btnReset = _("button", {id:"btnReset"}, "Reset Evidence");
+    btnReset.addEventListener("click", ()=>checkList.reset());
 
     /** Basic Routing
      * 
@@ -64,6 +67,7 @@ window.onload = () => {
     header.appendChild(navigation);
     header.appendChild(_("div", {class: "status"}, 
         makeClockInterface(),
+        _("div", {class: "input"}, btnReset),
         makeSoundInterface()
     ));
 

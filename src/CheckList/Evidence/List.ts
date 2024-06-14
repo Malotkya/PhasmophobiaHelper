@@ -16,7 +16,6 @@ const EVIDENCE_SCORE_OVERFLOW = 5;
  */
 export default class EvidenceList extends HTMLElement {
     private _data: Array<Evidence>
-    private _input: HTMLElement;
 
     //custom sets holding evidence proven/disproven
     private _induction: CustomSet<Evidence>; 
@@ -60,10 +59,6 @@ export default class EvidenceList extends HTMLElement {
 
             return evidence;
         });
-
-        this._input = _("div", {class:"input"}, 
-            _("button", {id: "btnReset"}, "Reset")
-        );
     }
 
     /** Update Ghost List Visibility & Order
@@ -167,7 +162,6 @@ export default class EvidenceList extends HTMLElement {
 
     connectedCallback() {
         this.appendChild(_("h2", "Evidence:"));
-        this.appendChild(this._input);
         this.appendChild(_("ul", {class:"evidence-list"}, this._data));
     }
 
