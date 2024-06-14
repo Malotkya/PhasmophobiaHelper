@@ -64,12 +64,12 @@ window.onload = () => {
         }
     });
 
-    header.appendChild(navigation);
-    header.appendChild(_("div", {class: "status"}, 
+    appendChildren(header, [
+        navigation,
         makeClockInterface(),
         _("div", {class: "input"}, btnReset),
         makeSoundInterface()
-    ));
+    ])
 
     const initMatch = window.location.href.match(ANCHOR_REGEX);
     if(initMatch){

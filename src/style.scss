@@ -10,8 +10,9 @@ body {
     display: flex;
     flex-direction: column;
     margin: auto;
-    //min-height: calc(100vh - 1);
+    height: 100vh;
     min-width: 320px;
+    color: $white;
 }
 
 h1 {
@@ -46,33 +47,74 @@ input {
 nav {
     display: flex;
     justify-content: center;
-}
+    flex-grow: 1;
+    flex-basis: 100%;
 
-nav > div {
-    list-style: 2;
-}
+    & > div {
+        list-style: 2;
+    }
 
+    a {
+        background-color: $dark-gray;
+        font-size: 1.25rem;
+        margin: .5rem;
+        padding: 0.25rem;
+        text-decoration: none;
+        border-radius: 0.25rem;
+        display: inline-block;
 
-nav a {
-    background-color: $dark-gray;
-    font-size: 1.25rem;
-    margin: .5rem;
-    padding: 0.25rem;
-    text-decoration: none;
-    border-radius: 0.25rem;
-    display: inline-block
-}
-
-nav a:hover, nav a:focus{
-    background-color: $medium-gray;
+        &:hover, &:focus {
+            background-color: $medium-gray;
+        }
+    }
 }
 
 /* Header & Footer Styling */
 
 header {
+    justify-content: center;
     display: flex;
     flex-flow: row wrap;
     margin: 10px;
+
+    #audioInterface{
+        flex-direction: column-reverse;
+        flex-basis: 100%;
+    }
+}
+
+@media(min-width: $tablet){
+    header {
+
+        #audioInterface{
+            flex-direction: row;
+        }
+    }
+}
+
+@media(min-width: 605px){
+    header {
+        nav {
+            flex-basis: auto;
+        }
+
+        #audioInterface {
+            flex-basis: auto;
+        }
+    }
+}
+
+@media(min-width: 700px){
+    header {
+
+        nav {
+            justify-content: left;
+        }
+
+        #hiddenBreak {
+            flex-basis: 100%;
+        }
+    }
 }
 
 footer {
