@@ -10,7 +10,7 @@ import HTMLToggleInputElement from "./HTMLToggleInput";
  * 
  */
 interface attributes{
-    [name:string]:string
+    [name:string]:string|number
 }
 
 /** Persist Key
@@ -63,7 +63,7 @@ export function persistAttributes(element: HTMLElement, initValues: attributes){
             initValues = JSON.parse(value);
         }
         for(let name in initValues){
-            setValue(element, name, initValues[name]);
+            setValue(element, name, String(initValues[name]));
         }
         element.dispatchEvent(new Event('change'));
         persistMap.set(element.id, Object.getOwnPropertyNames(initValues));
