@@ -1,18 +1,21 @@
 @import "./constants.scss";
 
-*{
+* {
     box-sizing: border-box;
 }
 
 body {
     background-color: $black;
-    color: $light-gray;
+    color: $white;
     display: flex;
     flex-direction: column;
     margin: auto;
-    height: 100vh;
+    min-height: 100vh;
     min-width: 320px;
-    color: $white;
+
+    main {
+        flex-grow: 1;
+    }
 }
 
 h1 {
@@ -20,7 +23,7 @@ h1 {
     margin: 0;
 }
 
-h2{
+h2 {
     text-align: center;
 }
 
@@ -30,7 +33,7 @@ ul, ol {
 }
 
 a:link,
-a:visited{
+a:visited {
     color: cyan;
 }
 
