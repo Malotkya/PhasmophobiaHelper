@@ -4,6 +4,10 @@
  */
 import { Fallback } from "./Fallback";
 
+//File Names
+export const METRONOME_FILE = "./sound/metronome-85688.mp3";
+export const FOOTSTEP_FILE  = "./sound/footstep.wav";
+
 /** Audio Interface
  * 
  * Contains elements of Audio that is required by this file.

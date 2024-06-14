@@ -6,7 +6,6 @@
  */
 import { SOUND } from "../UnicodeIcons";
 import { persistAttributes } from "../Memory";
-import HTMLToggleInputElement from "../HTMLToggleInput";
 import { createElement as _ } from "../Element";
 
 import {bpm, convert} from "./Speed";
@@ -56,23 +55,6 @@ sldVolume.addEventListener("change", ()=>{
 });
 persistAttributes(sldVolume, {value:String(INITAL_VOLUME)});
 
-/** Audio Select
- * 
- */
-const METRONOME = "./sound/metronome-85688.mp3";
-const FOOTSTEP  = "./sound/footstep.wav";
-
-const selAudio = new HTMLToggleInputElement(METRONOME, FOOTSTEP);
-    selAudio.id = "selAudio";
-    selAudio.addEventListener("change", ()=>{
-        setAudioFile(selAudio.value);
-    });
-    persistAttributes(selAudio, {value:METRONOME});
-
-const lblMetronome = _("span", "Metronome");
-const lblFootstep  = _("span", "Footstep");
-
-    
 /** Sound is Playing
  * 
  * @returns {boolean}
@@ -186,13 +168,6 @@ export function makeSoundInterface(): HTMLElement{
         _("div", btnMain),
         _("div", 
             _("lable", {for: sldVolume.id}, sldVolume, lblVolume)
-        ),
-        _("div", {class: "audioSelectWrapper"},
-            _("label", {for: selAudio.id},
-                lblMetronome,
-                selAudio,
-                lblFootstep
-            )
         )
     );
 }
