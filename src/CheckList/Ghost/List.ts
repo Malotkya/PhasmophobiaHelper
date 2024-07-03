@@ -22,7 +22,7 @@ export default class GhostList extends HTMLElement {
     }
 
     sort() {
-        this._data = this._data.sort((lhs:Ghost, rhs:Ghost)=>{
+        this._data.sort((lhs:Ghost, rhs:Ghost)=>{
             let value = lhs.rawOrder() - rhs.rawOrder();
             if(value === 0){
                 return lhs.name.localeCompare(rhs.name);
