@@ -5,6 +5,7 @@ import { createElement as _, appendChildren } from "../../Util/Element";
 export default class GhostList extends HTMLElement {
     private _target:HTMLElement;
     private _data:Array<Ghost>;
+    private _removed:Array<Ghost>;
 
     constructor(displayTarget:HTMLElement) {
         super();
@@ -20,6 +21,16 @@ export default class GhostList extends HTMLElement {
         this.reset();
     }
 
+    sort() {
+        this._data = this._data.sort((lhs:Ghost, rhs:Ghost)=>{
+            let value = lhs.rawOrder() - rhs.rawOrder();
+            if(value === 0){
+                return lhs.name.localeCompare(rhs.name);
+            }
+            return value;
+        });
+    }
+
     update() {
         const list = this.querySelector("ul");
         if(list){
@@ -31,11 +42,17 @@ export default class GhostList extends HTMLElement {
     
     reset() {
         this._data = [];
+        this._removed = [];
 
         for(let data of allGhosts){
             this._data.push(new Ghost(data));
         }
         this.update();
+    }
+
+    clear() {
+        while(this._removed.length > 0)
+            this._data.push(this._removed.pop());
     }
 
     private display(target?:Ghost|null){
@@ -53,7 +70,7 @@ export default class GhostList extends HTMLElement {
     }
 
     pull(index:number):void {
-        this._data.splice(index, 1);
+        this._removed.push(this._data.splice(index, 1)[0]);
     }
 
     connectedCallback() {
