@@ -130,6 +130,10 @@ export default class Ghost extends HTMLLIElement{
         this._disproven = false;
     }
 
+    public rawOrder():number {
+        return Number(this.style.order);
+    }
+
     /** Hide Ghost from List
      * 
      */
