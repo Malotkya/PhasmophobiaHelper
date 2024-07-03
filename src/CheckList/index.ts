@@ -48,10 +48,11 @@ export default class CheckList extends HTMLElement{
      * 
      */
     public update(){
-        this._ghostList.reset();
+        this._ghostList.clear();
         this._evidenceList.filter(this._ghostList);
         this._speedList.filter(this._ghostList);
         this._huntList.filter(this._ghostList);
+        this._ghostList.sort();
         this._ghostList.update();
     }
 
