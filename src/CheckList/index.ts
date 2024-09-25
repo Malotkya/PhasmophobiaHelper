@@ -75,6 +75,13 @@ export default class CheckList extends HTMLElement{
         this.update();
     }
 
+    /**Evidence Count Getter Passthrough
+     * 
+     */
+    get evidenceCount():number {
+        return this._evidenceList.evidenceCount;
+    }
+
     connectedCallback(){
         const evidence = _("section", {id: "evidence-section"}, 
             this._evidenceList,
