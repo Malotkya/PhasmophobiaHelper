@@ -7,7 +7,7 @@
     "dev": "npx webpack-cli --env dev",
     "watch": "npx webpack-cli --watch",
     "build": "npx webpack-cli --env prod",
-    "clean": "rm -r ./build && npm run build",
+    "clean": "rimraf ./build && npm run build",
     "preview": "wrangler pages dev",
     "deploy": "npm run clean && wrangler pages deploy"
   },
@@ -17,6 +17,7 @@
     "copy-webpack-plugin": "^12.0.2",
     "css-minimizer-webpack-plugin": "^5.0.0",
     "file-loader": "^6.2.0",
+    "rimraf": "^6.0.1",
     "sass": "^1.77.1",
     "sass-loader": "^14.2.1",
     "ts-loader": "^9.4.2",
