@@ -21,7 +21,7 @@ export interface audio_interface {
 }
 
 //Audio Interface Object
-let audio:audio_interface = new Fallback();
+let audio:audio_interface|undefined;
 
 /** Set Audio File
  * 
@@ -31,7 +31,10 @@ let audio:audio_interface = new Fallback();
  */
 export function setAudioFile(fileName:string){
     audio = new Audio(fileName);
-    audio.onerror = () => audio = new Fallback();
+    audio.onerror = () => {
+        alert(`Failed to load '${fileName}', switching to fallback.`);
+        audio = new Fallback();
+    }
 }
 
 /** Play Audio File
@@ -40,7 +43,9 @@ export function setAudioFile(fileName:string){
  * @param {number} volume 
  */
 export function playAudio(volume: number){
-    const temp:audio_interface = audio.cloneNode();
-    temp.volume = volume;
-    temp.play();
+    if(audio){
+        const temp:audio_interface = audio.cloneNode();
+        temp.volume = volume;
+        temp.play();
+    }
 }
