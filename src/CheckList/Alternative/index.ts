@@ -14,4 +14,4 @@ export default class Alternative extends Evidence{
     }
 }
 
-customElements.define("alternative-item", Alternative, {extends: "li"});
+customElements.define("alternative-item", Alternative);

@@ -11,7 +11,7 @@ import { createElement as _ } from "../../Util/Element";
 /** Ghost Class
  * 
  */
-export default class Ghost extends HTMLLIElement{
+export default class Ghost extends HTMLElement{
     // Elements
     private _name: HTMLElement;
     private _info: Element;
@@ -33,6 +33,7 @@ export default class Ghost extends HTMLLIElement{
     constructor(data: GhostData){
         super();
         this._disproven = false;
+        this.role = "listitem";
         
         //Name Information
         this._name = _("h2", {class: "name"}, data.name);
@@ -375,4 +376,4 @@ export default class Ghost extends HTMLLIElement{
     }
 }
 
-customElements.define("ghost-item", Ghost, {extends: "li"})
+customElements.define("ghost-item", Ghost)

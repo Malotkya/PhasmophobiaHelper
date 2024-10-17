@@ -27,7 +27,7 @@ export function createAllEvidence(target: Element): Array<Evidence>{
 /** Evidence Class
  * 
  */
-export default class Evidence extends HTMLLIElement{
+export default class Evidence extends HTMLElement{
     private _name: Element;
     private _btnInclude: HTMLElement;
     private _btnExclude: HTMLElement;
@@ -36,6 +36,7 @@ export default class Evidence extends HTMLLIElement{
     constructor(name: string){
         super();
         this.className = "evidence";
+        this.role = "listitem";
 
         this._name       = _("span", {class:"name"}, name);
         this._btnInclude = _("button", {class:"include"}, Icons.CHECK_MARK);
@@ -128,4 +129,4 @@ export default class Evidence extends HTMLLIElement{
     }
 }
 
-customElements.define("evidence-item", Evidence, {extends: "li"});
+customElements.define("evidence-item", Evidence);
