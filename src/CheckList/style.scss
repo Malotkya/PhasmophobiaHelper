@@ -66,8 +66,8 @@ check-list{
         }
     }
 
-    #hunt-list li,
-    #speed-list li{
+    #hunt-list [role=listitem],
+    #speed-list [role=listitem]{
         width: 33% ;
         padding: 0 5px;
     }
@@ -155,10 +155,10 @@ check-list{
             }
         }
 
-        #hunt-list li:nth-child(3n),
-        #hunt-list li:nth-child(3n-1),
-        #speed-list li:nth-child(3n),
-        #speed-list li:nth-child(3n-1),
+        #hunt-list [role=listitem]:nth-child(3n),
+        #hunt-list [role=listitem]:nth-child(3n-1),
+        #speed-list [role=listitem]:nth-child(3n),
+        #speed-list [role=listitem]:nth-child(3n-1),
         .evidence:nth-child(2n),
         .ghost:nth-child(2n){
             border-left: 2px solid #aaa;
@@ -191,7 +191,7 @@ check-list{
             grid-row-end: 3;
         }
     
-        .evidence-list li{
+        .evidence-list [role=listitem]{
             width: 100% !important;
             border: none !important;
         }
@@ -233,7 +233,7 @@ check-list{
             flex-grow: 1;
         }
 
-        .ghost-list li {
+        .ghost-list [role=listitem] {
             width: 100% !important;
             border: none !important;
         }
