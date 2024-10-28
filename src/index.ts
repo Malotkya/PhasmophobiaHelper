@@ -31,8 +31,8 @@ window.onload = () => {
      */
     const routing = (target:string) => {
         main.innerHTML = "";
-        switch(target){
-            case "checkList":
+        switch(target.toLocaleLowerCase()){
+            case "checklist":
                 main.appendChild(checkList);
                 break;
 
@@ -76,5 +76,15 @@ window.onload = () => {
         routing(initMatch[0]);
     } else {
         routing("checkList");
+    }
+
+    window.onpopstate = () => {
+        const match = window.location.href.match(ANCHOR_REGEX);
+
+        if(match) {
+            routing(match[0])
+        } else {
+            routing("CheckList");
+        }
     }
 }
