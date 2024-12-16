@@ -169,6 +169,11 @@ label span {
     height: 4ch;
 }
 
+.blood {
+    color: #880808 !important;
+    accent-color: #880808 !important;
+}
+
 /*Tablet Viewport */
 @media(min-width: $tablet){
     .status {

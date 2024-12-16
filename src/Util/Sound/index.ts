@@ -55,6 +55,31 @@ sldVolume.addEventListener("change", ()=>{
 });
 persistAttributes(sldVolume, {value:String(INITAL_VOLUME)});
 
+/** Blood Moon Checkbox
+ * 
+ */
+const chbBloodMoon = <HTMLInputElement>_("input", {
+    type: "checkbox",
+    id: "bloodMoon"
+});
+const lblBloodMoon = _("label", {for: chbBloodMoon.id},
+    chbBloodMoon,
+    "Blood Moon"
+);
+chbBloodMoon.addEventListener("change", ()=>{
+    const value = chbBloodMoon.checked;
+    setBloodMoon(value);
+    if(value) {
+        lblBloodMoon.classList.add("blood");
+        chbBloodMoon.classList.add("blood");
+        sldVolume.classList.add("blood");
+    } else {
+        lblBloodMoon.classList.remove("blood");
+        chbBloodMoon.classList.remove("blood");
+        sldVolume.classList.remove("blood");
+    }
+});
+
 /** Sound is Playing
  * 
  * @returns {boolean}
@@ -67,7 +92,9 @@ function isPlaying():boolean{
  * 
  */
 export const INITAL_SPEED = 1;
+const BLOOD_MOON_SPEED = 0.25;
 let ghostSpeed:number = INITAL_SPEED;
+let bloodMoon:boolean = false;
 
 /** Set Ghost Speed
  * 
@@ -75,9 +102,25 @@ let ghostSpeed:number = INITAL_SPEED;
  */
 export function setGhostSpeed(s:number):void {
     if(isNaN(s) || s <= 0)
-        ghostSpeed = INITAL_SPEED;
+        ghostSpeed = INITAL_SPEED + (bloodMoon? BLOOD_MOON_SPEED: 0);
     else
-        ghostSpeed = s;
+        ghostSpeed = s + (bloodMoon? BLOOD_MOON_SPEED: 0);
+}
+
+/** Set Blood Moon Speed Bonus
+ * 
+ * @param {boolean} value
+ */
+export function setBloodMoon(value:boolean):void {
+    if(bloodMoon !== value){
+        if(value){
+            ghostSpeed += BLOOD_MOON_SPEED;
+        } else {
+            ghostSpeed -= BLOOD_MOON_SPEED;
+        }
+
+        bloodMoon = value;
+    }
 }
 
 /** - - - - - Sound Thread Section - - - - -
@@ -168,6 +211,9 @@ export function makeSoundInterface(): HTMLElement{
         _("div", btnMain),
         _("div", 
             _("lable", {for: sldVolume.id}, sldVolume, lblVolume)
+        ),
+        _("div",
+            lblBloodMoon
         )
     );
 }
