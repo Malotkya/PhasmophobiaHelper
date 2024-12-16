@@ -7,9 +7,9 @@ const TIMEOUT = 1000; //1 second;
 export default class SpeedFinder extends HTMLElement {
     connectedCallback(){
         const btnTapper = _("button", {id: "tapper"});
-        const lblBpm = _("span");
-        const lblMps = _("span");
-        const lblClass = _("span");
+        const lblBpm = _("span", 0);
+        const lblMps = _("span", 0);
+        const lblClass = _("span", getSpeedClass(0));
 
         let lastTap:number = 0;
         const taps: Array<number> = [];
@@ -26,9 +26,11 @@ export default class SpeedFinder extends HTMLElement {
          * @returns {number}
          */
         function averageTaps():number {
+            if(taps.length === 0)
+                return 0;
+
             let total:number = 0;
             taps.forEach(v=>total+=v);
-
             return inverseConvert(total / taps.length);
         }
 
@@ -43,6 +45,8 @@ export default class SpeedFinder extends HTMLElement {
 
             if(!hasTimmedOut()) {
                 window.setTimeout(update, REFRESH_RATE);
+            } else {
+                console.debug(taps);
             }
         }
 
@@ -56,7 +60,7 @@ export default class SpeedFinder extends HTMLElement {
                 while(taps.length > 0)
                     taps.pop();
 
-                update();
+                setTimeout(update);
             } else {
                 taps.push(now - lastTap);
             }
@@ -65,9 +69,9 @@ export default class SpeedFinder extends HTMLElement {
         });
 
         this.appendChild(_("p", 
-            "Bpm: ", lblBpm,
-            " ", "M/s: ", lblMps,
-            " ", "Speed: ", lblClass
+            lblBpm, " bpm | ",
+            lblMps, " m/s", _("br"),
+            lblClass
         ));
         this.appendChild(btnTapper);
     }
