@@ -130,7 +130,7 @@ let speed:number = convert(bpm(1.7));
 let lastPlayed:number = Date.now();
 
 //Sound Thread Refresh Rate
-const REFRESH_RATE = 10;
+export const REFRESH_RATE = 10;
 
 /** Sound Thread
  * 
