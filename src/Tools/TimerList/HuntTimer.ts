@@ -1,7 +1,7 @@
 import {MINUTE} from "./data";
 import Timer from "./Timer";
-import { persistAttributes } from "../Util/Memory";
-import { createElement as _ } from "../Util/Element";
+import { persistAttributes } from "../../Util/Memory";
+import { createElement as _ } from "../../Util/Element";
 
 //Durations of Hunts in Milliseconds
 // Gotten from: https://phasmophobia.fandom.com/wiki/Hunt#Start_of_a_hunt

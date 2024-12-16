@@ -1,7 +1,7 @@
 import HuntTimer from "./HuntTimer";
 import Timer from "./Timer";
 import { SMUDGE_DATA, HUNT_DATA } from "./data";
-import { createElement as _ } from "../Util/Element";
+import { createElement as _ } from "../../Util/Element";
 
 export default class TimerList extends HTMLElement {
     private _data: Array<Timer>;
