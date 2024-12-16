@@ -1,5 +1,5 @@
 import CheckList from "./CheckList";
-import TimerList from "./TimerList";
+import Tools from "./Tools";
 import Settings from "./Settings";
 import { createElement as _, appendChildren } from "./Util/Element";
 import {makeSoundInterface} from "./Util/Sound";
@@ -14,11 +14,11 @@ window.onload = () => {
     const header = document.querySelector("header");
 
     const checkList = new CheckList();
-    const timer = new TimerList();
-    const settings = new Settings(checkList, timer.huntTimer)
+    const tools = new Tools();
+    const settings = new Settings(checkList, tools.timers.huntTimer)
     const navigation = _("nav", 
         _("div", _("a", {href: "#checkList"}, "Check List")),
-        _("div", _("a", {href: "#timers"}, "Timers")),
+        _("div", _("a", {href: "#tools"}, "Tools")),
         _("div", _("a", {href: "#settings"}, "Settings"))
     )
 
@@ -36,8 +36,8 @@ window.onload = () => {
                 main.appendChild(checkList);
                 break;
 
-            case "timers":
-                main.appendChild(timer);
+            case "tools":
+                main.appendChild(tools);
                 break;
 
             case "settings":
