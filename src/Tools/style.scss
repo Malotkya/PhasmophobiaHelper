@@ -1,3 +1,4 @@
+@import "../constants.scss";
 @import "./TimerList/style.scss";
 
 speed-finder {
@@ -5,6 +6,10 @@ speed-finder {
     max-width: 500px;
     margin: 0 auto;
     flex-flow: column;
+    background-color: $dark-gray;
+    padding: 16px 5px;
+    padding-top: 0;
+    border-radius: 0.25rem;
 
     > p {
         text-align: center;
@@ -12,5 +17,6 @@ speed-finder {
 
     > button {
         min-height: 200px;
+        background-color: $light-gray;
     }
 }
