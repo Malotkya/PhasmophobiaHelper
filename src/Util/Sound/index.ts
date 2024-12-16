@@ -8,7 +8,7 @@ import { SOUND } from "../UnicodeIcons";
 import { persistAttributes } from "../Memory";
 import { createElement as _ } from "../Element";
 
-import {bpm, convert} from "./Speed";
+import {bpm, convert, getSpeedModifier, setBloodMoon} from "./Speed";
 import { setAudioFile, playAudio } from "./Audio";
 
 /** Create Sound Button
@@ -88,41 +88,6 @@ function isPlaying():boolean{
     return btnMain.textContent === BUTTON_RUNNING_STRING;
 }
 
-/** Ghost Speed
- * 
- */
-export const INITAL_SPEED = 1;
-const BLOOD_MOON_SPEED = 0.25;
-let ghostSpeed:number = INITAL_SPEED;
-let bloodMoon:boolean = false;
-
-/** Set Ghost Speed
- * 
- * @param {number} s - 1 = 100% or normal speed
- */
-export function setGhostSpeed(s:number):void {
-    if(isNaN(s) || s <= 0)
-        ghostSpeed = INITAL_SPEED + (bloodMoon? BLOOD_MOON_SPEED: 0);
-    else
-        ghostSpeed = s + (bloodMoon? BLOOD_MOON_SPEED: 0);
-}
-
-/** Set Blood Moon Speed Bonus
- * 
- * @param {boolean} value
- */
-export function setBloodMoon(value:boolean):void {
-    if(bloodMoon !== value){
-        if(value){
-            ghostSpeed += BLOOD_MOON_SPEED;
-        } else {
-            ghostSpeed -= BLOOD_MOON_SPEED;
-        }
-
-        bloodMoon = value;
-    }
-}
-
 /** - - - - - Sound Thread Section - - - - -
  * 
  */
@@ -139,7 +104,7 @@ export const REFRESH_RATE = 10;
 function soundThread():void {
     if(isPlaying()){
         const now:number = Date.now();
-        if( now >= lastPlayed+(speed/ghostSpeed) ){
+        if( now >= lastPlayed+(speed/getSpeedModifier()) ){
             playAudio(Number(sldVolume.value));
             lastPlayed = now;
         }

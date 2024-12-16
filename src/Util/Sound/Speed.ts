@@ -81,6 +81,41 @@ export const convert = (speed: number):number => (60 / speed) * 1000;
  */
 export const inverseConvert = (speed: number):number => (1000 / speed) * 60;
 
+/** ------------------------ Ghost Speed & Blood Moon Values ------------------------
+ * 
+ */
+export const INITAL_SPEED = 1;
+const BLOOD_MOON_SPEED = 0.25;
+let ghostSpeed:number = INITAL_SPEED;
+let bloodMoon:number = 0;
+
+/** Set Ghost Speed
+ * 
+ * @param {number} s - 1 = 100% or normal speed
+ */
+export function setGhostSpeed(s:number):void {
+    if(isNaN(s) || s <= 0)
+        ghostSpeed = INITAL_SPEED;
+    else
+        ghostSpeed = s;
+}
+
+/** Set Blood Moon Speed Bonus
+ * 
+ * @param {boolean} value
+ */
+export function setBloodMoon(value:boolean):void {
+    bloodMoon = value? BLOOD_MOON_SPEED: 0;
+}
+
+/** Get Speed Modifier
+ * 
+ * @returns {number}
+ */
+export function getSpeedModifier():number {
+    return ghostSpeed + bloodMoon;
+}
+
 /** Get Classification
  * 
  * @param {number} speed in bpm
@@ -88,6 +123,8 @@ export const inverseConvert = (speed: number):number => (1000 / speed) * 60;
  */
 export function getSpeedClass(value:number) {
     const average = KNOWN_SPEEDS.get(1.7);
+
+    value = value / getSpeedModifier()
 
     if(value === 0 || isNaN(value)){
         return "Unknown";

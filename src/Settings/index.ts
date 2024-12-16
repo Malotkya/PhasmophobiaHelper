@@ -2,7 +2,7 @@ import { createElement as _, appendChildren } from "../Util/Element";
 import { persistAttributes } from "../Util/Memory";
 import CheckList from "../CheckList";
 import HuntTimer, {INTENSITY_OPTIONS, SIZE_OPTIONS} from "../Tools/TimerList/HuntTimer";
-import { setGhostSpeed, INITAL_SPEED } from "../Util/Sound";
+import { setGhostSpeed, INITAL_SPEED } from "../Util/Sound/Speed";
 import { setAudioFile, FOOTSTEP_FILE, METRONOME_FILE } from "../Util/Sound/Audio";
 
 
