@@ -1,6 +1,7 @@
 import { createElement as _ } from "../Util/Element";
 import { REFRESH_RATE } from "../Util/Sound";
 import { inverseConvert, mps, getSpeedClass } from "../Util/Sound/Speed";
+import SpecialArray from "../Util/SpecialArray";
 
 const TIMEOUT = 1000; //1 second;
 
@@ -12,7 +13,7 @@ export default class SpeedFinder extends HTMLElement {
         const lblClass = _("span", getSpeedClass(0));
 
         let lastTap:number = 0;
-        const taps: Array<number> = [];
+        const taps: SpecialArray<number> = new SpecialArray(20);
 
         /** Detect if the Person has stopped tapping.
          * 
@@ -39,8 +40,8 @@ export default class SpeedFinder extends HTMLElement {
          */
         function update(){
             const average = averageTaps();
-            lblBpm.textContent = String(average);
-            lblMps.textContent = String(mps(average));
+            lblBpm.textContent = average.toFixed(2);
+            lblMps.textContent = mps(average).toFixed(2);
             lblClass.textContent = getSpeedClass(average);
 
             if(!hasTimmedOut()) {
@@ -57,8 +58,7 @@ export default class SpeedFinder extends HTMLElement {
             const now = Date.now();
 
             if(hasTimmedOut()){
-                while(taps.length > 0)
-                    taps.pop();
+                taps.clear();
 
                 setTimeout(update);
             } else {
