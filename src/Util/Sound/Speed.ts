@@ -79,7 +79,7 @@ export const convert = (speed: number):number => (60 / speed) * 1000;
  * @param {number} speed in bpMs
  * @returns {number} im bpm
  */
-export const inverseConvert = (speed: number):number => (speed / 1000) / 60;
+export const inverseConvert = (speed: number):number => (1000 / speed) * 60;
 
 /** Get Classification
  * 
@@ -89,7 +89,7 @@ export const inverseConvert = (speed: number):number => (speed / 1000) / 60;
 export function getSpeedClass(value:number) {
     const average = KNOWN_SPEEDS.get(1.7);
 
-    if(value === 0){
+    if(value === 0 || isNaN(value)){
         return "Unknown";
     }else if(value < average - 8) {
         return "Slow";
