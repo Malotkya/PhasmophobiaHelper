@@ -46,8 +46,6 @@ export default class SpeedFinder extends HTMLElement {
 
             if(!hasTimmedOut()) {
                 window.setTimeout(update, REFRESH_RATE);
-            } else {
-                console.debug(taps);
             }
         }
 
