@@ -26,7 +26,7 @@ const KNOWN_SPEEDS = new Map<number, number>();
  */
 function inverseKnownSpeedsGet(value:number):number|undefined {
     for(const [mps, bpm] of KNOWN_SPEEDS.entries()) {
-        if(value >= bpm-2.5 && value <= bpm+2.5)
+        if(value >= bpm-1 && value <= bpm+1)
             return mps;
     }
 }
