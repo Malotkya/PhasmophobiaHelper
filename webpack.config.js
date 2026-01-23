@@ -1,7 +1,10 @@
 const path = require('path');
+const {DefinePlugin} = require("webpack");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
+
+const {version} = require("./package.json");
 
 //test if in production environment
 const prod = process.argv.includes('prod');
@@ -17,7 +20,8 @@ module.exports = {
         index: [
             path.join(source_directory, "index.ts"),
             path.join(source_directory, "style.scss")
-        ]
+        ],
+        sw: path.join(source_directory, "sw.ts")
     },
     devtool: prod?  undefined: 'source-map',
     module: {
@@ -44,18 +48,13 @@ module.exports = {
             }
         ],
     },
+    target: "web",
     resolve: {
         extensions: ['.tsx', '.ts', '.js'],
-    },
-    experiments: {
-        outputModule: true
     },
     output: { 
         filename: '[name].js',
         path: build_directory,
-        library: {
-            type: 'module'
-        }
     },
     plugins: [
         new CopyWebpackPlugin({
@@ -63,6 +62,9 @@ module.exports = {
                 to: build_directory,
                 from: public_directory
             }]
+        }),
+        new DefinePlugin({
+            VERSION: JSON.stringify(version)
         })
     ],
     optimization: {

@@ -4,10 +4,13 @@ import Settings from "./Settings";
 import { createElement as _, appendChildren } from "./Util/Element";
 import {makeSoundInterface} from "./Util/Sound";
 import {makeClockInterface} from "./Util/Clock";
+import { loadServiceWorker } from "./Util/ServiceWorker";
 
 const ANCHOR_REGEX = /(?<=#).*?(?=$|\?)/;
 
 const Error = (message:string) => _("p", {class: "error"}, message);
+
+loadServiceWorker("sw.js");
 
 window.onload = () => {
     const main = document.querySelector("main")!;
