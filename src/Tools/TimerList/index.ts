@@ -1,6 +1,6 @@
 import HuntTimer from "./HuntTimer";
 import Timer from "./Timer";
-import { SMUDGE_DATA, HUNT_DATA } from "./data";
+import { SMUDGE_DATA, HUNT_DATA, MINUTE } from "./data";
 import { createElement as _ } from "../../Util/Element";
 
 export default class TimerList extends HTMLElement {
@@ -13,6 +13,10 @@ export default class TimerList extends HTMLElement {
         this._data = [
             new Timer("Smudge Cooldown", SMUDGE_DATA),
             new Timer("Hunt Cooldown", HUNT_DATA),
+            new Timer("Obambu Form", [{
+                time: 2 * MINUTE,
+                info: "Obambu Form Switched!"
+            }]),
             this._hunt
         ]
     }
