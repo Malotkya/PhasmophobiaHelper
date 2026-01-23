@@ -34,7 +34,12 @@ module.exports = {
                         loader: 'file-loader',
                         options: { name: 'style.css'}
                     },
-                    'sass-loader'
+                    {
+                        loader: 'sass-loader',
+                        options: {
+                            api: "modern"
+                        }
+                    }
                 ]
             }
         ],

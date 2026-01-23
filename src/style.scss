@@ -1,12 +1,15 @@
-@import "./constants.scss";
+@use "./constants.scss";
+@forward './CheckList/style.scss';
+@forward "./Tools/style.scss";
+@forward "./Settings/style.scss";
 
 * {
     box-sizing: border-box;
 }
 
 body {
-    background-color: $black;
-    color: $white;
+    background-color: constants.$black;
+    color: constants.$white;
     display: flex;
     flex-direction: column;
     margin: auto;
@@ -58,7 +61,7 @@ nav {
     }
 
     a {
-        background-color: $dark-gray;
+        background-color: constants.$dark-gray;
         font-size: 1.25rem;
         margin: .5rem;
         padding: 0.25rem;
@@ -67,7 +70,7 @@ nav {
         display: inline-block;
 
         &:hover, &:focus {
-            background-color: $medium-gray;
+            background-color: constants.$medium-gray;
         }
     }
 }
@@ -86,7 +89,7 @@ header {
     }
 }
 
-@media(min-width: $tablet){
+@media(min-width: constants.$tablet){
     header {
 
         #audioInterface{
@@ -121,7 +124,7 @@ header {
 }
 
 footer {
-    background-color: $dark-gray;
+    background-color: constants.$dark-gray;
     text-align: center;
     padding: 10px;
 }
@@ -175,19 +178,16 @@ label span {
 }
 
 /*Tablet Viewport */
-@media(min-width: $tablet){
+@media(min-width: constants.$tablet){
     .status {
         flex-flow: row nowrap;
     }
 }
 
 /* Desktop Viewport */
-@media(min-width: $desktop){
+@media(min-width: constants.$desktop){
     body{
         max-width: 1000px;
     }
 }
 
-@import './CheckList/style.scss';
-@import "./Tools/style.scss";
-@import "./Settings/style.scss";

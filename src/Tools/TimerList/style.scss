@@ -1,4 +1,4 @@
-@import "../../constants.scss";
+@use "../../constants.scss";
 
 #clock {
     font-family: monospace;
@@ -22,7 +22,7 @@ timer-list {
                 display: flex;
                 flex-flow: row wrap;
                 justify-content: center;
-                background-color: $dark-gray;
+                background-color: constants.$dark-gray;
                 padding: 16px 5px;
                 padding-top: 0;
                 border-radius: 0.25rem;

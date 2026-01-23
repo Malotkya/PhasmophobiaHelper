@@ -1,4 +1,4 @@
-@import "../constants.scss";
+@use "../constants.scss";
 
 /* Check List Mobile Viewport */
 check-list{
@@ -10,7 +10,7 @@ check-list{
         .sub-section{
             display: block;
             margin: 0.25rem;
-            background-color: $dark-gray;
+            background-color: constants.$dark-gray;
             padding: .2rem;
             border-radius: 0.33rem;
         }
@@ -41,27 +41,27 @@ check-list{
             padding: 0 5px;
 
             &:hover, &:focus {
-                background-color: $medium-gray;
+                background-color: constants.$medium-gray;
             }
         }
     }
 
     .evidence-list {
         .yes{
-            background-color: $green;
+            background-color: constants.$green;
             order: -1;
 
             &:hover, &:focus {
-                background-color: $light-green;
+                background-color: constants.$light-green;
             }
         }
 
         .no{
-            background-color: $red;
+            background-color: constants.$red;
             order: 1;
 
             &:hover, &:focus {
-                background-color: $light-red;
+                background-color: constants.$light-red;
             }
         }
     }
@@ -107,7 +107,7 @@ check-list{
             margin-bottom: 0;
 
             li {
-                background-color: $medium-gray;
+                background-color: constants.$medium-gray;
                 padding: 3px 5px;
                 border-radius: 0.25rem;
                 text-align: center;
@@ -118,7 +118,7 @@ check-list{
         ul{
             margin: 1rem;
             padding: .2rem 3ch;
-            background-color: $medium-gray;
+            background-color: constants.$medium-gray;
             border-radius: 0.25rem;
             list-style-type: circle;
             margin-bottom: 0;
@@ -169,7 +169,7 @@ check-list{
 
 
 /*Tablet Viewport */
-@media(min-width: $tablet){
+@media(min-width: constants.$tablet){
      check-list {
         display: grid;
         grid-template-columns: 200px auto;
@@ -213,7 +213,7 @@ check-list{
 }
 
 /* Desktop Viewport */
-@media(min-width: $desktop){
+@media(min-width: constants.$desktop){
 
     check-list {
         display: flex;

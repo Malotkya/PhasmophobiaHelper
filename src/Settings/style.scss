@@ -1,11 +1,11 @@
-@import "../constants.scss";
+@use "../constants.scss";
 
 settings-menu {
     min-width: 320px;
     max-width: 600px;
     margin: 0 auto;
     display: block;
-    background-color: $dark-gray;
+    background-color: constants.$dark-gray;
     padding: 0.2rem;
     border-radius: 0.33rem;
     padding-bottom: 0.5rem;
