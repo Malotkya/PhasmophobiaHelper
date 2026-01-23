@@ -33,7 +33,7 @@ document.addEventListener("change", function PersistListener(event:Event){
     if(target.id && persistMap.has(target.id)){
         const att:attributes = {};
 
-        for(let name of persistMap.get(target.id))
+        for(let name of persistMap.get(target.id)!)
             att[name] = getValue(target, name);
         
         localStorage.setItem(KEY(target.id), JSON.stringify(att));
@@ -57,7 +57,7 @@ export function persistAttributes(element: HTMLElement, initValues: attributes){
     if( element.id.length === 0) {
         console.warn("No id on element to persist:\n%o", element);
     } else {
-        const value:string = localStorage.getItem(KEY(element.id));
+        const value = localStorage.getItem(KEY(element.id));
         if(value){
             initValues = JSON.parse(value);
         }
@@ -86,7 +86,7 @@ function getValue(element: HTMLElement, attribute: string): string{
                 return String(element.checked);
 
         default:
-            return element.getAttribute(attribute);
+            return element.getAttribute(attribute) || "";
     }
 }
 

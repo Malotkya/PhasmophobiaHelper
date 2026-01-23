@@ -10,8 +10,8 @@ const ANCHOR_REGEX = /(?<=#).*?(?=$|\?)/;
 const Error = (message:string) => _("p", {class: "error"}, message);
 
 window.onload = () => {
-    const main = document.querySelector("main");
-    const header = document.querySelector("header");
+    const main = document.querySelector("main")!;
+    const header = document.querySelector("header")!;
 
     const checkList = new CheckList();
     const tools = new Tools();

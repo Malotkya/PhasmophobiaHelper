@@ -28,7 +28,7 @@ export function createAllEvidence(target: Element): Array<Evidence>{
  * 
  */
 export default class Evidence extends HTMLElement{
-    private _name: Element;
+    private _name: HTMLElement;
     private _btnInclude: HTMLElement;
     private _btnExclude: HTMLElement;
     private _btnReset: HTMLElement;

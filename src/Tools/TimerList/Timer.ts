@@ -31,7 +31,7 @@ export default class Timer extends HTMLElement implements Task{
     constructor(name:string, data: TimerData){
         super();
         this._name = _("h2", {class: "title"}, name);
-        this.startTime = 0;
+        this._start = 0;
         this._steps = data;
         this._index = this._steps.length;
 
@@ -102,7 +102,7 @@ export default class Timer extends HTMLElement implements Task{
      * 
      * @param {number} value 
      */
-    private updateElements(value?:number): void {
+    private updateElements(value:number = 0): void {
         this.value = value / 1000;
         //Update timer info
         if(this._index >= this._steps.length){

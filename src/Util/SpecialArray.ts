@@ -11,7 +11,7 @@ export default class SpecialArray<T> extends Array<T> {
             if(this.length >= this.max)
                 this.pop();
 
-            super.push(items.pop())
+            super.push(items.pop()!)
         }
 
         return this.length;

@@ -13,8 +13,8 @@ export const TIC_LENGTH: number = 0.03;
 /** Fallback Audio Class
  * 
  */
-export class Fallback implements audio_interface{
-    private _context: AudioContext|undefined;
+export class Fallback extends EventTarget implements audio_interface{
+    private _context: AudioContext;
     private _masterGain: any;
 
     /** Constructor
@@ -22,13 +22,14 @@ export class Fallback implements audio_interface{
      * @param {number} volume 
      */
     constructor(volume: string|number = 0.5){
+        super();
         const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
         if(AudioContext){
             this._context = new AudioContext();
             this._masterGain = this._context.createGain();
             this._masterGain.connect(this._context.destination);
         } else {
-            alert("Unable to play Fallback audio!");
+            throw new Error("Unable to play Fallback audio!");
         }
 
         if(volume)

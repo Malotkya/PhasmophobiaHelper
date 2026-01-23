@@ -122,7 +122,7 @@ export function getSpeedModifier():number {
  * @returns {string}
  */
 export function getSpeedClass(value:number) {
-    const average = KNOWN_SPEEDS.get(1.7);
+    const average = KNOWN_SPEEDS.get(1.7) || 0;
 
     value = value / getSpeedModifier()
 

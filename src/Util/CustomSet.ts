@@ -30,7 +30,7 @@ export default class CustomSet<t>{
      * 
      * @returns {t}
      */
-    private shrink():t{
+    private shrink():t|undefined{
         return this._list.pop();
     }
 
@@ -49,7 +49,7 @@ export default class CustomSet<t>{
         this._maxSize = value;
 
         while(this._list.length > this._maxSize){
-            output.push(this.shrink());
+            output.push(this.shrink()!);
         }
         
         return output;
@@ -62,8 +62,8 @@ export default class CustomSet<t>{
      * @param {t} item 
      * @returns {t} - item removed
      */
-    public add(item: t):t{
-        let output: t|undefined = undefined;
+    public add(item: t):t|undefined{
+        let output: t|undefined;
 
         if(!this._list.includes(item)){
             if(this._list.length >= this._maxSize)
@@ -97,7 +97,7 @@ export default class CustomSet<t>{
     public clear(): Array<t>{
         let output: Array<t> = [];
         while(this._list.length > 0)
-            output.push(this.shrink());
+            output.push(this.shrink()!);
         return output;
     }
 

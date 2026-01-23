@@ -13,10 +13,9 @@ export const FOOTSTEP_FILE  = "./sound/footstep.wav";
  * Contains elements of Audio that is required by this file.
  * 
  */
-export interface audio_interface {
+export type audio_interface = EventTarget&{
     play: ()=>Promise<void>;
     volume: number,
-    onerror?: OnErrorEventHandlerNonNull,
     cloneNode: ()=>any
 }
 
@@ -31,10 +30,10 @@ let audio:audio_interface|undefined;
  */
 export function setAudioFile(fileName:string){
     audio = new Audio(fileName);
-    audio.onerror = () => {
+    audio?.addEventListener("error", () => {
         alert(`Failed to load '${fileName}', switching to fallback.`);
         audio = new Fallback();
-    }
+    });
 }
 
 /** Play Audio File

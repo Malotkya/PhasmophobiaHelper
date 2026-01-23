@@ -11,8 +11,8 @@ export interface GhostData {
     required?: string,
     link?: string,
     warning?: string,
-    speed?: number|Array<number>,
-    hunt?: number|Array<number>
+    speed?: number|number[],
+    hunt?: number|number[]
 }
 
 export const allGhosts:Array<GhostData> = [

@@ -21,8 +21,8 @@ export default class Ghost extends HTMLElement{
     //Ghost Info
     private _disproven: boolean;
     private _required: string;
-    private _hunt: number|Array<number>;
-    private _speed: number|Array<number>;
+    private _hunt: number|number[]|undefined;
+    private _speed: number|number[]|undefined;
 
     //List Elements
     private _styleElement: HTMLElement;

@@ -4,8 +4,8 @@ import { createElement as _, appendChildren } from "../../Util/Element";
 
 export default class GhostList extends HTMLElement {
     private _target:HTMLElement;
-    private _data:Array<Ghost>;
-    private _removed:Array<Ghost>;
+    private _data:Array<Ghost> = [];
+    private _removed:Array<Ghost> = [];
 
     constructor(displayTarget:HTMLElement) {
         super();
@@ -52,7 +52,7 @@ export default class GhostList extends HTMLElement {
 
     clear() {
         while(this._removed.length > 0)
-            this._data.push(this._removed.pop());
+            this._data.push(this._removed.pop()!);
     }
 
     private display(target?:Ghost|null){
