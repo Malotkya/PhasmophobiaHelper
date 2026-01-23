@@ -2,7 +2,12 @@
 declare const self: ServiceWorkerGlobalScope;
 
 const CACHED_FILES = [
-    "/"
+    "/",
+    "/index.js",
+    "/style.css",
+    "/favicon.ico",
+    "/sound/footstep.wav",
+    "/sound/metronome-85688.mp3",
 ]
 
 self.addEventListener("install", (event)=>{
