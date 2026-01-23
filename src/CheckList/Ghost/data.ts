@@ -25,7 +25,7 @@ export const allGhosts:Array<GhostData> = [
         hunt: 50,
         info: [
             "Will target one player at a time",
-            "Perfers singing/humming during ghost events.",
+            "Perfers singing/humming during ghost events, and will always be female.",
             "Has a chance to roam to it's target.",
             "Has a special sound that can only be herd with the parabolic mic."
         ],
@@ -423,5 +423,70 @@ export const allGhosts:Array<GhostData> = [
         ],
         speed: 1.7,
         hunt: 50,
+    },
+    {   name: "Dayan",
+        link: "https://www.youtube.com/watch?v=HMWUNFP5Vw8",
+        info: [
+            "Will always have a female name and ghost model",
+            "Moves slower if a player is within 10m of the ghost and is not moving.",
+            "Moves faster if a player is within 10m of the ghost and is moving.",
+            "Moves at the normal ghost speed when noone is within 10m of the ghost.",
+        ],
+        warning: "Has a chance to hunt early if a person is moving near it.",
+        evidence: [
+            "EMF Level 5",
+            "Ghost Orbs",
+            "Spirit Box"
+        ],
+        speed: [
+            1.13,
+            1.7,
+            2.25
+        ],
+        hunt: [
+            65,
+            50
+        ]
+    },
+    {   name: "Gallu",
+        link: "https://www.youtube.com/watch?v=HMWUNFP5Vw8",
+        info: [
+            "If you use a saftey item on the ghost, it will increase its speed (enraged).",
+            "If you use and item when the ghost is already fully enraged, it move slower (weakened).",
+            "If the ghost is fully enraged at the end of a hunt, it will become weakened.",
+            "If you smudge the ghost when it is weakend, the ghost will be smudged for 7s."
+        ],
+        warning: "Saftey Items: Smudge Stick, Crucifix, Salt",
+        evidence: [
+            "EMF Level 5",
+            "Ultraviolet",
+            "Spirit Box"
+        ],
+        speed: [
+            1.36,
+            1.7,
+            2.04
+        ],
+        hunt: 50
+    },
+    {   name: "Obambu",
+        link: "https://www.youtube.com/watch?v=HMWUNFP5Vw8",
+        info: [
+            "Will change between Active/Inactive every 2 minutes",
+            "The timer is going at all times, and will switch even if the ghost is not hunting."
+        ],
+        evidence: [
+            "Ghost Writing",
+            "Ultraviolet",
+            "D.O.T.s Projector"
+        ],
+        speed: [
+            1.36,
+            2.04
+        ],
+        hunt: [
+            65,
+            15
+        ]
     }
 ];
