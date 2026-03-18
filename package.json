@@ -1,6 +1,6 @@
 {
     "name": "phasmophobia-helper",
-    "version": "0.9.0.8",
+    "version": "0.9.1",
     "description": "",
     "main": "index.js",
     "scripts": {
@@ -16,8 +16,8 @@
     "license": "ISC",
     "devDependencies": {
         "concurrently": "^9.2.1",
-        "copy-webpack-plugin": "^12.0.2",
-        "css-minimizer-webpack-plugin": "^5.0.0",
+        "copy-webpack-plugin": "^14.0.0",
+        "css-minimizer-webpack-plugin": "^8.0.0",
         "file-loader": "^6.2.0",
         "rimraf": "^6.0.1",
         "sass": "^1.97.3",
