@@ -38,7 +38,17 @@ document.addEventListener("change", function PersistListener(event:Event){
         
         localStorage.setItem(KEY(target.id), JSON.stringify(att));
     }
-})
+});
+
+export function reloadAttributes(element: HTMLElement) {
+    const data = localStorage.getItem(KEY(element.id));
+    if(data){
+        const values = JSON.parse(data);
+        for(const name in values) {
+            setValue(element, name, String(values[name]));
+        }
+    }
+}
 
 /** Persist Attributes Function
  * 
