@@ -4,6 +4,7 @@
  */
 import * as Icons from "../../Util/UnicodeIcons";
 import { GhostData } from "@Data/Ghosts";
+import { AudioInitData } from "../../Util/Sound/Audio";
 import { EVIDENCE_OVERRIDE, SPEED_TYPES, HUNT_TYPES } from "@Data/Evidence";
 import { createElement as _ } from "../../Util/Element";
 
@@ -19,7 +20,7 @@ export default class Ghost extends HTMLElement{
     readonly speed: number|number[]|undefined;
     readonly hunt: number|number[]|undefined;
     readonly warning:string|undefined;
-    readonly info:string[];
+    readonly info:(string|(AudioInitData&{content?:string}))[];
     readonly link: string|undefined;
 
     

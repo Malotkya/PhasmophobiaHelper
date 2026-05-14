@@ -9,7 +9,7 @@ import { persistAttributes } from "../Memory";
 import { createElement as _ } from "../Element";
 
 import {bpm, convert, getSpeedModifier, setBloodMoon} from "./Speed";
-import { setAudioFile, playAudio } from "./Audio";
+import { setAudioFile, playAudio, setVolume } from "./Audio";
 
 /** Create Sound Button
  * 
@@ -51,7 +51,8 @@ sldVolume.addEventListener("change", ()=>{
         value = 0;
         sldVolume.value = "0";
     }
-    lblVolume.textContent = `${Math.round(value * 100)}%`
+    lblVolume.textContent = `${Math.round(value * 100)}%`;
+    setVolume(value);
 });
 persistAttributes(sldVolume, {value:String(INITAL_VOLUME)});
 
@@ -105,7 +106,7 @@ function soundThread():void {
     if(isPlaying()){
         const now:number = Date.now();
         if( now >= lastPlayed+(speed/getSpeedModifier()) ){
-            playAudio(Number(sldVolume.value));
+            playAudio();
             lastPlayed = now;
         }
     }

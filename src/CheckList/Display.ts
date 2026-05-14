@@ -2,6 +2,7 @@ import type Ghost from "./Ghost";
 import { createElement as _ } from "../Util/Element";
 import { createSoundButton } from "../Util/Sound";
 import { generateSound } from "../Util/Sound";
+import { AudioData } from "../Util/Sound/Audio";
 
 export default class DisplayElement extends HTMLElement {
     private _name:HTMLHeadingElement = _("h2", {class: "name"});
@@ -40,7 +41,17 @@ export default class DisplayElement extends HTMLElement {
         if(ghost.speed) {
             this._info.append(createSoundButton(ghost.speed));
         }
-        this._info.append(...ghost.info.map(s=>_("li", s)));
+        this._info.append(...ghost.info.map(s=>_("li",
+            typeof s === "object"?
+                [
+                    s.content?
+                        s.content + "\n":
+                        null,
+                    AudioData(s)
+                ]:
+                s
+            )
+        ));
         if(ghost.required) {
             this._info.append(_("li", "Always has: "+ghost.required))
         }
