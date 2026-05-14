@@ -1,0 +1,8 @@
+{
+	"files.exclude": {
+		".vscode": true,
+		"build": true,
+		".wrangler": true,
+		"node_modules": true,
+	}
+}
