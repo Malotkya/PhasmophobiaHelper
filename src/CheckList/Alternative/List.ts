@@ -8,9 +8,10 @@
  */
 import Ghost from "../Ghost";
 import GhostList from "../Ghost/List";
-import { AlternativeEvidence, SPEED_TYPES, HUNT_TYPES } from "@Data/Evidence";
+import { AlternativeEvidence } from "@Data/Evidence";
 import Alternative from ".";
 import { createElement as _ } from "../../Util/Element";
+import { JsonSettingsEditor, HuntDataEditor, SpeedDataEditor } from "../../Settings/Data";
 
 /** Alternative Check List
  * 
@@ -25,9 +26,9 @@ export default class AlternativeList extends HTMLElement{
     /** Constructor
      * 
      * @param {string} title 
-     * @param {AlternativeData} data
+     * @param {sonSettingsEditor<AlternativeEvidence>} input
      */
-    constructor(title:string, data: AlternativeEvidence){
+    constructor(title:string, input: JsonSettingsEditor<AlternativeEvidence>){
         super();
         this.className = "sub-section";
         this._induction = new Set();
@@ -35,32 +36,35 @@ export default class AlternativeList extends HTMLElement{
 
         this._title = title;
         this._data = [];
-        for(const name in data){
-            const value = data[name];
-            const alternative = new Alternative(name, value);
-            this._data.push(alternative);
 
-            //Alternate Found
-            alternative.includeEvent(()=>{
-                alternative.found();
-                this._induction.add(alternative);
-                this._deduction.delete(alternative);
-            });
+        input.updateEvent((data)=>{
+            for(const name in data){
+                const value = data[name];
+                const alternative = new Alternative(name, value);
+                this._data.push(alternative);
 
-            //Alternate Not Found
-            alternative.excludeEvent(()=>{
-                alternative.notFound();
-                this._induction.delete(alternative);
-                this._deduction.add(alternative);
-            });
+                //Alternate Found
+                alternative.includeEvent(()=>{
+                    alternative.found();
+                    this._induction.add(alternative);
+                    this._deduction.delete(alternative);
+                });
 
-            //Alternate Reset
-            alternative.resetEvent(()=>{
-                alternative.reset();
-                this._induction.delete(alternative);
-                this._deduction.delete(alternative);
-            });
-        }
+                //Alternate Not Found
+                alternative.excludeEvent(()=>{
+                    alternative.notFound();
+                    this._induction.delete(alternative);
+                    this._deduction.add(alternative);
+                });
+
+                //Alternate Reset
+                alternative.resetEvent(()=>{
+                    alternative.reset();
+                    this._induction.delete(alternative);
+                    this._deduction.delete(alternative);
+                });
+            }
+        })
     }
 
     /** Reset Event
@@ -118,13 +122,13 @@ customElements.define("alternative-list", AlternativeList);
 
 export class SpeedList extends AlternativeList {
     constructor(){
-        super("Speed:", SPEED_TYPES);
+        super("Speed:", SpeedDataEditor);
     }
 }
 
 export class HuntList extends AlternativeList {
     constructor(){
-        super("Hunts:", HUNT_TYPES);
+        super("Hunts:", HuntDataEditor);
     }
 }
 

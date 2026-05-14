@@ -4,7 +4,7 @@ import CheckList from "../CheckList";
 import HuntTimer, {INTENSITY_OPTIONS, SIZE_OPTIONS} from "../Tools/TimerList/HuntTimer";
 import { setGhostSpeed, INITAL_SPEED } from "../Util/Sound/Speed";
 import { setAudioFile, FOOTSTEP_FILE, METRONOME_FILE } from "../Util/Sound/Audio";
-
+import { GhostDataEditor, EvidenceDataEditor, SpeedDataEditor, HuntDataEditor } from "./Data";
 
 export default class Settings extends HTMLElement {
     private _numEvidenceCount:HTMLInputElement;
@@ -12,6 +12,8 @@ export default class Settings extends HTMLElement {
     private _selMapSize: HTMLSelectElement;
     private _sldGhostSpeed:HTMLSelectElement;
     private _selAudio:HTMLSelectElement;
+    private _advSettingInput:HTMLInputElement;
+    private _advSettings:HTMLElement;
 
     constructor(checkList:CheckList, huntTimer:HuntTimer) {
         super();
@@ -71,6 +73,24 @@ export default class Settings extends HTMLElement {
             setAudioFile(this._selAudio.value);
         });
         persistAttributes(this._selAudio, {value: FOOTSTEP_FILE});
+
+        this._advSettingInput = _("input", {type: "checkbox", id:"show-adv-settings"});
+        this._advSettings = _("div", {style: "display: none;", hidden:true},
+            GhostDataEditor,
+            EvidenceDataEditor,
+            SpeedDataEditor,
+            HuntDataEditor
+        );
+
+        this._advSettingInput.addEventListener("change", ()=>{
+            if(this._advSettingInput.checked) {
+                this._advSettings.hidden = false;
+                this._advSettings.style.display = "";
+            } else {
+                this._advSettings.hidden = true;
+                this._advSettings.style.display = "none";
+            }
+        })
     }
 
     disconnectedCallback(){
@@ -79,7 +99,7 @@ export default class Settings extends HTMLElement {
 
     connectedCallback() {
         appendChildren(this, [
-            _("h2", "Settings"),
+            _("h2", "Basic Settings"),
             _("label", {for: this._numEvidenceCount.id}, 
                 _("div", "Number of Evidence: "),
                 _("div", this._numEvidenceCount)
@@ -100,6 +120,14 @@ export default class Settings extends HTMLElement {
                 _("div", "Metrinome Sound: "),
                 _("div", this._selAudio)
             ),
+            _("section",
+                _("label", {for: this._advSettingInput.id},
+                    _("div", this._advSettingInput),
+                    _("h2", "Advanced Settings")
+                )
+            )
+            ,
+            this._advSettings
         ])
     }
 }

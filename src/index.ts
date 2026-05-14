@@ -90,5 +90,9 @@ window.onload = () => {
         } else {
             routing("CheckList");
         }
-    }
+    };
+
+    window.addEventListener("reset", ()=>{
+        btnReset.click();
+    });
 }

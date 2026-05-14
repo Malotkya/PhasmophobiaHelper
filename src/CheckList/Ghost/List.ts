@@ -1,7 +1,7 @@
 import Ghost from ".";
-import { AllGhosts } from "@Data/Ghosts";
 import { createElement as _ } from "../../Util/Element";
 import type DisplayElement from "../Display";
+import { GhostDataEditor } from "../../Settings/Data";
 
 export default class GhostList extends HTMLElement {
     private _display:DisplayElement;
@@ -11,11 +11,14 @@ export default class GhostList extends HTMLElement {
         super();
         this.className = "sub-section";
         this._display = displayTarget;
-        this._list = _("ul", {class:"ghost-list"},
-            AllGhosts
-                .sort((a, b)=>a.name.localeCompare(b.name))
-                .map(g => new Ghost(g))
-        );
+        this._list = _("ul", {class:"ghost-list"});
+
+        GhostDataEditor.updateEvent((data)=>{
+            this._list.replaceChildren(...(
+                data.sort((a, b)=>a.name.localeCompare(b.name))
+                    .map(g => new Ghost(g))
+            ));
+        })
 
         this.addEventListener("click", (event:Event)=>{
             const target = (event.target as HTMLElement).closest("[role=listitem]") as Ghost;

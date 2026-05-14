@@ -3,58 +3,59 @@
  * @author Alex Malotky
  */
 import type GhostList from "../Ghost/List";
-import { EvidenceData, DEFAULT_EVIDENCE_COUNT, EVIDENCE_SCORE_OVERFLOW } from "@Data/Evidence";
+import { DEFAULT_EVIDENCE_COUNT, EVIDENCE_SCORE_OVERFLOW } from "@Data/Evidence";
 import Evidence from ".";
 import CustomSet from "../../Util/CustomSet";
 import { createElement as _ } from "../../Util/Element";
-
+import { EvidenceDataEditor } from "../../Settings/Data";
 
 
 /** Evidence List
  * 
  */
 export default class EvidenceList extends HTMLElement {
-    private _data: Array<Evidence>
+    private _data: Array<Evidence> = [];
 
     //custom sets holding evidence proven/disproven
     private _induction: CustomSet<Evidence> = new CustomSet(DEFAULT_EVIDENCE_COUNT);
     private _deduction: Set<Evidence> = new Set();
 
     //Number of evidence needed to rule out a ghost.
-    private _evidenceThreashold: number;
+    private _evidenceThreashold: number = 1;
 
     constructor(){
-        super()
-        this._evidenceThreashold = 1;
+        super();
         this.className = "sub-section";
 
-        this._data = EvidenceData.map(data=>{
-            const evidence = new Evidence(data);
+        EvidenceDataEditor.updateEvent((data)=>{
+            this._data = data.map(value=>{
+                const evidence = new Evidence(value);
 
-            //Evidence Found
-            evidence.includeEvent(()=>{
-                evidence.found();
-                let replaced = this._induction.add(evidence);
-                if(replaced)
-                    replaced.reset();
-                this._deduction.delete(evidence);
+                //Evidence Found
+                evidence.includeEvent(()=>{
+                    evidence.found();
+                    let replaced = this._induction.add(evidence);
+                    if(replaced)
+                        replaced.reset();
+                    this._deduction.delete(evidence);
+                });
+
+                //Evidence Not Found
+                evidence.excludeEvent(()=>{
+                    evidence.notFound();
+                    this._induction.delete(evidence);
+                    this._deduction.add(evidence);
+                });
+
+                //Evidence Reset
+                evidence.resetEvent(()=>{
+                    evidence.reset();
+                    this._induction.delete(evidence);
+                    this._deduction.delete(evidence);
+                });
+
+                return evidence;
             });
-
-            //Evidence Not Found
-            evidence.excludeEvent(()=>{
-                evidence.notFound();
-                this._induction.delete(evidence);
-                this._deduction.add(evidence);
-            });
-
-            //Evidence Reset
-            evidence.resetEvent(()=>{
-                evidence.reset();
-                this._induction.delete(evidence);
-                this._deduction.delete(evidence);
-            });
-
-            return evidence;
         });
     }
 

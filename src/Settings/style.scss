@@ -2,7 +2,7 @@
 
 settings-menu {
     min-width: 320px;
-    max-width: 600px;
+    max-width: 90%;
     margin: 0 auto;
     display: block;
     background-color: constants.$dark-gray;
@@ -11,8 +11,11 @@ settings-menu {
     padding-bottom: 0.5rem;
     margin-bottom: 0.3rem;
 
-    label {
+    > label {
         max-width: 350px;
+    }
+
+    label {
         display: flex;
         margin: 0 auto;
         justify-content: space-between;
@@ -21,5 +24,49 @@ settings-menu {
         input, select {
             text-align: center;
         }
+    }
+
+    section {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+
+        label {
+            width: 75%;
+            justify-content: center;
+            gap: 10px;
+
+            input {
+                transform: scale(1.5);
+            }
+
+            div {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+        }
+    }
+
+    json-editor {
+        display: block;
+        border: constants.$light-gray solid 1px;
+        border-radius: 15px;
+        padding: .3em;
+        margin-bottom: 10px;
+        text-align: right;
+
+        h3 {
+            text-align: center;
+        }
+
+        textarea {
+            resize: vertical;
+            width: 100%;
+            height: 15em;
+            margin-bottom: 10px;
+            overflow: scroll;
+        }
+
     }
 }
