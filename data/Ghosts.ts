@@ -7,12 +7,19 @@ import { Evidence } from "@Data/Evidence"
 export interface GhostData {
     name: string,
     evidence: Array<Evidence>,
-    info: Array<string>,
+    info: Array<string|AudioHelperData>,
     required?: string,
     link?: string,
     warning?: string,
     speed?: number|number[],
-    hunt?: number|number[]
+    hunt?: number|number[],
+    audio?: AudioHelperData
+}
+
+export interface AudioHelperData {
+    content?: string
+    title?: string,
+    data: string|string[]|Record<string, string>
 }
 
 export const AllGhosts:Array<GhostData> = [
@@ -27,7 +34,32 @@ export const AllGhosts:Array<GhostData> = [
             "Will target one player at a time",
             "Perfers singing/humming during ghost events, and will always be female.",
             "Has a chance to roam to it's target.",
-            "Has a special sound that can only be herd with the parabolic mic."
+            {
+                content: "Has a special sound that can only be herd with the parabolic mic.",
+                title: "Banshee Scream",
+                data: {
+                    "Banshee Scream 1":  "/sound/banshee/Scream_1.ogg",
+                    "Banshee Scream 2":  "/sound/banshee/Scream_2.ogg",
+                    "Banshee Scream 3":  "/sound/banshee/Scream_3.ogg",
+                    "Banshee Scream 4":  "/sound/banshee/Scream_4.ogg",
+                    "Banshee Scream 5":  "/sound/banshee/Scream_5.ogg",
+                    "Banshee Scream 6":  "/sound/banshee/Scream_6.ogg",
+                    "Banshee Scream 7":  "/sound/banshee/Scream_7.ogg",
+                    "Banshee Scream 8":  "/sound/banshee/Scream_8.ogg",
+                    "Banshee Scream 9":  "/sound/banshee/Scream_9.ogg",
+                    "Banshee Scream 10": "/sound/banshee/Scream_10.ogg",
+                    "Banshee Scream 11": "/sound/banshee/Scream_11.ogg",
+                    "Banshee Scream 12": "/sound/banshee/Scream_12.ogg",
+                    "Banshee Scream 13": "/sound/banshee/Scream_13.ogg",
+                    "Banshee Scream 14": "/sound/banshee/Scream_14.ogg",
+                    "Banshee Scream 15": "/sound/banshee/Scream_15.ogg",
+                    "Banshee Scream 16": "/sound/banshee/Scream_16.ogg",
+                    "Banshee Scream 17": "/sound/banshee/Scream_17.ogg",
+                    "Banshee Scream 18": "/sound/banshee/Scream_18.ogg",
+                    "Banshee Scream 19": "/sound/banshee/Scream_19.ogg",
+                    "Banshee Scream 20": "/sound/banshee/Scream_20.ogg",
+                }
+            }
         ],
         speed: 1.7,
         link: "https://youtu.be/zuiss03Zd9Q"
