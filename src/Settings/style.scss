@@ -48,6 +48,12 @@ settings-menu {
         }
     }
 
+    .reset {
+        display: block;
+        margin: 0 auto;
+        margin-bottom: 0.83em;
+    }
+
     json-editor {
         display: block;
         border: constants.$light-gray solid 1px;
@@ -67,6 +73,5 @@ settings-menu {
             margin-bottom: 10px;
             overflow: scroll;
         }
-
     }
 }

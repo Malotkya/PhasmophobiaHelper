@@ -74,8 +74,17 @@ export default class Settings extends HTMLElement {
         });
         persistAttributes(this._selAudio, {value: FOOTSTEP_FILE});
 
+        const reset = _("button", {class: "reset"}, "Reset All to Defaults");
+        reset.addEventListener("click", ()=>{
+            GhostDataEditor.reset();
+            EvidenceDataEditor.reset();
+            SpeedDataEditor.reset();
+            HuntDataEditor.reset();
+        });
+
         this._advSettingInput = _("input", {type: "checkbox", id:"show-adv-settings"});
         this._advSettings = _("div", {style: "display: none;", hidden:true},
+            reset,
             GhostDataEditor,
             EvidenceDataEditor,
             SpeedDataEditor,
@@ -91,6 +100,8 @@ export default class Settings extends HTMLElement {
                 this._advSettings.style.display = "none";
             }
         })
+
+        
     }
 
     disconnectedCallback(){
