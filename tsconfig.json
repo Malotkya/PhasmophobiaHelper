@@ -2,10 +2,14 @@
     "compilerOptions": {
         "strict": true,
         "noImplicitAny": true,
+        "lib": ["DOM", "DOM.Iterable"],
         "module": "nodenext",
         "target": "es2024",
         "moduleResolution": "nodenext",
-        "outDir": "./public/",
+        "outDir": "./build/",
         "allowJs": true,
+        "paths": {
+            "@Data/*": ["./data/*"]
+        }
     }
 }

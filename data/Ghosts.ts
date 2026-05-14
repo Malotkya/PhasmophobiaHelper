@@ -1,4 +1,4 @@
-import { EvidenceData } from "../Evidence/data";
+import { Evidence } from "@Data/Evidence"
 
 /** Ghost Data Interface
  * 
@@ -6,8 +6,8 @@ import { EvidenceData } from "../Evidence/data";
  */
 export interface GhostData {
     name: string,
-    evidence: Array<EvidenceData>,
-    info?: Array<string>,
+    evidence: Array<Evidence>,
+    info: Array<string>,
     required?: string,
     link?: string,
     warning?: string,
@@ -15,7 +15,7 @@ export interface GhostData {
     hunt?: number|number[]
 }
 
-export const allGhosts:Array<GhostData> = [
+export const AllGhosts:Array<GhostData> = [
     {   name: "Banshee",
         evidence: [
             "Ultraviolet",

@@ -51,6 +51,7 @@ module.exports = {
     target: "web",
     resolve: {
         extensions: ['.tsx', '.ts', '.js'],
+        tsconfig: path.resolve(__dirname, 'tsconfig.json')
     },
     output: { 
         filename: '[name].js',
