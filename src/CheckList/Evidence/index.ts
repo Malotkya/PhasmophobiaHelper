@@ -3,26 +3,8 @@
  * @author Alex Malotky
  */
 import * as Icons from "../../Util/UnicodeIcons";
-import {allEvidence} from "./data";
+import {EvidenceData} from "@Data/Evidence"
 import { createElement as _ } from "../../Util/Element";
-/** Create All Evidence Objects
- * 
- * Creates a list with all Evidence Objects.
- * 
- * @param {Element}target 
- * @returns {Array<Evidence>}
- */
-export function createAllEvidence(target: Element): Array<Evidence>{
-    const list: Array<Evidence> = [];
-
-    for(let data of allEvidence){
-        const evidence = new Evidence(data);
-        list.push(evidence);
-        target.appendChild(evidence);
-    }
-    
-    return list;
-}
 
 /** Evidence Class
  * 
@@ -39,7 +21,7 @@ export default class Evidence extends HTMLElement{
         this.role = "listitem";
 
         this._name       = _("span", {class:"name"}, name);
-        this._btnInclude = _("button", {class:"include"}, Icons.CHECK_MARK);
+        this._btnInclude = _("button", {class: "include"}, Icons.CHECK_MARK);
         this._btnExclude = _("button", {class: "exclude"}, Icons.EX);
         this._btnReset   = _("button", {class: "reset", style: "display: none"}, Icons.RESET);
 

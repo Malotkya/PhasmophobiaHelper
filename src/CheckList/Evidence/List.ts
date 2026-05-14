@@ -2,14 +2,13 @@
  * 
  * @author Alex Malotky
  */
-import GhostList from "../Ghost/List";
-import { allEvidence } from "./data";
+import type GhostList from "../Ghost/List";
+import { EvidenceData, DEFAULT_EVIDENCE_COUNT, EVIDENCE_SCORE_OVERFLOW } from "@Data/Evidence";
 import Evidence from ".";
 import CustomSet from "../../Util/CustomSet";
 import { createElement as _ } from "../../Util/Element";
 
-const DEFAULT_EVIDENCE_COUNT = 3;
-const EVIDENCE_SCORE_OVERFLOW = 5;
+
 
 /** Evidence List
  * 
@@ -18,8 +17,8 @@ export default class EvidenceList extends HTMLElement {
     private _data: Array<Evidence>
 
     //custom sets holding evidence proven/disproven
-    private _induction: CustomSet<Evidence>; 
-    private _deduction: Set<Evidence>;
+    private _induction: CustomSet<Evidence> = new CustomSet(DEFAULT_EVIDENCE_COUNT);
+    private _deduction: Set<Evidence> = new Set();
 
     //Number of evidence needed to rule out a ghost.
     private _evidenceThreashold: number;
@@ -28,10 +27,8 @@ export default class EvidenceList extends HTMLElement {
         super()
         this._evidenceThreashold = 1;
         this.className = "sub-section";
-        this._induction = new CustomSet(DEFAULT_EVIDENCE_COUNT);
-        this._deduction = new Set();
 
-        this._data = allEvidence.map(data=>{
+        this._data = EvidenceData.map(data=>{
             const evidence = new Evidence(data);
 
             //Evidence Found
@@ -65,14 +62,11 @@ export default class EvidenceList extends HTMLElement {
      * 
      */
     public filter(list: GhostList): void {
-        let index:number = 0;
-        while(index<list.length){
-            const ghost = list.at(index);
-
+        for(const ghost of list) {
             //Count Evidence Not Found
             let dScore = 0;
             for(let e of this._deduction){
-                if(ghost.has(e.name)){
+                if(ghost.evidence.includes(e.name)){
                     dScore++;
                 }
                 if(ghost.required === e.name){
@@ -92,7 +86,7 @@ export default class EvidenceList extends HTMLElement {
                 }
             } else {
                 for( let e of this._induction){
-                    if(ghost.has(e.name)) {
+                    if(ghost.evidence.includes(e.name)) {
                         iScore--;
                     }else {
                         iScore+=EVIDENCE_SCORE_OVERFLOW;
@@ -102,13 +96,13 @@ export default class EvidenceList extends HTMLElement {
             
 
             if(iScore>1 || dScore >= this._evidenceThreashold) {
-                list.pull(index);
+                ghost.hide();
             } else {
                 //Reorder Ghost
+                ghost.show();
                 ghost.order = iScore;
-                index++;
             }
-        }
+        } 
     }
 
     /** Reset the Game

@@ -8,7 +8,7 @@
  */
 import Ghost from "../Ghost";
 import GhostList from "../Ghost/List";
-import { AlternativeData, SPEED_TYPES, HUNT_TYPES } from "./data";
+import { AlternativeEvidence, SPEED_TYPES, HUNT_TYPES } from "@Data/Evidence";
 import Alternative from ".";
 import { createElement as _ } from "../../Util/Element";
 
@@ -27,7 +27,7 @@ export default class AlternativeList extends HTMLElement{
      * @param {string} title 
      * @param {AlternativeData} data
      */
-    constructor(title:string, data: AlternativeData){
+    constructor(title:string, data: AlternativeEvidence){
         super();
         this.className = "sub-section";
         this._induction = new Set();
@@ -73,6 +73,9 @@ export default class AlternativeList extends HTMLElement{
     }
 
     private check(ghost:Ghost):Boolean{
+        if(ghost.hidden)
+            return false;
+        
         for(let alternative of this._induction){
             if(!ghost.checkAlternative(alternative.value))
                 return false;
@@ -93,12 +96,9 @@ export default class AlternativeList extends HTMLElement{
      * @param {GhostList} list 
      */
     public filter(list: GhostList): void{
-        let index:number = 0;
-        while(index < list.length){
-            if(this.check(list.at(index))) {
-                index++;
-            } else {
-                list.pull(index);
+        for(const ghost of list){
+            if(!this.check(ghost)) {
+                ghost.hide()
             }
         }
     }
