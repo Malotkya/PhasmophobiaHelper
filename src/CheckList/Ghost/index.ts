@@ -3,9 +3,8 @@
  * @author Alex Malotky
  */
 import * as Icons from "../../Util/UnicodeIcons";
-import {GhostData} from "./data";
-import { SPEED_TYPES, HUNT_TYPES } from "../Alternative";
-import {createSoundButton} from "../../Util/Sound";
+import { GhostData } from "@Data/Ghosts";
+import { EVIDENCE_OVERRIDE, SPEED_TYPES, HUNT_TYPES } from "@Data/Evidence";
 import { createElement as _ } from "../../Util/Element";
 
 /** Ghost Class
@@ -13,16 +12,20 @@ import { createElement as _ } from "../../Util/Element";
  */
 export default class Ghost extends HTMLElement{
     // Elements
-    private _name: HTMLElement;
-    private _info: Element;
-    private _evidence: Element;
+    readonly name: string;
+    readonly evidence: string[];
+    readonly required: string|undefined;
+
+    readonly speed: number|number[]|undefined;
+    readonly hunt: number|number[]|undefined;
+    readonly warning:string|undefined;
+    readonly info:string[];
+    readonly link: string|undefined;
+
     
 
     //Ghost Info
     private _disproven: boolean;
-    private _required: string;
-    private _hunt: number|number[]|undefined;
-    private _speed: number|number[]|undefined;
 
     //List Elements
     private _styleElement: HTMLElement;
@@ -36,41 +39,14 @@ export default class Ghost extends HTMLElement{
         this.role = "listitem";
         
         //Name Information
-        this._name = _("h2", {class: "name"}, data.name);
-
-        //Main Evidence Information
-        this._evidence = _("ol",
-            data.evidence.map((s:string)=>_("li", s))
-        )
-
-        //Alternative Evidence Information
-        this._info = _("div", {class:"info"},
-
-            //Warning Information
-            data.warning? _("p", {class:'warn'}, data.warning): null,
-
-            _("ul",
-                //Speed Information
-                data.speed? createSoundButton(data.speed): null,
-
-                //Main Information
-                data.info? data.info.map(s=>_("li", s)): null,
-
-                //Required Information
-                data.required? _("li", "Always has: "+data.required): null,
-            ),
-
-            //Additional Info Link
-            data.link? _("p", _("a", {target:'_blank',  href:data.link}, "More Info")): null
-        );
-
-        //Alternative Ghost Information
-        this._hunt = data.hunt;
-        this._speed = data.speed;
-        
-        //Required Evidence Information
-        this._required = data.required || "";
-
+        this.name = data.name;
+        this.evidence = data.evidence;
+        this.warning = data.warning;
+        this.speed = data.speed;
+        this.hunt = data.hunt;
+        this.required = data.required;
+        this.link = data.link;
+        this.info = data.info;
 
         //Remove Button List Element
         this._btnRemove = _("button", Icons.EX);
@@ -96,21 +72,6 @@ export default class Ghost extends HTMLElement{
         this.innerHTML = "";
     }
 
-    /** Has Evidence
-     * 
-     * @param {string} evidence 
-     * @returns {boolean}
-     */
-    public has(evidence: string): boolean{
-        const list = this._evidence.children;
-        for(let i=0; i<list.length; i++){
-            if(list[i].textContent === evidence)
-                return true;
-        }
-
-        return false;
-    }
-
     /** Cross Off Ghost from List
      * 
      */
@@ -131,22 +92,22 @@ export default class Ghost extends HTMLElement{
         this._disproven = false;
     }
 
-    public rawOrder():number {
-        return Number(this.style.order);
-    }
-
     /** Hide Ghost from List
      * 
      */
     public hide(): void{
-        this.classList.add("no");
+        this._disproven = true;
+        this.style.display = "none";
+        this.hidden = true;
     }
 
     /** Show Ghost on List
      * 
      */
     public show(): void{
-        this.classList.remove("no");
+        this._disproven = false;
+        this.style.display = "";
+        this.hidden = false;
     }
 
     /** Reset Ghost on List
@@ -215,11 +176,11 @@ export default class Ghost extends HTMLElement{
      * @returns {boolean}
      */
     private isFastSpeed(): boolean {
-        if(this._speed){
-            if(typeof this._speed === "number"){
-                return this._speed > SPEED_TYPES.Average;
+        if(this.speed){
+            if(typeof this.speed === "number"){
+                return this.speed > SPEED_TYPES.Average;
             } else {
-                for(let s of this._speed){
+                for(let s of this.speed){
                     if(s > SPEED_TYPES.Average)
                         return true;
                 }
@@ -236,11 +197,11 @@ export default class Ghost extends HTMLElement{
      * @returns {boolean}
      */
     private isSlowSpeed(): boolean {
-        if(this._speed){
-            if(typeof this._speed === "number"){
-                return this._speed < SPEED_TYPES.Average;
+        if(this.speed){
+            if(typeof this.speed === "number"){
+                return this.speed < SPEED_TYPES.Average;
             } else {
-                for(let s of this._speed){
+                for(let s of this.speed){
                     if(s < SPEED_TYPES.Average)
                         return true;
                 }
@@ -257,11 +218,11 @@ export default class Ghost extends HTMLElement{
      * @returns {boolean}
      */
     private isAverageSpeed(): boolean {
-        if(this._speed){
-            if(typeof this._speed === "number"){
-                return this._speed == SPEED_TYPES.Average;
+        if(this.speed){
+            if(typeof this.speed === "number"){
+                return this.speed == SPEED_TYPES.Average;
             } else {
-                for(let s of this._speed){
+                for(let s of this.speed){
                     if(s == SPEED_TYPES.Average)
                         return true;
                 }
@@ -278,11 +239,11 @@ export default class Ghost extends HTMLElement{
      * @returns {boolean}
      */
     private isEarlyHunter(): boolean {
-        if(this._hunt){
-            if(typeof this._hunt === "number"){
-                return this._hunt > HUNT_TYPES.Normal;
+        if(this.hunt){
+            if(typeof this.hunt === "number"){
+                return this.hunt > HUNT_TYPES.Normal;
             } else {
-                for(let h of this._hunt){
+                for(let h of this.hunt){
                     if(h > HUNT_TYPES.Normal)
                         return true;
                 }
@@ -299,11 +260,11 @@ export default class Ghost extends HTMLElement{
      * @returns {boolean}
      */
     private isLateHunter(): boolean {
-        if(this._hunt){
-            if(typeof this._hunt === "number"){
-                return this._hunt < HUNT_TYPES.Normal;
+        if(this.hunt){
+            if(typeof this.hunt === "number"){
+                return this.hunt < HUNT_TYPES.Normal;
             } else {
-                for(let h of this._hunt){
+                for(let h of this.hunt){
                     if(h < HUNT_TYPES.Normal)
                         return true;
                 }
@@ -320,11 +281,11 @@ export default class Ghost extends HTMLElement{
      * @returns {boolean}
      */
     private isNormalHunter(): boolean {
-        if(this._hunt){
-            if(typeof this._hunt === "number"){
-                return this._hunt == HUNT_TYPES.Normal;
+        if(this.hunt){
+            if(typeof this.hunt === "number"){
+                return this.hunt == HUNT_TYPES.Normal;
             } else {
-                for(let h of this._hunt){
+                for(let h of this.hunt){
                     if(h == HUNT_TYPES.Normal)
                         return true;
                 }
@@ -336,43 +297,20 @@ export default class Ghost extends HTMLElement{
         return true;
     }
 
-    /** Required Evidence Getter
-     * 
-     */
-    public get required(): string{
-        return this._required;
-    }
-
-    /** Ghost Name Getter
-     * 
-     */
-    public get name(): string{
-        return this._name.textContent;
-    }
-
     /** Ghost List Item Order Getter
      * 
      */
     public get order(){
-        let hidden: Boolean = this.classList.contains("no");
-        return Number(this.style.order) + (Number(this._disproven || hidden) * 10);
+        return Number(this.style.order) + (Number(this._disproven) * 10);
     }
 
     /** Ghost List Item Order Setter
      * 
      */
     public set order(value: number){
-        this.style.order = (value + (Number(this._disproven) * 10)).toString();
-    }
-
-    /** Display Ghost Information
-     * 
-     */
-    public display(target:HTMLElement): void{
-        target.innerHTML = "";
-        target.appendChild(this._name);
-        target.appendChild(this._evidence);
-        target.appendChild(this._info);
+        if(value > EVIDENCE_OVERRIDE)
+            value -= EVIDENCE_OVERRIDE
+        this.style.order = String(value);
     }
 }
 
