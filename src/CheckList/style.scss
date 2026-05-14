@@ -94,7 +94,7 @@ check-list{
         cursor: default;
     }
 
-    #display {
+    ghost-display {
         .name{
             font-size: 2rem;
         }
@@ -145,7 +145,7 @@ check-list{
 
 @media(min-width: 400px){
     check-list {
-        #display ol {
+        ghost-display ol {
             flex-direction: row;
         }
 
@@ -202,11 +202,11 @@ check-list{
 
     @media(max-width: 650px){
         check-list {
-            #display ol {
+            ghost-display ol {
                 flex-direction: column;
             }
     
-            #display ol li {
+            ghost-display ol li {
                 width: 100%;
             }
         }
@@ -226,7 +226,7 @@ check-list{
             min-width: 200px;
         }
 
-        #display ol {
+        ghost-display ol {
             justify-content: space-evenly;
         }
 
