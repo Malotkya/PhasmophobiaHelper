@@ -10,6 +10,8 @@
  * @param {Array<any>} children 
  * @returns {HTMLElement}
  */
+export function createElement<Name extends keyof HTMLElementTagNameMap>(name:Name, attributes?:any, ...children:Array<any>):HTMLElementTagNameMap[Name]
+export function createElement(name:string, attributes?:any, ...children:Array<any>):HTMLElement
 export function createElement(name:string, attributes:any = {}, ...children:Array<any>):HTMLElement {
     // If attribute could be content
     if(attributes instanceof HTMLElement || Array.isArray(attributes) || typeof attributes !== "object") {
