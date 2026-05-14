@@ -14,6 +14,7 @@ export default class GhostList extends HTMLElement {
         this._list = _("ul", {class:"ghost-list"});
 
         GhostDataEditor.updateEvent((data)=>{
+            console.info(`Loaded ${data.length} Ghosts.`);
             this._list.replaceChildren(...(
                 data.sort((a, b)=>a.name.localeCompare(b.name))
                     .map(g => new Ghost(g))
