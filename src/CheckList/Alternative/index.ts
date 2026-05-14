@@ -1,5 +1,4 @@
 import Evidence from "../Evidence";
-export {SPEED_TYPES, HUNT_TYPES} from "./data"
 
 export default class Alternative extends Evidence{
     private _value: number;
