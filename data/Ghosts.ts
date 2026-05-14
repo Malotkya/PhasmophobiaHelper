@@ -520,5 +520,41 @@ export const AllGhosts:Array<GhostData> = [
             65,
             15
         ]
-    }
+    },
+    {   name: "Aswang",
+        speed: [1.53, 1.7, 2.8],
+        link: "https://youtu.be/CPCzqlG3VOg",
+        info: [
+            "Speeds up at a faster rate then a normal ghost when it has line of site on a player",
+            "Weakness: Cannot kill players in official hiding spots."
+        ],
+        evidence: [
+            "D.O.T.s Projector",
+            "Ghost Writing",
+            "Freezing Temps"
+        ],
+        hunt: 50,
+        warning: "Can start hunting with no grace period."
+    },
+    {   name: "Kormos",
+        speed: [1.7, 2.21],
+        link: "https://youtu.be/CPCzqlG3VOg",
+        info: [
+            "Moves at a faster speed when once it detects the player",
+            "The distance at which the Kormos can hear the player differs depending on if the player is running (30 m), crouched(10 m), or walking normaly (15 m).",
+            "Will still speed up like a normal ghost if it continually detects the player, can reach Moroi top speeds.",
+            "Can hunt at a higher sanity of a player is running near it.",
+            "Weakness: Cannot see the player if they are standing still."
+        ],
+        evidence: [
+            "Ghost Orbs",
+            "Spirit Box",
+            "Ultraviolet"
+        ],
+        hunt: [
+            70,
+            50
+        ],
+        warning: "Can hear the players footsteps in addition to the normal voice and electronics."
+    },
 ];
