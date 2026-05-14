@@ -1,6 +1,7 @@
 import CheckList from "./CheckList";
 import Tools from "./Tools";
 import Settings from "./Settings";
+import About from "./About";
 import { createElement as _, appendChildren } from "./Util/Element";
 import {makeSoundInterface} from "./Util/Sound";
 import {makeClockInterface} from "./Util/Clock";
@@ -18,7 +19,8 @@ window.onload = () => {
 
     const checkList = new CheckList();
     const tools = new Tools();
-    const settings = new Settings(checkList, tools.timers.huntTimer)
+    const settings = new Settings(checkList, tools.timers.huntTimer);
+    const about = About();
     const navigation = _("nav", 
         _("div", _("a", {href: "#checkList"}, "Check List")),
         _("div", _("a", {href: "#tools"}, "Tools")),
@@ -33,22 +35,21 @@ window.onload = () => {
      * @param {string} target 
      */
     const routing = (target:string) => {
-        main.innerHTML = "";
         switch(target.toLocaleLowerCase()){
             case "checklist":
-                main.appendChild(checkList);
+                main.replaceChildren(checkList);
                 break;
 
             case "tools":
-                main.appendChild(tools);
+                main.replaceChildren(tools);
                 break;
 
             case "settings":
-                main.appendChild(settings);
+                main.replaceChildren(settings, about);
                 break;
 
             default:
-                main.appendChild(Error(`Unable to find '${target}'!`))
+                main.replaceChildren(Error(`Unable to find '${target}'!`))
         }
     }
 
