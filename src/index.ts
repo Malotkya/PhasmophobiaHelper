@@ -22,7 +22,7 @@ window.onload = () => {
     const settings = new Settings(checkList, tools.timers.huntTimer);
     const about = About();
     const navigation = _("nav", 
-        _("div", _("a", {href: "#checkList"}, "Check List")),
+        _("div", _("a", {href: "/"}, "Check List")),
         _("div", _("a", {href: "#tools"}, "Tools")),
         _("div", _("a", {href: "#settings"}, "Settings"))
     )
