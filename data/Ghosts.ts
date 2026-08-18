@@ -501,7 +501,7 @@ export const AllGhosts:Array<GhostData> = [
         ],
         hunt: 50
     },
-    {   name: "Obambu",
+    {   name: "Obambo",
         link: "https://www.youtube.com/watch?v=HMWUNFP5Vw8",
         info: [
             "Will change between Active/Inactive every 2 minutes",
@@ -557,4 +557,21 @@ export const AllGhosts:Array<GhostData> = [
         ],
         warning: "Can hear the players footsteps in addition to the normal voice and electronics."
     },
+    {   name: "Deildegast",
+        speed: [0.4, 1.7, 3.0],
+        link: "https://youtu.be/rEErohIRbdc",
+        info: [
+            "Doesn't speed up in line of sight.",
+            "Can be slowed down by throwing unique items.",
+            "Throwing 30 items is needed to reach its minimum speed.",
+            "It's speed resets after every hunt."
+        ],
+        evidence: [
+            "EMF Level 5",
+            "Ghost Writing",
+            "D.O.T.s Projector"
+        ],
+        hunt: 50,
+        //warning: ""
+    }
 ];
